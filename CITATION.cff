@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you use this work, please cite it as below."
+title: "Project KAGURA: quantitative research on the Japanese yen and Japanese monetary policy"
+type: software
+authors:
+  - family-names: Blasco
+    given-names: Aki
+version: 0.1.0
+abstract: >-
+  Reproducible research code and documentation studying whether USD/JPY has structurally
+  decoupled from the US-Japan interest-rate differential. Version 0.1 contains the data
+  foundation and exploratory diagnostics; no formal hypothesis test has been run yet.
+keywords:
+  - Japanese yen
+  - USD/JPY
+  - interest-rate differential
+  - structural breaks
+  - monetary policy

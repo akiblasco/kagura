@@ -3,6 +3,7 @@ name = "kagura"
 version = "0.1.0"
 description = "Quantitative research on the Japanese yen, USD/JPY, and Japanese monetary policy."
 readme = "README.md"
+license = "MIT"
 authors = [{ name = "Aki Blasco" }]
 requires-python = ">=3.12"
 dependencies = [
@@ -44,3 +45,4 @@ ignore_missing_imports = true
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+filterwarnings = ["error"]
