@@ -1,7 +1,10 @@
-.PHONY: sync test lint
+.PHONY: sync data test lint
 
 sync:
 	uv sync
+
+data:
+	uv run python -m kagura.data
 
 test:
 	uv run pytest -q

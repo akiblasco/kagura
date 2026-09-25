@@ -10,6 +10,7 @@ dependencies = [
     "numpy>=2.0",
     "statsmodels>=0.14",
     "matplotlib>=3.9",
+    "certifi>=2024",
 ]
 
 [dependency-groups]
