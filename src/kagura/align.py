@@ -19,6 +19,10 @@ MARKET = ["us_2y", "us_10y", "fed_funds", "jgb_2y", "jgb_10y", "brent", "vix"]
 # ponytail: "5 business days" implemented as 7 calendar days; no holiday calendar needed.
 MAX_CARRY = pd.Timedelta(days=7)
 
+# Share of a series' values carried from an earlier day above which the source is suspect.
+# Holidays alone give up to ~6% (JGBs). See docs/decisions/0005-carried-share-guard.md.
+MAX_CARRIED_SHARE = 0.08
+
 # Monthly series: offset from the first day of the reference month to the day it is
 # assumed known. Fixed conservative approximations, not historical release dates.
 AVAILABLE_AFTER = {
@@ -55,6 +59,13 @@ def build_daily(long: pd.DataFrame) -> pd.DataFrame:
     return out
 
 
+def carried_share(daily: pd.DataFrame) -> pd.Series:
+    """Share of each market series' non-missing values that were carried from an earlier day."""
+    return pd.Series(
+        {name: daily[f"{name}_carried"][daily[name].notna()].mean() for name in MARKET}
+    )
+
+
 def build_monthly(long: pd.DataFrame, daily: pd.DataFrame) -> pd.DataFrame:
     """One row per month: the last daily row of the month, plus the latest monthly releases
     available on that date. ``<name>_month`` is the reference month of the value used."""
@@ -85,5 +96,6 @@ if __name__ == "__main__":
     for label, df in (("daily", daily), ("monthly", monthly)):
         print(f"{label}: {len(df)} rows, {df['date'].min():%Y-%m-%d}..{df['date'].max():%Y-%m-%d}")
     print("share of non-missing values carried:")
-    for name in MARKET:
-        print(f"  {name:10s} {daily[f'{name}_carried'].sum() / daily[name].notna().sum():.2%}")
+    for name, share in carried_share(daily).items():
+        warn = f"  WARNING: above {MAX_CARRIED_SHARE:.0%}, source may have lost history"
+        print(f"  {name:10s} {share:.2%}{warn if share > MAX_CARRIED_SHARE else ''}")

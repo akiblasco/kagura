@@ -2,7 +2,14 @@ import pandas as pd
 import pytest
 
 from kagura import DATA_PROCESSED
-from kagura.align import AVAILABLE_AFTER, MARKET, build_daily, build_monthly
+from kagura.align import (
+    AVAILABLE_AFTER,
+    MARKET,
+    MAX_CARRIED_SHARE,
+    build_daily,
+    build_monthly,
+    carried_share,
+)
 
 
 def _long(rows: list[tuple[str, str, float]]) -> pd.DataFrame:
@@ -90,3 +97,14 @@ def test_carried_flag_only_where_value_present() -> None:
     assert d["usdjpy"].notna().all()
     for name in MARKET:
         assert not (d[f"{name}_carried"] & d[name].isna()).any(), name
+
+
+def test_h1_inputs_not_degraded_by_carrying() -> None:
+    """Fails if a source loses history and gaps are silently filled by carrying.
+
+    Only the H1 yield legs fail the test; other series get a warning from ``make data``."""
+    if not (DATA_PROCESSED / "daily.csv").exists():
+        pytest.skip("run `make data` first")
+    shares = carried_share(pd.read_csv(DATA_PROCESSED / "daily.csv"))
+    for name in ("us_2y", "us_10y", "jgb_2y", "jgb_10y"):
+        assert shares[name] <= MAX_CARRIED_SHARE, f"{name}: {shares[name]:.1%} carried"
