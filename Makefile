@@ -5,6 +5,7 @@ sync:
 
 data:
 	uv run python -m kagura.data
+	uv run python -m kagura.align
 
 test:
 	uv run pytest -q
