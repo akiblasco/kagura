@@ -1,4 +1,4 @@
-.PHONY: sync data test lint
+.PHONY: sync data test lint research
 
 sync:
 	uv sync
@@ -14,3 +14,6 @@ lint:
 	uv run ruff check .
 	uv run ruff format --check .
 	uv run mypy
+
+research:
+	uv run jupyter nbconvert --to notebook --execute --inplace notebooks/01_exploration.ipynb
