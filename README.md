@@ -57,7 +57,8 @@ and anything resembling a trading system. See `docs/ROADMAP.md` for when those c
 | Ingestion: USD/JPY, US/JGB yields, policy rates, CPI, Brent, VIX | done |
 | Time alignment with observation vs availability dating | done (fixed-lag approximation, [ADR 0003](docs/decisions/0003-time-alignment.md)) |
 | Exploratory diagnostics and rolling correlations | done (exploratory, [ADR 0004](docs/decisions/0004-h1-exploratory-specification.md)) |
-| Baseline regressions with HAC errors, rolling betas | not started |
+| H1 formal testing protocol | frozen before estimation ([ADR 0006](docs/decisions/0006-h1-formal-testing-protocol.md)) |
+| H1a baseline: era regression with HAC errors, gate and directional tests, robustness, rolling betas | implemented and tested on synthetic data; **formal run on real data pending** |
 | Structural-break tests | not started |
 | Yen Fundamental Gap v1 | not started |
 
@@ -134,8 +135,15 @@ src/kagura/
   data.py      download each source, keep raw files unchanged, parse into one long table
   align.py     build daily.csv (USD/JPY calendar) and monthly.csv without look-ahead
   explore.py   exploratory computations and plots; constants frozen by ADR 0004
-tests/         parser tests, alignment tests on synthetic data, data-quality checks
+  models.py    H1a econometrics: era-interacted OLS with Newey–West HAC errors, positivity
+               gate, directional tests S/R, Fieller sets, era-equality Wald test, two-leg
+               decomposition, rolling beta, monthly changes; constants frozen by ADR 0006
+  h1a.py       H1a orchestration: SHA-256 check of the frozen data vintage, schema and
+               sample checks, assembly of the primary and R1–R3 specifications
+tests/         unit tests on synthetic data (models, orchestration, notebook), data-quality
+               and data-integrity checks
 notebooks/     01_exploration.ipynb: executed exploratory notebook with dated notes
+               02_h1a_formal.ipynb: H1a formal test (ADR 0006); not yet executed
 reports/figures/  figures written by the notebook
 docs/
   RESEARCH_SPEC.md   full research program
@@ -158,9 +166,19 @@ make data      # download sources, build data/processed/{series_long,daily,month
 make test      # unit tests plus data-quality tests (warnings are errors)
 make lint      # ruff check, ruff format --check, mypy --strict
 make research  # re-execute notebooks/01_exploration.ipynb and rewrite reports/figures/
+make h1a       # execute notebooks/02_h1a_formal.ipynb (H1a formal test, ADR 0006)
 ```
 
 Without `make data`, the data-quality tests are skipped and the unit tests still run.
+
+**H1a runs only on the frozen data vintage.** `make h1a` first checks the SHA-256 of the
+processed files and the H1-relevant raw files against ADR 0006 §9.2 (the 2026-09-15
+download), then their schemas and sample boundaries (daily 1981-01-01 to 2026-09-11,
+monthly to 2026-08). Any mismatch stops the notebook with an `IntegrityError` before any
+regression runs. Because data are not redistributed, a fresh `make data` downloads a newer
+vintage and will not match: the published H1a result is reproducible from the code and
+that frozen vintage, not from a later download. The notebook separates confirmatory,
+secondary, descriptive and robustness results as the ADR defines them.
 
 ## Research decisions
 
@@ -175,6 +193,9 @@ context, options considered, decision, rationale and limitations:
   frozen before results were viewed.
 - [0005 Carried-share guard](docs/decisions/0005-carried-share-guard.md): response to a
   Brent source change.
+- [0006 H1 formal econometric testing protocol](docs/decisions/0006-h1-formal-testing-protocol.md):
+  the H1a test, decision rules, robustness variants and frozen data vintage, committed
+  before any model was estimated on real data. H1b is deferred to a later ADR.
 
 ## Known limitations
 
