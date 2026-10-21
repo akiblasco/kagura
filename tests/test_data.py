@@ -1,8 +1,9 @@
 import pandas as pd
 import pytest
 
-from kagura import DATA_PROCESSED
+from kagura import DATA, DATA_PROCESSED
 from kagura.data import load, parse_bis, parse_fred, parse_mof
+from kagura.vintage import protected_files
 
 # --- parser tests: run offline, reproduce each source's quirks -------------------------------
 
@@ -91,6 +92,10 @@ def test_values_in_plausible_range(series_long: pd.DataFrame) -> None:
 
 
 def test_recent(series_long: pd.DataFrame) -> None:
+    """Freshness of a current download. A frozen vintage ages by design; its integrity is
+    checked by tests/test_h1a.py::test_real_data_is_the_frozen_vintage instead."""
+    if protected_files(DATA):
+        pytest.skip(f"{DATA} holds the frozen ADR 0006 vintage; freshness does not apply")
     last = series_long.groupby("series")["date"].max()
     # Monthly series arrive with up to a three-month publication lag (jp_call_rate is the slowest).
     stale = last[last < pd.Timestamp.today() - pd.Timedelta(days=150)]

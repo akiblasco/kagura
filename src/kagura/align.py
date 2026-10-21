@@ -9,8 +9,9 @@ from __future__ import annotations
 
 import pandas as pd
 
-from kagura import DATA_PROCESSED
+from kagura import DATA, DATA_PROCESSED
 from kagura.data import load
+from kagura.vintage import ensure_writable
 
 # Daily market series joined onto the USD/JPY calendar.
 MARKET = ["us_2y", "us_10y", "fed_funds", "jgb_2y", "jgb_10y", "brent", "vix"]
@@ -83,6 +84,7 @@ def build_monthly(long: pd.DataFrame, daily: pd.DataFrame) -> pd.DataFrame:
 
 
 def build() -> tuple[pd.DataFrame, pd.DataFrame]:
+    ensure_writable(DATA)  # rebuilding could change the frozen files' bytes (kagura.vintage)
     long = load()
     daily = build_daily(long)
     monthly = build_monthly(long, daily)

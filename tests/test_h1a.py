@@ -311,6 +311,9 @@ def test_notebook_is_unexecuted_and_never_reimplements_the_econometrics() -> Non
         "cov_type",
         "read_csv",
         "polyfit",
+        "load_daily",  # explore loaders follow KAGURA_DATA; H1a must read only the frozen data/
+        "load_monthly",
+        "DATA_PROCESSED",
         *forbidden_calls,
     ):  # estimation only through h1a.analyze
         assert forbidden not in text, forbidden

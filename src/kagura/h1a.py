@@ -11,7 +11,6 @@ change tables from ``kagura.explore``). This module only
 
 from __future__ import annotations
 
-import hashlib
 import json
 import math
 import subprocess
@@ -42,21 +41,13 @@ from kagura.models import (
     robustness_label,
     two_leg_regression,
 )
+from kagura.vintage import FROZEN_SHA256 as FROZEN_SHA256  # re-exported for tests
+from kagura.vintage import sha256 as sha256
 
 # --- frozen data vintage (ADR 0006 §9.2) ------------------------------------------------------
 
-# Paths relative to data/, exactly as in the ADR 0006 §9.2 table.
-
-FROZEN_SHA256 = {
-    "processed/daily.csv": "edfc95cf676d3647b6af3667b3b34fc74b4b6e692d750bf6ab8008de9105cd99",
-    "processed/monthly.csv": "3f19c005d8db1ab1963488b2af748dcb6f956fe3a6a6cf6f4acdafda92a56215",
-    "raw/manifest.json": "c0f5676e888751690cf8a5ad86df63c8727b5a02f63302b33fb535e315bee51c",
-    "raw/usdjpy.csv": "0ea1de1993e69827ccfdddc390af8f8f5abf15c566f4c4cd5a6072495b773965",
-    "raw/us_2y.csv": "1289774410381729569844068b657a7cc11a56a699669509bf6ed26a0db572a4",
-    "raw/us_10y.csv": "94c1e5b98460d7de645be32f3211853c3d749724ecb12cac33bc84623ea759b4",
-    "raw/jgb.csv": "997a8f95dc20c884d506c627ac075b1e93a357410094058ac19f3effead2e353",
-    "raw/jgb_current.csv": "8da8cc83668bf280f1849ce2e6fab752881fc771b87d4691887bdb85e2f9f519",
-}
+# The ADR 0006 §9.2 table (paths relative to data/) and the hasher live in kagura.vintage, so
+# the download pipeline can protect the same files without importing the econometrics.
 
 # Columns the H1a analysis reads. Extra columns are allowed.
 DAILY_COLUMNS = [
@@ -73,14 +64,6 @@ MONTHLY_COLUMNS = ["date", "usdjpy", "diff_2y", "diff_10y"]
 
 class IntegrityError(RuntimeError):
     """The data on disk are not the frozen ADR 0006 vintage, or not in the expected shape."""
-
-
-def sha256(path: Path) -> str:
-    h = hashlib.sha256()
-    with path.open("rb") as f:
-        for block in iter(lambda: f.read(1 << 20), b""):
-            h.update(block)
-    return h.hexdigest()
 
 
 def verify_checksums(root: Path = ROOT, expected: dict[str, str] = FROZEN_SHA256) -> None:

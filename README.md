@@ -171,6 +171,13 @@ make h1a       # execute notebooks/02_h1a_formal.ipynb (H1a formal test, ADR 000
 
 Without `make data`, the data-quality tests are skipped and the unit tests still run.
 
+**The frozen vintage is write-protected.** If `data/` holds any file of the ADR 0006 vintage
+(matched by SHA-256, `src/kagura/vintage.py`), `make data` refuses to run before downloading
+anything. Download a current vintage into another directory instead:
+`KAGURA_DATA=data/current make data`, and check it with `KAGURA_DATA=data/current make test`.
+The freshness test is skipped on the frozen vintage, which ages by design; its integrity is
+checked by checksum instead. `make h1a` always reads `data/`.
+
 **H1a runs only on the frozen data vintage.** `make h1a` first checks the SHA-256 of the
 processed files and the H1-relevant raw files against ADR 0006 §9.2 (the 2026-09-15
 download), then their schemas and sample boundaries (daily 1981-01-01 to 2026-09-11,

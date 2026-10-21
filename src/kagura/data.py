@@ -17,7 +17,8 @@ from datetime import UTC, datetime
 import certifi
 import pandas as pd
 
-from kagura import DATA_PROCESSED, DATA_RAW
+from kagura import DATA, DATA_PROCESSED, DATA_RAW
+from kagura.vintage import ensure_writable
 
 FRED = "https://fred.stlouisfed.org/graph/fredgraph.csv?id={}"
 MOF = "https://www.mof.go.jp/english/policy/jgbs/reference/interest_rate/{}"
@@ -87,16 +88,25 @@ def fetch(url: str) -> bytes:
 
 
 def build() -> pd.DataFrame:
+    ensure_writable(DATA)  # never overwrite a protected vintage (kagura.vintage)
     manifest: dict[str, dict[str, str | int]] = {}
+    raws: dict[str, bytes] = {}
     frames = []
+    # Download and parse everything before writing anything, so a failed or garbled download
+    # (e.g. an HTML error page that does not parse) writes nothing. This is not atomic: a
+    # failure while writing (e.g. disk full, interruption) can still leave a mix of old and
+    # new files. Download into a fresh directory (KAGURA_DATA) to keep that risk harmless.
     for name, (url, parser) in SOURCES.items():
-        raw = fetch(url)
-        (DATA_RAW / f"{name}.csv").write_bytes(raw)
+        raw = raws[name] = fetch(url)
         downloaded_at = datetime.now(UTC).isoformat()
         manifest[name] = {"url": url, "downloaded_at": downloaded_at, "bytes": len(raw)}
         # The MOF footer contains Shift-JIS bytes; the data rows are ASCII, so replace is safe.
         text = raw.decode("utf-8-sig", errors="replace")
         frames.append(parser(text, "jgb" if name == "jgb_current" else name))
+    DATA_RAW.mkdir(parents=True, exist_ok=True)
+    DATA_PROCESSED.mkdir(parents=True, exist_ok=True)
+    for name, raw in raws.items():
+        (DATA_RAW / f"{name}.csv").write_bytes(raw)
     (DATA_RAW / "manifest.json").write_text(json.dumps(manifest, indent=2))
 
     long = pd.concat(frames, ignore_index=True)
