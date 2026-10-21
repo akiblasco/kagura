@@ -140,14 +140,58 @@ def test_downloader_will_not_write_through_a_file_symlink(
     assert (frozen / "raw" / "brent.csv").read_text() == "frozen brent\n"
 
 
-def test_a_modified_frozen_file_no_longer_protects(
+def test_frozen_folders_stay_protected_when_files_are_modified_or_missing(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    # Documented behaviour: protection is by content. A file whose bytes changed is no longer
-    # the frozen vintage, and H1a's own checksum check would refuse it (kagura.h1a).
+    # Protection is by path: damaging the vintage must not switch the guard off.
     frozen = frozen_tree(tmp_path, monkeypatch)
-    (frozen / "raw" / "usdjpy.csv").write_text("edited\n")
-    vintage.ensure_writable(frozen)
+    (frozen / "raw" / "usdjpy.csv").write_text("edited\n")  # checksum no longer matches
+    assert vintage.protected_files(frozen) == []
+    with pytest.raises(ProtectedVintageError):
+        vintage.ensure_writable(frozen)
+    for f in [*(frozen / "raw").iterdir(), *(frozen / "processed").iterdir()]:
+        f.unlink()  # every frozen file gone
+    with pytest.raises(ProtectedVintageError):
+        vintage.ensure_writable(frozen)
+    (frozen / "raw").rmdir()
+    (frozen / "processed").rmdir()  # even the folders gone
+    with pytest.raises(ProtectedVintageError):
+        vintage.ensure_writable(frozen)
+
+
+def test_symlinks_are_refused_without_any_checksum_match(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    frozen = frozen_tree(tmp_path, monkeypatch)
+    monkeypatch.setattr(vintage, "FROZEN_SHA256", {})  # no file counts as frozen by content
+    current = tmp_path / "current"
+    (current / "processed").mkdir(parents=True)
+    (current / "processed" / "series_long.csv").symlink_to(frozen / "processed/series_long.csv")
+    with pytest.raises(ProtectedVintageError):
+        vintage.ensure_writable(current)
+    link = tmp_path / "dirlink"
+    link.symlink_to(frozen)
+    with pytest.raises(ProtectedVintageError):
+        vintage.ensure_writable(link)
+
+
+def test_separate_destinations_remain_writable(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    frozen = frozen_tree(tmp_path, monkeypatch)
+    vintage.ensure_writable(frozen / "current")  # a sibling inside data/, e.g. data/current
+    vintage.ensure_writable(tmp_path / "elsewhere" / "data")  # an absolute path elsewhere
+    other = tmp_path / "other"
+    (other / "raw").mkdir(parents=True)
+    (other / "raw" / "usdjpy.csv").write_text("a later download\n")
+    vintage.ensure_writable(other)  # an existing non-frozen dataset may be refreshed
+
+
+def test_canonical_data_dir_refused_and_data_current_allowed() -> None:
+    # The real paths: data/ is refused by path alone; data/current (the README example) is not.
+    with pytest.raises(ProtectedVintageError):
+        vintage.ensure_writable(ROOT / "data", frozen_dir=ROOT / "data")
+    vintage.ensure_writable(ROOT / "data" / "current", frozen_dir=ROOT / "data")
 
 
 def kagura_data(env_value: str | None, code: str) -> str:

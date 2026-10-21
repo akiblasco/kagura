@@ -51,13 +51,12 @@ def protected_files(data_dir: Path) -> list[str]:
 
 
 def _links_into_frozen(data_dir: Path, frozen_dir: Path) -> list[str]:
-    """Paths under ``data_dir``/raw and /processed (the folders, or files in them) that
-    resolve, through any symlink, into the frozen directory's raw/ or processed/ folder.
+    """Paths under ``data_dir``/raw and /processed (the folders, or files in them) that are,
+    or resolve through any symlink into, the frozen directory's raw/ or processed/ folder.
 
-    Writing to such a path would overwrite frozen-vintage files, including ones ADR 0006
-    does not checksum (e.g. raw/brent.csv, processed/series_long.csv)."""
-    if not protected_files(frozen_dir):
-        return []
+    Path-based and unconditional: those two folders are protected whatever they contain,
+    even if frozen files were edited, deleted or never downloaded, so the guard cannot be
+    switched off by damaging the vintage it protects."""
     guarded = [(frozen_dir / sub).resolve() for sub in ("raw", "processed")]
     hits = []
     for sub in ("raw", "processed"):
@@ -70,17 +69,16 @@ def _links_into_frozen(data_dir: Path, frozen_dir: Path) -> list[str]:
 
 
 def ensure_writable(data_dir: Path, frozen_dir: Path | None = None) -> None:
-    """Refuse to write into ``data_dir`` if it holds any frozen file, or if any of its
-    write targets resolves (through symlinks) into the frozen directory's raw/ or
-    processed/ folder. Any single checksum match protects the whole directory: its other
-    files (e.g. series_long.csv) belong to the same vintage even though ADR 0006 does not
-    checksum them. ``frozen_dir`` defaults to FROZEN_DIR (read at call time)."""
+    """Refuse to write into ``data_dir`` if any of its write targets is, or resolves through
+    symlinks into, the canonical frozen raw/ or processed/ folder (always, by path), or if
+    it holds any frozen file (by checksum, which also protects a copy of the vintage kept
+    elsewhere). ``frozen_dir`` defaults to FROZEN_DIR (read at call time)."""
     found = protected_files(data_dir) or _links_into_frozen(
         data_dir, FROZEN_DIR if frozen_dir is None else frozen_dir
     )
     if found:
         raise ProtectedVintageError(
-            f"{data_dir} holds the frozen ADR 0006 vintage ({', '.join(found)}); refusing to "
-            "overwrite it. Download into another directory instead, e.g.\n"
+            f"{data_dir} is or holds the frozen ADR 0006 vintage ({', '.join(found)}); "
+            "refusing to overwrite it. Download into another directory instead, e.g.\n"
             "    KAGURA_DATA=data/current make data"
         )
