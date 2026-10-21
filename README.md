@@ -4,8 +4,10 @@ KAGURA is an open quantitative research project on the Japanese yen: USD/JPY, Ja
 monetary policy, FX intervention, market regimes, and their macroeconomic consequences.
 It is a research program, not a trading system or a price-prediction app.
 
-**Status: v0.1 in progress.** The data foundation and a first exploratory pass are done.
-No formal hypothesis test has been run yet. Nothing in this repository is investment advice.
+**Status: v0.1 in progress.** The data foundation, an exploratory pass and the first formal
+test (H1a, short-run comovement) are done; its pre-registered outcome is **inconclusive**
+(see [H1a result](#h1a-result-formal-adr-0006)). Nothing in this repository is investment
+advice.
 
 ## Research question
 
@@ -58,9 +60,46 @@ and anything resembling a trading system. See `docs/ROADMAP.md` for when those c
 | Time alignment with observation vs availability dating | done (fixed-lag approximation, [ADR 0003](docs/decisions/0003-time-alignment.md)) |
 | Exploratory diagnostics and rolling correlations | done (exploratory, [ADR 0004](docs/decisions/0004-h1-exploratory-specification.md)) |
 | H1 formal testing protocol | frozen before estimation ([ADR 0006](docs/decisions/0006-h1-formal-testing-protocol.md)) |
-| H1a baseline: era regression with HAC errors, gate and directional tests, robustness, rolling betas | implemented and tested on synthetic data; **formal run on real data pending** |
+| H1a baseline: era regression with HAC errors, gate and directional tests, robustness, rolling betas | done: executed once on the frozen vintage, outcome **inconclusive** ([notebook](notebooks/02_h1a_formal.ipynb)) |
+| H1b long-run (levels) relationship | not started; procedure to be frozen in a separate ADR |
 | Structural-break tests | not started |
 | Yen Fundamental Gap v1 | not started |
+
+## H1a result (formal, ADR 0006)
+
+> Pre-registered test of the **short-run** relationship only: daily USD/JPY changes against
+> same-day changes in the US–Japan 2Y differential, 2022– versus 2013–2021. It concerns
+> association, not causation, and says nothing yet about long-run (levels) decoupling (H1b).
+> Run once with `make h1a` at commit `dd8d04f` on the frozen 2026-09-15 data vintage.
+
+**Outcome: inconclusive.** The data cannot resolve whether the association declined by the
+pre-registered "material" one-third.
+
+| | 2013–2021 | 2022– |
+|---|---|---|
+| β, % USD/JPY per 1 pp differential change (95% CI) | 6.44 (5.46–7.43) | 4.05 (3.43–4.67) |
+| R² (descriptive) | 0.133 | 0.191 |
+
+- δ = β_new − (2/3)β_ref = −0.24, 95% interval [−1.15, 0.66]. Neither directional test
+  rejects (p_S = 0.30, p_R = 0.70).
+- The estimated relative change is −37%, Fieller 95% set [−49%, −22%]. It straddles the
+  one-third threshold: a decline of some size, of uncertain magnitude. This is not
+  evidence of no change.
+- The differential's explanatory share rose (R² 0.13 → 0.19) because it became more
+  volatile.
+- **Robustness:** "sensitive to R2, R3". On monthly data and on the 10Y differential, a
+  material decline is ruled out, so the daily-2Y estimate does not generalise across
+  horizon or maturity.
+- **Descriptive:** the rolling slope fell before the 2022 candidate boundary. The
+  association runs mainly through the US 2Y yield.
+
+Full results, the interpretation and the limitations are in
+[`notebooks/02_h1a_formal.ipynb`](notebooks/02_h1a_formal.ipynb), sections 4–11.
+
+![Rolling beta of daily USD/JPY on the 2Y differential](reports/figures/h1a_rolling_beta.png)
+
+*Rolling OLS slope and R² (250- and 750-day windows). Descriptive only; dotted lines are
+the ADR 0004 policy events.*
 
 ## Preliminary observations (exploratory)
 
@@ -143,7 +182,7 @@ src/kagura/
 tests/         unit tests on synthetic data (models, orchestration, notebook), data-quality
                and data-integrity checks
 notebooks/     01_exploration.ipynb: executed exploratory notebook with dated notes
-               02_h1a_formal.ipynb: H1a formal test (ADR 0006); not yet executed
+               02_h1a_formal.ipynb: H1a formal test (ADR 0006), executed once, with interpretation
 reports/figures/  figures written by the notebook
 docs/
   RESEARCH_SPEC.md   full research program
