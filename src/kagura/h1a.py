@@ -282,8 +282,16 @@ def vintage_table(root: Path = ROOT) -> pd.DataFrame:
     return pd.DataFrame(rows).T
 
 
+# Tracked inputs that determine the analysis. Generated outputs (the executed notebook,
+# reports/figures/) are deliberately excluded: writing them must not look like a code change.
+SOURCE_PATHS = ("src", "tests", "docs", "Makefile", "pyproject.toml", "uv.lock")
+
+
 def provenance(root: Path = ROOT) -> dict[str, str]:
-    """Git commit, working-tree state and package versions for the reproducibility record."""
+    """Git commit, state of the tracked source files and package versions.
+
+    ``source_tree`` is "clean" when no tracked file under SOURCE_PATHS differs from the
+    commit; untracked files and generated outputs are ignored."""
     import platform
     from importlib.metadata import version
 
@@ -293,7 +301,9 @@ def provenance(root: Path = ROOT) -> dict[str, str]:
 
     return {
         "git_commit": git("rev-parse", "HEAD"),
-        "working_tree": "clean" if git("status", "--porcelain") == "" else "modified",
+        "source_tree": "clean"
+        if git("status", "--porcelain", "--untracked-files=no", "--", *SOURCE_PATHS) == ""
+        else "modified",
         "python": platform.python_version(),
         **{pkg: version(pkg) for pkg in ("pandas", "numpy", "statsmodels", "matplotlib")},
     }

@@ -248,7 +248,33 @@ def test_tables_label_confirmatory_and_robustness_rows(
 def test_provenance_reports_commit_and_versions() -> None:
     p = h1a.provenance()
     assert re.fullmatch(r"[0-9a-f]{40}|unavailable", p["git_commit"])
-    assert p["working_tree"] in {"clean", "modified"} and "statsmodels" in p
+    assert p["source_tree"] in {"clean", "modified"} and "statsmodels" in p
+
+
+def test_provenance_ignores_generated_outputs_but_not_source_edits(tmp_path: Path) -> None:
+    import subprocess
+
+    def git(*args: str) -> None:
+        subprocess.run(
+            ["git", "-c", "user.name=t", "-c", "user.email=t@t", *args],
+            cwd=tmp_path,
+            check=True,
+            capture_output=True,
+        )
+
+    (tmp_path / "src").mkdir()
+    (tmp_path / "notebooks").mkdir()
+    (tmp_path / "src" / "m.py").write_text("x = 1\n")
+    (tmp_path / "notebooks" / "n.ipynb").write_text("{}\n")
+    git("init", "-q")
+    git("add", ".")
+    git("commit", "-q", "-m", "init")
+    (tmp_path / "notebooks" / "n.ipynb").write_text('{"executed": true}\n')  # outputs written
+    (tmp_path / "reports").mkdir()
+    (tmp_path / "reports" / "fig.png").write_bytes(b"png")  # new untracked figure
+    assert h1a.provenance(tmp_path)["source_tree"] == "clean"
+    (tmp_path / "src" / "m.py").write_text("x = 2\n")  # a real code change
+    assert h1a.provenance(tmp_path)["source_tree"] == "modified"
 
 
 # --- the real data (integrity only: no model is run) ------------------------------------------
@@ -297,11 +323,22 @@ def test_notebook_has_the_twelve_sections_in_order_with_status_labels() -> None:
         assert label in headings[number - 1], headings[number - 1]
 
 
-def test_notebook_is_unexecuted_and_never_reimplements_the_econometrics() -> None:
+def test_notebook_is_unexecuted_or_one_complete_clean_run() -> None:
+    # Either never run, or the stored record of one top-to-bottom run with no errors: cells
+    # numbered 1..n in order (no partial or re-ordered execution), every cell with output.
+    cells = [c for c in notebook_cells() if c["cell_type"] == "code"]
+    counts = [c["execution_count"] for c in cells]
+    if all(n is None for n in counts):
+        assert all(c["outputs"] == [] for c in cells)
+        return
+    assert counts == list(range(1, len(cells) + 1))
+    outputs = [o for c in cells for o in c["outputs"]]  # type: ignore[attr-defined]
+    assert all(o["output_type"] != "error" and o.get("name") != "stderr" for o in outputs)
+    assert all(c["outputs"] for c in cells)
+
+
+def test_notebook_never_reimplements_the_econometrics() -> None:
     code = [source(c) for c in notebook_cells() if c["cell_type"] == "code"]
-    for c in notebook_cells():
-        if c["cell_type"] == "code":
-            assert c["outputs"] == [] and c["execution_count"] is None
     text = "\n".join(code)
     forbidden_calls = ("era_regression(", "h1a_test(", "two_leg_regression(", "era_equality(")
     for forbidden in (
