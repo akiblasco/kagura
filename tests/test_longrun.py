@@ -12,6 +12,7 @@ from kagura.longrun import (
     _uecm_design,
     ar_polynomial,
     bootstrap_half_life,
+    calendar_terms,
     classify,
     dols,
     fit_ardl,
@@ -122,3 +123,29 @@ def test_cpi_checksums_are_exactly_the_adr_0008_table() -> None:
     adr = (ROOT / "docs/decisions/0008-h1b-long-run-protocol.md").read_text()
     for rel, digest in CPI_SHA256.items():
         assert re.search(rf"\| {re.escape(rel)} \| `{digest}`", adr), rel
+
+
+def test_calendar_terms_place_seasonal_and_lagged_tax_impulses() -> None:
+    idx = pd.period_range("1981-01", "2021-12", freq="M")
+    z = calendar_terms(idx, p=2, qs=(3, 1), tax_lags="q0")
+    assert z.shape == (len(idx), 11 + 4 * 3)  # 11 centred months + 4 tax months x q_x = 3
+    assert np.allclose(z[:, :11].mean(0), 0)
+    hits = idx[z[:, 11:].sum(1) > 0].astype(str).tolist()
+    assert hits[:3] == ["1989-04", "1989-05", "1989-06"] and len(hits) == 12
+    assert calendar_terms(idx, p=2, qs=(3, 1), tax_lags="none").shape[1] == 11
+
+
+def test_independent_orders_and_extra_terms_match_statsmodels() -> None:
+    rng = np.random.default_rng(7)
+    y, xs = _coint(rng, n=492)
+    idx = pd.period_range("1981-01", periods=492, freq="M")
+    extra = calendar_terms(idx, p=2, qs=(3, 1), tax_lags="q0")
+    fit = fit_ardl(y, xs, p=2, q=(3, 1), start=12, extra=extra)
+    yv, z = _uecm_design(y, xs, 2, (3, 1), 12)
+    ex = extra[12:]
+    res = sm.OLS(yv, np.column_stack([z, ex[:, np.abs(ex).sum(0) > 0]])).fit()
+    assert z.shape[1] == 1 + 3 + 1 + 3 + 1  # const, levels, one Δy lag, 3 Δx1, 1 Δx2
+    assert np.allclose(fit.fitted_coef, res.params) and fit.nobs == 480
+    r = np.zeros((3, len(res.params)))
+    r[0, 1], r[1, 2], r[2, 3] = 1, 1, 1
+    assert math.isclose(fit.f_stat, float(res.f_test(r).fvalue), rel_tol=1e-9)

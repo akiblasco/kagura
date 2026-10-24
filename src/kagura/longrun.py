@@ -11,8 +11,11 @@ Kept separate from ``kagura.models``, which implements the frozen H1a test (ADR 
 
 from __future__ import annotations
 
+import itertools
 import math
 import warnings
+from collections.abc import Callable, Sequence
+from concurrent.futures import ProcessPoolExecutor
 from dataclasses import dataclass, replace
 from pathlib import Path
 from typing import Literal
@@ -36,7 +39,7 @@ WINDOW_END = "2026-07"
 TAX_MONTHS = ("1989-04", "1997-04", "2014-04", "2019-10")  # consumption-tax changes
 LEVEL = 0.05  # descriptive reference level (ADR 0008 §9.2, §9.4)
 MAX_LAG = 12  # ARDL p and q, and ADF lags (§9.2, §9.4)
-DOLS_MAX = 6  # dum-OLS leads/lags (§9.4)
+DOLS_MAX = 6  # D-OLS leads/lags (§9.4)
 HALF_LIFE_CAP = 1200  # months searched before a half-life is called infinite
 
 # PSS (2001) Case III, Tables CI(iii) and CII(iii), 5 %: k -> (F_I0, F_I1, t_I0, t_I1).
@@ -180,7 +183,7 @@ def classify(name: str, y: pd.Series, trend: bool = False, seasonal: bool = Fals
 @dataclass(frozen=True)
 class ARDL:
     p: int  # lags of y in levels
-    q: int  # lags of each regressor in levels (common), q >= 1
+    q: int | tuple[int, ...]  # lags of each regressor in levels (common or per regressor)
     f_stat: float
     t: float
     phi: float  # loading on y_{t-1}
@@ -195,15 +198,19 @@ class ARDL:
     start: int  # first usable row of the input arrays
 
 
-def _uecm_design(y: Array, xs: Array, p: int, q: int, start: int) -> tuple[Array, Array]:
-    """Δy_t on [1, y_{t-1}, X_{t-1}, Δy_{t-1..t-p+1}, ΔX_{t..t-q+1}] for t = start..n-1."""
+def _uecm_design(
+    y: Array, xs: Array, p: int, q: int | Sequence[int], start: int
+) -> tuple[Array, Array]:
+    """Δy_t on [1, y_{t-1}, X_{t-1}, Δy_{t-1..t-p+1}, ΔX_j,{t..t-q_j+1}] for t = start..n-1.
+    ``q`` is one order for every regressor or one per regressor."""
     n = len(y)
+    qs = [q] * xs.shape[1] if isinstance(q, int) else list(q)
     dy = np.r_[np.nan, np.diff(y)]
     dxs = np.vstack([np.full((1, xs.shape[1]), np.nan), np.diff(xs, axis=0)])
     t = np.arange(start, n)
     cols = [np.ones(len(t)), y[t - 1], *xs[t - 1].T]
     cols += [dy[t - i] for i in range(1, p)]
-    cols += [dxs[t - i, j] for j in range(xs.shape[1]) for i in range(q)]
+    cols += [dxs[t - i, j] for j in range(xs.shape[1]) for i in range(qs[j])]
     return dy[t], np.column_stack(cols)
 
 
@@ -239,12 +246,24 @@ def bg_pvalue(e: Array, zm: Array, lags: int = 12) -> float:
     return chi2_sf(float(len(e) * r2), lags)
 
 
-def fit_ardl(y: Array, xs: Array, p: int, q: int, start: int | None = None) -> ARDL:
+def fit_ardl(
+    y: Array,
+    xs: Array,
+    p: int,
+    q: int | Sequence[int],
+    start: int | None = None,
+    extra: Array | None = None,
+) -> ARDL:
     """UECM at fixed orders. F tests y_{t-1} and X_{t-1} jointly (PSS Case III); t is the
-    t-ratio on y_{t-1}. Long-run coefficients -pi/phi with delta-method HAC and OLS s.e."""
+    t-ratio on y_{t-1}. Long-run coefficients -pi/phi with delta-method HAC and OLS s.e.
+    ``extra``: further deterministic columns (one row per observation of y), appended last;
+    columns that are zero over the estimation sample are dropped."""
     k = xs.shape[1]
     start = MAX_LAG + 1 if start is None else start
     yv, zm = _uecm_design(y, xs, p, q, start)
+    if extra is not None:
+        ex = extra[start:]
+        zm = np.column_stack([zm, ex[:, np.abs(ex).sum(0) > 0]])
     b, e, zinv = _ols(yv, zm)
     n, kz = zm.shape
     s2 = e @ e / (n - kz)
@@ -264,33 +283,77 @@ def fit_ardl(y: Array, xs: Array, p: int, q: int, start: int | None = None) -> A
         se[name] = out
     bgp = bg_pvalue(e, zm)
     return ARDL(
-        p, q, float(wmat / (k + 1)), float(phi / math.sqrt(vcov[1, 1])), float(phi), lr,
+        p, q if isinstance(q, int) else tuple(q), float(wmat / (k + 1)),
+        float(phi / math.sqrt(vcov[1, 1])), float(phi), lr,
         se["hac"], se["ols"], bgp, bgp > LEVEL, e, b, n, start,
     )  # fmt: skip
 
 
-def select_ardl(y: Array, xs: Array, max_lag: int = MAX_LAG) -> ARDL:
-    """BG-filtered AIC over p in 1..max_lag and a common q in 1..max_lag on one fixed
-    estimation sample: the lowest-AIC order whose BG(12) p-value exceeds 5 %; if none passes,
-    the overall AIC minimum (flagged by ``bg_passed=False``)."""
-    start = max_lag + 1
-    best: tuple[float, int, int] | None = None
-    best_any: tuple[float, int, int] | None = None
+Terms = Callable[[int, tuple[int, ...]], Array]
+
+
+def select_ardl(
+    y: Array,
+    xs: Array,
+    max_lag: int = MAX_LAG,
+    start: int | None = None,
+    independent: bool = False,
+    terms: Terms | None = None,
+) -> ARDL:
+    """BG-filtered AIC on one fixed estimation sample: the lowest-AIC order whose BG(12)
+    p-value exceeds 5 %; if none passes, the overall AIC minimum (``bg_passed=False``).
+
+    Default (Stage 1 original): p in 1..max_lag, one common q in 1..max_lag, constant only,
+    sample from row max_lag + 1. ``independent``: one q per regressor ({1..max_lag}^(k+1)).
+    ``terms(p, qs)`` returns deterministic columns for each candidate (superseded ADR 0008
+    draft r2 §6.1–6.2)."""
+    start = max_lag + 1 if start is None else start
+    k = xs.shape[1]
+    grids = (
+        itertools.product(range(1, max_lag + 1), repeat=k)
+        if independent
+        else ((q,) * k for q in range(1, max_lag + 1))
+    )
+    qgrid = list(grids)
+    best: tuple[float, int, tuple[int, ...]] | None = None
+    best_any: tuple[float, int, tuple[int, ...]] | None = None
     for p in range(1, max_lag + 1):
-        for q in range(1, max_lag + 1):
-            yv, zm = _uecm_design(y, xs, p, q, start)
+        for qs in qgrid:
+            yv, zm = _uecm_design(y, xs, p, qs, start)
+            if terms is not None:
+                ex = terms(p, qs)[start:]
+                zm = np.column_stack([zm, ex[:, np.abs(ex).sum(0) > 0]])
             _, e, _ = _ols(yv, zm)
             aic = len(e) * math.log(e @ e / len(e)) + 2 * zm.shape[1]
             if best_any is None or aic < best_any[0]:
-                best_any = (aic, p, q)
+                best_any = (aic, p, qs)
             if (best is None or aic < best[0]) and bg_pvalue(e, zm) > LEVEL:
-                best = (aic, p, q)
+                best = (aic, p, qs)
     chosen = best or best_any
     assert chosen is not None
-    fit = fit_ardl(y, xs, chosen[1], chosen[2], start)
+    _, p, qs = chosen
+    q: int | tuple[int, ...] = qs if independent else qs[0]
+    fit = fit_ardl(y, xs, p, q, start, None if terms is None else terms(p, qs))
     if best is None:
         fit = replace(fit, bg_passed=False)
     return fit
+
+
+def calendar_terms(
+    index: pd.PeriodIndex, p: int, qs: tuple[int, ...], tax_lags: Literal["none", "q0", "p"]
+) -> Array:
+    """Superseded ADR 0008 draft r2 §6.1 deterministic terms: 11 centred calendar-month
+    dummies, plus tax impulses I_{e+j} for every tax month e and j = 0..L-1 (r3 §6.3 option
+    (i): the spike propagates through the L lagged differences of the tax-inclusive series).
+    L = q of the first regressor ("q0", relative CPI), p ("p", for a tax-inclusive dependent
+    variable) or no impulses ("none")."""
+    months = pd.get_dummies(index.month).to_numpy(float)[:, 1:]
+    cols = [months - months.mean(0)]
+    lags = {"none": 0, "q0": qs[0], "p": p}[tax_lags]
+    for e in pd.PeriodIndex(TAX_MONTHS, freq="M"):
+        for j in range(lags):
+            cols.append((index == e + j).astype(float)[:, None])
+    return np.column_stack(cols)
 
 
 def ar_polynomial(fit: ARDL) -> Array:
@@ -343,19 +406,46 @@ def bootstrap_half_life(
     return out
 
 
-def simulate_bounds_quantiles(
-    n: int, k: int, reps: int, level: float = 0.95, seed: int = 20261024, max_lag: int = MAX_LAG
-) -> tuple[float, float]:
-    """Upper-bound PSS null (independent random walks of length n, no levels relation): F
-    upper-``level`` and t lower-(1 - ``level``) quantiles of the full ``select_ardl`` procedure.
-    Synthetic data only."""
+def _sim_chunk(args: tuple[int, int, int, int, int | None, bool, Terms | None, int]) -> Array:
+    n, k, reps, max_lag, start, independent, terms, seed = args
     rng = np.random.default_rng(seed)
-    fs, t = np.empty(reps), np.empty(reps)
+    out = np.empty((reps, 2))
     for r in range(reps):
-        wmat = rng.standard_normal((n, k + 1)).cumsum(0)
-        fit = select_ardl(wmat[:, 0], wmat[:, 1:], max_lag)
-        fs[r], t[r] = fit.f_stat, fit.t
-    return float(np.quantile(fs, level)), float(np.quantile(t, 1 - level))
+        w = rng.standard_normal((n, k + 1)).cumsum(0)
+        fit = select_ardl(w[:, 0], w[:, 1:], max_lag, start, independent, terms)
+        out[r] = fit.f_stat, fit.t
+    return out
+
+
+def simulate_bounds_quantiles(
+    n: int,
+    k: int,
+    reps: int,
+    level: float = 0.95,
+    seed: int = 20261024,
+    max_lag: int = MAX_LAG,
+    start: int | None = None,
+    independent: bool = False,
+    terms: Terms | None = None,
+    workers: int = 1,
+) -> tuple[float, float]:
+    """Upper-bound PSS null (independent driftless random walks of length n, no levels
+    relation): F upper-``level`` and t lower-(1 - ``level``) quantiles of exactly the
+    ``select_ardl`` procedure given the same arguments. Synthetic data only. With
+    ``workers`` > 1 the draws are split into ``workers`` chunks with spawned seeds (results
+    then differ from the single-process stream but are reproducible)."""
+    if workers == 1:
+        res = _sim_chunk((n, k, reps, max_lag, start, independent, terms, seed))
+    else:
+        seeds = [int(s.generate_state(1)[0]) for s in np.random.SeedSequence(seed).spawn(workers)]
+        sizes = [reps // workers + (i < reps % workers) for i in range(workers)]
+        jobs = [
+            (n, k, m, max_lag, start, independent, terms, sd)
+            for m, sd in zip(sizes, seeds, strict=True)
+        ]
+        with ProcessPoolExecutor(workers) as ex:
+            res = np.vstack(list(ex.map(_sim_chunk, jobs)))
+    return float(np.quantile(res[:, 0], level)), float(np.quantile(res[:, 1], 1 - level))
 
 
 def loading(dz: Array, ect: Array, controls: Array) -> tuple[float, float]:
@@ -367,7 +457,7 @@ def loading(dz: Array, ect: Array, controls: Array) -> tuple[float, float]:
     return float(b[1]), float(b[1] / math.sqrt(vcov[1, 1]))
 
 
-# --- FM-OLS and dum-OLS (§9.4) -------------------------------------------------------------------
+# --- FM-OLS and D-OLS (§9.4) -------------------------------------------------------------------
 
 
 def andrews_bandwidth(u: Array) -> float:
@@ -395,7 +485,7 @@ class CointFit:
     coef: Array  # [constant, regressors...]
     se: Array
     bandwidth: float
-    extra: int  # dum-OLS leads/lags (0 for FM-OLS)
+    extra: int  # D-OLS leads/lags (0 for FM-OLS)
 
 
 def fmols(y: Array, xs: Array) -> CointFit:
