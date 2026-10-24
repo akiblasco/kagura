@@ -1,0 +1,4 @@
+gap=None rho=0: max relative diff 5.0e-15  OK
+gap=None rho=0.95: max relative diff 8.4e-15  OK
+gap=45 rho=0: max relative diff 3.4e-15  OK
+gap=45 rho=0.95: max relative diff 1.2e-14  OK

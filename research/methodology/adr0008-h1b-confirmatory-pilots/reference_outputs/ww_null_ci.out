@@ -1,0 +1,21 @@
+cell | FM-andrews rate [95% CP] screen | D-OLS rate [95% CP] screen   (screen: FAIL if 99% CP lower > .0375; PASS if 99% CP upper <= .0375; else AMBIG)
+rho=0    normal d=I1 drift=0.0 | 0.021 [0.015,0.028] PASS | 0.021 [0.016,0.029] PASS
+rho=0    normal d=I0 drift=0.0 | 0.050 [0.041,0.060] FAIL | 0.045 [0.036,0.055] AMBIG
+rho=0    garch  d=I1 drift=0.0 | 0.020 [0.014,0.027] PASS | 0.018 [0.013,0.025] PASS
+rho=0    garch  d=I0 drift=0.0 | 0.043 [0.035,0.053] AMBIG | 0.043 [0.035,0.053] AMBIG
+rho=0.8  normal d=I1 drift=0.0 | 0.021 [0.016,0.029] PASS | 0.049 [0.040,0.059] AMBIG
+rho=0.8  normal d=I0 drift=0.0 | 0.058 [0.048,0.069] FAIL | 0.090 [0.078,0.104] FAIL
+rho=0.8  garch  d=I1 drift=0.0 | 0.022 [0.016,0.030] PASS | 0.050 [0.040,0.060] FAIL
+rho=0.8  garch  d=I0 drift=0.0 | 0.057 [0.047,0.068] FAIL | 0.099 [0.086,0.113] FAIL
+rho=0.95 normal d=I1 drift=0.0 | 0.027 [0.020,0.035] AMBIG | 0.159 [0.143,0.175] FAIL
+rho=0.95 normal d=I0 drift=0.0 | 0.061 [0.051,0.072] FAIL | 0.244 [0.225,0.263] FAIL
+rho=0.95 garch  d=I1 drift=0.0 | 0.018 [0.013,0.025] PASS | 0.152 [0.137,0.169] FAIL
+rho=0.95 garch  d=I0 drift=0.0 | 0.059 [0.049,0.070] FAIL | 0.239 [0.221,0.259] FAIL
+rho=0.98 normal d=I1 drift=0.0 | 0.023 [0.017,0.031] PASS | 0.225 [0.207,0.244] FAIL
+rho=0.98 normal d=I0 drift=0.0 | 0.072 [0.062,0.085] FAIL | 0.340 [0.319,0.361] FAIL
+rho=0.98 garch  d=I1 drift=0.0 | 0.028 [0.021,0.036] AMBIG | 0.230 [0.212,0.249] FAIL
+rho=0.98 garch  d=I0 drift=0.0 | 0.077 [0.066,0.090] FAIL | 0.353 [0.333,0.375] FAIL
+rho=0    normal d=I1 drift=0.5 | 0.000 [0.000,0.002] PASS | 0.000 [0.000,0.002] PASS
+rho=0.8  normal d=I1 drift=0.5 | 0.000 [0.000,0.002] PASS | 0.000 [0.000,0.002] PASS
+rho=0.95 normal d=I1 drift=0.5 | 0.000 [0.000,0.002] PASS | 0.001 [0.000,0.003] PASS
+rho=0.98 normal d=I1 drift=0.5 | 0.001 [0.000,0.004] PASS | 0.011 [0.007,0.017] PASS

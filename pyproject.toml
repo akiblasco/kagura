@@ -30,6 +30,8 @@ build-backend = "hatchling.build"
 [tool.ruff]
 line-length = 100
 target-version = "py312"
+# Archived pilot code is kept as it was run (ADR 0008 §4–§5), not to project style.
+extend-exclude = ["research/methodology"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B", "N", "W"]

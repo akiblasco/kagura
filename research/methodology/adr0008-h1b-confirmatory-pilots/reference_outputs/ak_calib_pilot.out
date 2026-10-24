@@ -1,0 +1,11 @@
+worst-case null rej at nominal .025: 0.1027 | alpha* (worst case over all 10 cells) = None = None/438
+rho=0    normal  size@.025=0.0573  P(p<=1/438)=0.0367  cell-alpha*=none attainable | power@alpha*(worst): shift1.0=nan shift2.0=nan ramp2.0=nan rw=nan var2.0=nan early_shift1.0=nan
+rho=0    garch   size@.025=0.0937  P(p<=1/438)=0.0740  cell-alpha*=none attainable | power@alpha*(worst): shift1.0=nan shift2.0=nan ramp2.0=nan rw=nan var2.0=nan early_shift1.0=nan
+rho=0.8  normal  size@.025=0.0480  P(p<=1/438)=0.0350  cell-alpha*=none attainable | power@alpha*(worst): shift1.0=nan shift2.0=nan ramp2.0=nan rw=nan var2.0=nan early_shift1.0=nan
+rho=0.8  garch   size@.025=0.0823  P(p<=1/438)=0.0677  cell-alpha*=none attainable | power@alpha*(worst): shift1.0=nan shift2.0=nan ramp2.0=nan rw=nan var2.0=nan early_shift1.0=nan
+rho=0.95 normal  size@.025=0.0530  P(p<=1/438)=0.0430  cell-alpha*=none attainable | power@alpha*(worst): shift1.0=nan shift2.0=nan ramp2.0=nan rw=nan var2.0=nan early_shift1.0=nan
+rho=0.95 garch   size@.025=0.0617  P(p<=1/438)=0.0547  cell-alpha*=none attainable | power@alpha*(worst): shift1.0=nan shift2.0=nan ramp2.0=nan rw=nan var2.0=nan early_shift1.0=nan
+rho=0.98 normal  size@.025=0.0750  P(p<=1/438)=0.0647  cell-alpha*=none attainable | power@alpha*(worst): shift1.0=nan shift2.0=nan ramp2.0=nan rw=nan var2.0=nan early_shift1.0=nan
+rho=0.98 garch   size@.025=0.0850  P(p<=1/438)=0.0707  cell-alpha*=none attainable | power@alpha*(worst): shift1.0=nan shift2.0=nan ramp2.0=nan rw=nan var2.0=nan early_shift1.0=nan
+rho=0.99 normal  size@.025=0.0943  P(p<=1/438)=0.0770  cell-alpha*=none attainable | power@alpha*(worst): shift1.0=nan shift2.0=nan ramp2.0=nan rw=nan var2.0=nan early_shift1.0=nan
+rho=0.99 garch   size@.025=0.1027  P(p<=1/438)=0.0870  cell-alpha*=none attainable | power@alpha*(worst): shift1.0=nan shift2.0=nan ramp2.0=nan rw=nan var2.0=nan early_shift1.0=nan

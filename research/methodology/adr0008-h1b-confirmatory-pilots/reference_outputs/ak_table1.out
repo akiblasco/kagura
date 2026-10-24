@@ -1,0 +1,3 @@
+rho=0: avg 0.0554 (MC se 0.0011) published 0.057  range [0.047,0.068]  diff -0.0016
+rho=0.4: avg 0.0515 (MC se 0.0011) published 0.051  range [0.043,0.065]  diff +0.0005
+rho=0.8: avg 0.0497 (MC se 0.0011) published 0.048  range [0.038,0.061]  diff +0.0017

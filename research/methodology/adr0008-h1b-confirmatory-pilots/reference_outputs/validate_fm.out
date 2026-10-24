@@ -1,0 +1,5 @@
+T=500   rho_u=0 rho_v=0 endog=0: FM t 5% rejection [0.064 0.058]
+T=500   rho_u=0 rho_v=0 endog=0.8: FM t 5% rejection [0.05  0.052]
+T=500   rho_u=0.6 rho_v=0.5 endog=0.8: FM t 5% rejection [0.111 0.098]
+T=2000  rho_u=0.6 rho_v=0.5 endog=0.8: FM t 5% rejection [0.077 0.072]
+T=5000  rho_u=0.6 rho_v=0.5 endog=0.8: FM t 5% rejection [0.05 0.04]

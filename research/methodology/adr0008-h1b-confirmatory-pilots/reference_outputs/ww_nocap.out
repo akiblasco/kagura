@@ -1,0 +1,17 @@
+(0, 'normal', 'I1', 0.0, None)                FM-nocap 0.022   D-nocap 0.021
+(0, 'normal', 'I0', 0.0, None)                FM-nocap 0.045   D-nocap 0.042
+(0.8, 'normal', 'I1', 0.0, None)              FM-nocap 0.022   D-nocap 0.057
+(0.8, 'normal', 'I0', 0.0, None)              FM-nocap 0.056   D-nocap 0.104
+(0.95, 'normal', 'I1', 0.0, None)             FM-nocap 0.022   D-nocap 0.150
+(0.95, 'normal', 'I0', 0.0, None)             FM-nocap 0.051   D-nocap 0.230
+(0.98, 'normal', 'I1', 0.0, None)             FM-nocap 0.019   D-nocap 0.254
+(0.98, 'normal', 'I0', 0.0, None)             FM-nocap 0.060   D-nocap 0.366
+(0.98, 'garch', 'I1', 0.0, None)              FM-nocap 0.022   D-nocap 0.258
+(0.95, 'normal', 'I1', 0.0, ('shift', 1))     FM-nocap 0.027   D-nocap 0.163
+(0.95, 'normal', 'I1', 0.0, ('shift', 2))     FM-nocap 0.048   D-nocap 0.184
+(0.95, 'normal', 'I1', 0.0, ('slope', 1))     FM-nocap 0.016   D-nocap 0.140
+(0.95, 'normal', 'I1', 0.0, ('rw', None))     FM-nocap 0.050   D-nocap 0.175
+(0.98, 'normal', 'I1', 0.0, ('shift', 1))     FM-nocap 0.020   D-nocap 0.261
+(0.98, 'normal', 'I1', 0.0, ('shift', 2))     FM-nocap 0.071   D-nocap 0.299
+(0.98, 'normal', 'I1', 0.0, ('slope', 1))     FM-nocap 0.021   D-nocap 0.239
+(0.98, 'normal', 'I1', 0.0, ('rw', None))     FM-nocap 0.030   D-nocap 0.259

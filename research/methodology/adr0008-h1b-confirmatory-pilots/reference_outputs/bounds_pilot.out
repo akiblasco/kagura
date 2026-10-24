@@ -1,0 +1,41 @@
+PSS asymptotic replication (n=1000, 200k reps split):
+  lower: F97.5 ~ 4.389  t2.5 ~ -3.118   (PSS: F 4.41, t -3.13)
+  upper: F97.5 ~ 5.482  t2.5 ~ -3.783   (PSS: F 5.52, t -3.80)
+
+Fixed-order CVs (n=480, design dummies): order bound dgp: F97.5 t2.5 | joint pass rate under null using own CVs
+  ((1, 1, 1), 'upper', 'iid'): F=5.355 t=-3.724  joint(F>cF & t<ct)=0.0175
+  ((1, 1, 1), 'lower', 'iid'): F=4.327 t=-3.088  joint(F>cF & t<ct)=0.0126
+  ((2, 2, 2), 'upper', 'iid'): F=5.354 t=-3.698  joint(F>cF & t<ct)=0.0179
+  ((2, 2, 2), 'lower', 'iid'): F=4.303 t=-3.076  joint(F>cF & t<ct)=0.0126
+  ((3, 3, 3), 'upper', 'iid'): F=5.362 t=-3.711  joint(F>cF & t<ct)=0.0176
+  ((3, 3, 3), 'lower', 'iid'): F=4.296 t=-3.086  joint(F>cF & t<ct)=0.0123
+  ((4, 4, 4), 'upper', 'iid'): F=5.326 t=-3.738  joint(F>cF & t<ct)=0.0176
+  ((4, 4, 4), 'lower', 'iid'): F=4.284 t=-3.066  joint(F>cF & t<ct)=0.0125
+  ((6, 6, 6), 'upper', 'iid'): F=5.391 t=-3.734  joint(F>cF & t<ct)=0.0179
+  ((6, 6, 6), 'lower', 'iid'): F=4.322 t=-3.090  joint(F>cF & t<ct)=0.0132
+  ((8, 8, 8), 'upper', 'iid'): F=5.369 t=-3.753  joint(F>cF & t<ct)=0.0172
+  ((8, 8, 8), 'lower', 'iid'): F=4.351 t=-3.086  joint(F>cF & t<ct)=0.0127
+  ((12, 12, 12), 'upper', 'iid'): F=5.391 t=-3.737  joint(F>cF & t<ct)=0.0169
+  ((12, 12, 12), 'lower', 'iid'): F=4.234 t=-3.054  joint(F>cF & t<ct)=0.0132
+  ((1, 1, 1), 'upper', 'dyn'): F=6.243 t=-3.338  joint(F>cF & t<ct)=0.0090
+  ((1, 1, 1), 'upper', 'garch'): F=5.519 t=-3.794  joint(F>cF & t<ct)=0.0180
+  ((1, 1, 1), 'upper', 'drift'): F=5.632 t=-3.866  joint(F>cF & t<ct)=0.0181
+  ((1, 1, 1), 'upper', 't5'): F=5.354 t=-3.736  joint(F>cF & t<ct)=0.0175
+  ((4, 4, 4), 'upper', 'dyn'): F=5.425 t=-3.720  joint(F>cF & t<ct)=0.0179
+  ((4, 4, 4), 'upper', 'garch'): F=5.487 t=-3.774  joint(F>cF & t<ct)=0.0174
+  ((4, 4, 4), 'upper', 'drift'): F=5.683 t=-3.859  joint(F>cF & t<ct)=0.0181
+  ((4, 4, 4), 'upper', 't5'): F=5.348 t=-3.739  joint(F>cF & t<ct)=0.0174
+
+Full BG-filtered AIC selection under upper-bound null:
+  iid    0.07s/rep  none-pass-BG=0.001  median K_sr=4 (IQR 2-7)
+         conditional-CV rejection: F 0.0413  t 0.0363  joint 0.0238
+         full-procedure CVs: F97.5=5.846 t2.5=-3.855  (iid fixed (1,1,1): F=5.355 t=-3.724)
+  dyn    0.07s/rep  none-pass-BG=0.000  median K_sr=5 (IQR 3-8)
+         conditional-CV rejection: F 0.0338  t 0.0350  joint 0.0225
+         full-procedure CVs: F97.5=5.861 t2.5=-3.799  (iid fixed (1,1,1): F=5.355 t=-3.724)
+  garch  0.08s/rep  none-pass-BG=0.004  median K_sr=4 (IQR 2-8)
+         conditional-CV rejection: F 0.0452  t 0.0389  joint 0.0276
+         full-procedure CVs: F97.5=6.039 t2.5=-3.948  (iid fixed (1,1,1): F=5.355 t=-3.724)
+  drift  0.07s/rep  none-pass-BG=0.000  median K_sr=3 (IQR 2-7)
+         conditional-CV rejection: F 0.0288  t 0.0300  joint 0.0238
+         full-procedure CVs: F97.5=5.485 t2.5=-3.805  (iid fixed (1,1,1): F=5.355 t=-3.724)

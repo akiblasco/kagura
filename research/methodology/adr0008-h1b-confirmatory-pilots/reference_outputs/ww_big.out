@@ -1,0 +1,9 @@
+rho=0.8 None           FM raw 0.024 sc 0.025 | D raw 0.062 sc 0.025
+rho=0.8 ('shift', 4)   FM raw 0.914 sc 0.918 | D raw 0.887 sc 0.700
+rho=0.8 ('shift', 6)   FM raw 1.000 sc 1.000 | D raw 0.999 sc 0.997
+rho=0.95 None           FM raw 0.015 sc 0.025 | D raw 0.156 sc 0.025
+rho=0.95 ('shift', 4)   FM raw 0.403 sc 0.453 | D raw 0.412 sc 0.098
+rho=0.95 ('shift', 6)   FM raw 0.841 sc 0.876 | D raw 0.805 sc 0.470
+rho=0.98 None           FM raw 0.029 sc 0.025 | D raw 0.260 sc 0.025
+rho=0.98 ('shift', 4)   FM raw 0.390 sc 0.384 | D raw 0.486 sc 0.070
+rho=0.98 ('shift', 6)   FM raw 0.753 sc 0.746 | D raw 0.777 sc 0.253
