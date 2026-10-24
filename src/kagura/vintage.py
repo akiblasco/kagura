@@ -28,6 +28,13 @@ FROZEN_SHA256 = {
     "raw/jgb_current.csv": "8da8cc83668bf280f1849ce2e6fab752881fc771b87d4691887bdb85e2f9f519",
 }
 
+# ADR 0008 §8.2: the monthly CPI files of the same vintage, used by H1b. Kept apart so the
+# ADR 0006 table above stays exactly as frozen; the write guard protects both.
+CPI_SHA256 = {
+    "raw/jp_cpi.csv": "a40f9238981868e66ca40498ff7ee2d54b3e2d2a226d6d8bc1ed30034c3fe1d0",
+    "raw/us_cpi.csv": "f8ecddf53a9a9a74dda92c2c4204e6039466fcb744bc74171b73b5f6aac48119",
+}
+
 
 class ProtectedVintageError(RuntimeError):
     """A write was attempted into a data directory that holds a protected vintage."""
@@ -45,7 +52,7 @@ def protected_files(data_dir: Path) -> list[str]:
     """Files in ``data_dir`` that are byte-for-byte part of the frozen vintage."""
     return [
         rel
-        for rel, want in FROZEN_SHA256.items()
+        for rel, want in {**FROZEN_SHA256, **CPI_SHA256}.items()
         if (data_dir / rel).is_file() and sha256(data_dir / rel) == want
     ]
 

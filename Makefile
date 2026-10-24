@@ -1,4 +1,4 @@
-.PHONY: sync data test lint research h1a
+.PHONY: sync data test lint research h1a h1b-explore
 
 sync:
 	uv sync
@@ -22,3 +22,8 @@ research:
 # error; executes notebooks/02_h1a_formal.ipynb in place and writes reports/figures/h1a_*.
 h1a:
 	uv run jupyter nbconvert --to notebook --execute --inplace notebooks/02_h1a_formal.ipynb
+
+# H1b exploratory Stage 1 (ADR 0008 §9.1-§9.4). Verifies the frozen data checksums first;
+# executes notebooks/03_h1b_exploratory.ipynb in place and writes reports/figures/h1b_*.
+h1b-explore:
+	uv run jupyter nbconvert --to notebook --execute --inplace notebooks/03_h1b_exploratory.ipynb
