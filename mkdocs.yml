@@ -1,0 +1,115 @@
+# Local research & learning site. Markdown in docs/ is canonical; site/ is generated (gitignored).
+# Preview: make docs-serve. Not deployed: publishing needs explicit approval.
+site_name: KAGURA Research
+site_description: USD/JPY, interest-rate differentials and Japanese monetary policy — research reports and learning companion
+repo_url: https://github.com/akiblasco/kagura
+repo_name: akiblasco/kagura
+edit_uri: ""
+docs_dir: docs
+site_dir: site
+strict: true
+
+theme:
+  name: material
+  language: en
+  font:
+    text: IBM Plex Sans
+    code: IBM Plex Mono
+  icon:
+    logo: material/chart-bell-curve-cumulative
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: custom
+      accent: custom
+      toggle: {icon: material/weather-night, name: Dark mode}
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: custom
+      accent: custom
+      toggle: {icon: material/weather-sunny, name: Light mode}
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.indexes
+    - navigation.top
+    - navigation.footer
+    - toc.follow
+    - search.highlight
+    - content.code.copy
+    - content.tooltips
+
+extra_css: [assets/kagura.css]
+extra_javascript:
+  - assets/mathjax.js
+  - https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-svg.js
+  - https://cdn.jsdelivr.net/npm/plotly.js-dist-min@2.35.2/plotly.min.js
+  - assets/charts.js
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - footnotes
+  - abbr
+  - toc: {permalink: true}
+  - pymdownx.details
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.arithmatex: {generic: true}
+  - pymdownx.highlight
+  - pymdownx.inlinehilite
+
+validation:
+  links:
+    absolute_links: info
+    unrecognized_links: info
+
+not_in_nav: |
+  /decisions/superseded/
+
+nav:
+  - Home: index.md
+  - Reports:
+      - learning/reports/index.md
+      - Research overview: learning/reports/00-research-overview.md
+      - H1a · Short-run comovement: learning/reports/01-h1a-short-run-comovement.md
+      - H1b · Long-run fundamentals: learning/reports/02-h1b-long-run-fundamentals.md
+  - Textbook:
+      - learning/textbook/index.md
+      - 1 · Exchange rates, logs and real depreciation: learning/textbook/exchange-rates-logs-real-depreciation.md
+      - 2 · Regression and interpreting coefficients: learning/textbook/regression-coefficients.md
+      - 3 · Stationarity, unit roots and differencing: learning/textbook/stationarity-unit-roots.md
+      - 4 · Hypothesis tests, intervals and uncertainty: learning/textbook/hypothesis-testing-uncertainty.md
+  - Concepts:
+      - learning/INDEX.md
+      - Economics and finance: learning/concepts/economics.md
+      - Data and measurement: learning/concepts/data.md
+      - Statistical inference: learning/concepts/inference.md
+      - Time-series econometrics: learning/concepts/time-series.md
+      - Research methodology: learning/concepts/methodology.md
+  - Cheatsheets:
+      - learning/cheatsheets/index.md
+      - FX, inflation, PPP and real depreciation: learning/cheatsheets/fx-inflation-ppp.md
+      - Inference, intervals and tests: learning/cheatsheets/inference.md
+      - Time series, stationarity and cointegration: learning/cheatsheets/time-series.md
+      - KAGURA results, decisions and limits: learning/cheatsheets/kagura-results.md
+  - Journal:
+      - learning/journal/index.md
+      - H1b · The methodological journey: learning/journal/h1b-methodological-journey.md
+  - Research record:
+      - Research specification: RESEARCH_SPEC.md
+      - Hypotheses: HYPOTHESES.md
+      - Roadmap: ROADMAP.md
+      - Decisions (ADRs):
+          - 0001 Sample period: decisions/0001-sample-period.md
+          - 0002 Data sources: decisions/0002-data-sources.md
+          - 0003 Time alignment: decisions/0003-time-alignment.md
+          - 0004 H1 exploratory specification: decisions/0004-h1-exploratory-specification.md
+          - 0005 Carried-share guard: decisions/0005-carried-share-guard.md
+          - 0006 H1 formal testing protocol: decisions/0006-h1-formal-testing-protocol.md
+          - 0008 H1b long-run protocol: decisions/0008-h1b-long-run-protocol.md

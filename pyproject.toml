@@ -22,6 +22,9 @@ dev = [
     "pandas-stubs>=2.2",
     "jupyterlab>=4",
 ]
+docs = [
+    "mkdocs-material>=9.5",
+]
 
 [build-system]
 requires = ["hatchling"]

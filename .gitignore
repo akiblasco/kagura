@@ -17,3 +17,8 @@ graphify-out/
 .env.*
 dist/
 .claude/settings.local.json
+
+# MkDocs build output (make docs-build)
+/site/
+# Chart data derived from the frozen vintage (make docs-figures); not redistributed
+/docs/learning/data/

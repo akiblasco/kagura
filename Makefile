@@ -1,4 +1,4 @@
-.PHONY: sync data test lint research h1a h1b-explore
+.PHONY: sync data test lint research h1a h1b-explore docs-figures docs-build docs-serve
 
 sync:
 	uv sync
@@ -27,3 +27,14 @@ h1a:
 # executes notebooks/03_h1b_exploratory.ipynb in place and writes reports/figures/h1b_*.
 h1b-explore:
 	uv run jupyter nbconvert --to notebook --execute --inplace notebooks/03_h1b_exploratory.ipynb
+
+# Learning companion site (MkDocs Material, local only). Figures are read from committed
+# notebook outputs; site/ is generated and gitignored.
+docs-figures:
+	uv run python docs/learning/reports/make_figures.py
+
+docs-build: docs-figures
+	uv run --group docs mkdocs build --strict
+
+docs-serve: docs-figures
+	uv run --group docs mkdocs serve --dev-addr 127.0.0.1:8000

@@ -1,0 +1,405 @@
+/* KAGURA research site: restrained editorial styling on top of Material. */
+
+:root,
+[data-md-color-scheme="default"] {
+  --md-primary-fg-color: #14213d;
+  --md-primary-fg-color--light: #2b3a5c;
+  --md-primary-fg-color--dark: #0b1426;
+  --md-accent-fg-color: #2a6fdb;
+  --md-typeset-a-color: #1f5fc4;
+  --k-surface: #f6f7f9;
+  --k-border: #dfe3ea;
+  --k-ink: #14213d;
+  --k-muted: #5b6475;
+  --k-good: #1e7d4f;
+  --k-warn: #9a6400;
+  --k-figure-bg: #ffffff;
+}
+
+[data-md-color-scheme="slate"] {
+  --md-primary-fg-color: #0e1626;
+  --md-primary-fg-color--light: #1b2740;
+  --md-primary-fg-color--dark: #070c16;
+  --md-accent-fg-color: #7aa7ff;
+  --md-typeset-a-color: #8db4ff;
+  --md-default-bg-color: #0f1420;
+  --k-surface: #161d2c;
+  --k-border: #26304a;
+  --k-ink: #e6e9f0;
+  --k-muted: #9aa3b5;
+  --k-good: #5fd39a;
+  --k-warn: #f0b85a;
+  --k-figure-bg: #ffffff;
+}
+
+.md-typeset {
+  font-size: 0.8rem;
+  line-height: 1.65;
+}
+.md-typeset h1 {
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--k-ink);
+}
+.md-typeset h2 {
+  font-weight: 600;
+  border-bottom: 1px solid var(--k-border);
+  padding-bottom: 0.3em;
+}
+.md-typeset table:not([class]) {
+  font-variant-numeric: tabular-nums;
+  font-size: 0.72rem;
+}
+
+/* Headline metrics */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(9rem, 100%), 1fr));
+  gap: 0.8rem;
+  margin: 1.2rem 0 1.6rem;
+}
+.kpi {
+  background: var(--k-surface);
+  border: 1px solid var(--k-border);
+  border-radius: 6px;
+  padding: 0.9rem 1rem 0.8rem;
+}
+.kpi .label {
+  font-size: 0.64rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--k-muted);
+}
+.kpi .value {
+  font-size: 1.75rem;
+  font-weight: 600;
+  line-height: 1.15;
+  color: var(--k-ink);
+  font-variant-numeric: tabular-nums;
+  margin: 0.2rem 0;
+}
+.kpi .value small {
+  font-size: 0.7rem;
+  font-weight: 400;
+  color: var(--k-muted);
+}
+.kpi .note {
+  font-size: 0.66rem;
+  color: var(--k-muted);
+}
+.kpi.verdict .value {
+  color: var(--k-warn);
+  font-size: 1.3rem;
+  line-height: 1.55;
+}
+
+/* Lead sentence under the title */
+.lead {
+  font-size: 0.95rem;
+  color: var(--k-muted);
+  border-left: 3px solid var(--md-accent-fg-color);
+  padding-left: 0.9rem;
+  margin: 0.4rem 0 1rem;
+}
+
+/* Status chips */
+.chip {
+  display: inline-block;
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border: 1px solid var(--k-border);
+  border-radius: 999px;
+  padding: 0.1rem 0.55rem;
+  color: var(--k-muted);
+  margin-right: 0.3rem;
+}
+
+/* Figures: charts are drawn on a light surface, so keep them on one in dark mode too */
+.md-typeset figure img,
+.md-typeset p > img {
+  background: var(--k-figure-bg);
+  border: 1px solid var(--k-border);
+  border-radius: 6px;
+  padding: 0.4rem;
+}
+.md-typeset figcaption {
+  font-size: 0.68rem;
+  color: var(--k-muted);
+  max-width: 44rem;
+}
+
+/* Section cards on the home page */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(13rem, 100%), 1fr));
+  gap: 0.8rem;
+}
+.card-grid > a {
+  display: block;
+  background: var(--k-surface);
+  border: 1px solid var(--k-border);
+  border-radius: 6px;
+  padding: 0.9rem 1rem;
+  color: var(--k-ink);
+}
+.card-grid > a:hover {
+  border-color: var(--md-accent-fg-color);
+}
+.card-grid strong {
+  display: block;
+  margin-bottom: 0.25rem;
+}
+.card-grid span {
+  font-size: 0.7rem;
+  color: var(--k-muted);
+}
+
+@media screen and (max-width: 44.9375em) {
+  .kpi .value {
+    font-size: 1.45rem;
+  }
+  .kpi.verdict .value {
+    font-size: 1.15rem;
+  }
+}
+
+/* Keep numeric cells on one line; Material scrolls wide tables horizontally */
+.md-typeset table:not([class]) td {
+  white-space: nowrap;
+}
+.md-typeset table:not([class]) td:first-child,
+.md-typeset table:not([class]) td:last-child {
+  white-space: normal;
+}
+
+/* ---------- Interactive charts ---------- */
+.kchart {
+  width: 100%;
+  height: 22rem;
+}
+.kchart.tall {
+  height: 26rem;
+}
+.kchart.short {
+  height: 15rem;
+}
+.chart-frame {
+  background: var(--k-surface);
+  border: 1px solid var(--k-border);
+  border-radius: 8px;
+  padding: 0.8rem 0.9rem 0.6rem;
+  margin: 1rem 0 1.4rem;
+}
+.chart-frame .chart-title {
+  font-weight: 600;
+  color: var(--k-ink);
+  margin: 0 0 0.15rem;
+}
+.chart-frame .chart-sub {
+  font-size: 0.68rem;
+  color: var(--k-muted);
+  margin: 0 0 0.4rem;
+}
+.chart-frame .chart-source {
+  font-size: 0.62rem;
+  color: var(--k-muted);
+  margin: 0.3rem 0 0;
+}
+.kchart-error {
+  color: var(--k-warn);
+  font-size: 0.7rem;
+}
+.kchart-toggle {
+  display: inline-flex;
+  border: 1px solid var(--k-border);
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 0.4rem;
+}
+.kchart-toggle button {
+  font: inherit;
+  font-size: 0.66rem;
+  padding: 0.25rem 0.7rem;
+  background: transparent;
+  color: var(--k-muted);
+  border: 0;
+  cursor: pointer;
+}
+.kchart-toggle button[aria-pressed="true"] {
+  background: var(--md-accent-fg-color);
+  color: #fff;
+}
+.kchart-toggle button:focus-visible {
+  outline: 2px solid var(--md-accent-fg-color);
+  outline-offset: -2px;
+}
+
+/* ---------- Home ---------- */
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  gap: 1.4rem;
+  align-items: start;
+  margin-bottom: 0.6rem;
+}
+.hero h1 {
+  font-size: 1.9rem;
+  line-height: 1.15;
+  margin: 0 0 0.6rem;
+}
+.hero .eyebrow {
+  font-size: 0.64rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--md-accent-fg-color);
+  font-weight: 600;
+  margin: 0 0 0.4rem;
+}
+.hero .kpi-grid {
+  margin: 0;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+@media screen and (max-width: 59.9375em) {
+  .hero {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.two-col {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(17rem, 100%), 1fr));
+  gap: 0.9rem;
+  margin: 0.8rem 0 1.2rem;
+}
+.finding {
+  border: 1px solid var(--k-border);
+  border-top: 3px solid var(--md-accent-fg-color);
+  border-radius: 6px;
+  padding: 0.8rem 1rem;
+  background: var(--k-surface);
+}
+.finding h3 {
+  margin: 0 0 0.3rem !important;
+  font-size: 0.85rem;
+}
+.finding p,
+.finding ul {
+  font-size: 0.72rem;
+  margin: 0.3rem 0;
+}
+.md-typeset .finding ul li {
+  margin-bottom: 0.15rem;
+}
+
+/* ---------- Timeline ---------- */
+.timeline {
+  list-style: none;
+  margin: 0.8rem 0 1.2rem !important;
+  padding: 0 !important;
+  position: relative;
+}
+.timeline::before {
+  content: "";
+  position: absolute;
+  left: 6.2rem;
+  top: 0.3rem;
+  bottom: 0.3rem;
+  width: 2px;
+  background: var(--k-border);
+}
+.md-typeset .timeline > li {
+  display: grid;
+  grid-template-columns: 5.6rem 1fr;
+  gap: 1.2rem;
+  margin: 0 0 0.75rem !important;
+  position: relative;
+}
+.timeline .when {
+  font-size: 0.66rem;
+  color: var(--k-muted);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  padding-top: 0.1rem;
+}
+.timeline .what {
+  font-size: 0.74rem;
+  line-height: 1.5;
+}
+.timeline .what strong {
+  color: var(--k-ink);
+}
+.timeline > li::after {
+  content: "";
+  position: absolute;
+  left: 5.95rem;
+  top: 0.35rem;
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 50%;
+  background: var(--md-accent-fg-color);
+  box-shadow: 0 0 0 3px var(--md-default-bg-color);
+}
+.timeline > li.planned::after {
+  background: var(--md-default-bg-color);
+  border: 2px solid var(--k-muted);
+}
+.timeline > li.fail::after {
+  background: var(--k-warn);
+}
+.timeline > li.planned .what {
+  color: var(--k-muted);
+}
+.timeline .tag {
+  display: inline-block;
+  font-size: 0.58rem;
+  border: 1px solid var(--k-border);
+  border-radius: 999px;
+  padding: 0 0.45rem;
+  margin-left: 0.3rem;
+  color: var(--k-muted);
+  vertical-align: 1px;
+}
+@media screen and (max-width: 44.9375em) {
+  .timeline::before {
+    left: 0.3rem;
+  }
+  .md-typeset .timeline > li {
+    grid-template-columns: 1fr;
+    gap: 0.1rem;
+    padding-left: 1.3rem;
+  }
+  .timeline .when {
+    text-align: left;
+  }
+  .timeline > li::after {
+    left: 0.05rem;
+  }
+}
+
+/* ---------- Textbook ---------- */
+.md-typeset .arithmatex {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+.symbols td:first-child {
+  white-space: nowrap;
+}
+
+/* Concept status labels: what KAGURA did with a method */
+.status {
+  display: inline-block;
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.05rem 0.45rem;
+  border-radius: 0.2rem;
+  border: 1px solid currentColor;
+  margin-right: 0.3rem;
+}
+.status.implemented { color: var(--k-good); }
+.status.exploratory { color: var(--k-muted); }
+.status.rejected { color: var(--k-warn); }
+.status.planned, .status.background { color: var(--k-muted); border-style: dashed; }
+.concept-meta { color: var(--k-muted); font-size: 0.7rem; margin: -0.4rem 0 0.8rem; }
+.md-typeset .mermaid { text-align: center; margin: 1rem 0; }
