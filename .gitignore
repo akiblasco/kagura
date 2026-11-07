@@ -22,3 +22,6 @@ dist/
 /site/
 # Chart data derived from the frozen vintage (make docs-figures); not redistributed
 /docs/learning/data/
+# Official policy events (ADR 0009 §6.1): public sources committed, restricted ones never
+!data/events/
+data/events/restricted/

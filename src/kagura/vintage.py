@@ -36,6 +36,37 @@ CPI_SHA256 = {
 }
 
 
+# ADR 0009 §6.4: the policy-event collection of 2026-11-07, relative to data/events. The
+# manifest holds the SHA-256 of every raw file (public and restricted), so pinning it pins
+# them all; events_mismatches() checks both levels. ADR 0007's run calls it first.
+EVENTS_SHA256 = {
+    "manifest.json": "98f0d5b62ca26f4a9233fec2e7c8afc07b86ae570a6ea025d1b7fd290ee2b5df",
+    "policy_events.csv": "e9514210e4caa1cc655a88162f2cc6301ab9a6cbc18dae7ce9462b6df822049a",
+    "restricted/policy_events_full.csv": (
+        "f9413dc2dae0adaf019dfdfd61cf316c8abee3f694fa794eea8bb0d5dc5a18ec"
+    ),
+}
+
+
+def events_mismatches(events_dir: Path) -> list[str]:
+    """Pinned event files, and raw files listed in the manifest, that are missing or differ."""
+    import json
+
+    bad = [
+        rel
+        for rel, want in EVENTS_SHA256.items()
+        if not (events_dir / rel).is_file() or sha256(events_dir / rel) != want
+    ]
+    if "manifest.json" not in bad:
+        manifest = json.loads((events_dir / "manifest.json").read_text())
+        bad += [
+            rel
+            for rel, m in manifest.items()
+            if not (events_dir / rel).is_file() or sha256(events_dir / rel) != m["sha256"]
+        ]
+    return bad
+
+
 class ProtectedVintageError(RuntimeError):
     """A write was attempted into a data directory that holds a protected vintage."""
 
