@@ -20,6 +20,13 @@ def test_episodes_split_on_more_than_five_business_days() -> None:
     assert events.episodes([D(2024, 5, 1), D(2024, 5, 8)], hol) == [1, 1]
 
 
+def test_new_year_bank_holidays_merge_the_1999_2000_gap() -> None:
+    # 1999-12-24 -> 2000-01-04: 7 weekdays, 5 once 31 Dec - 3 Jan are excluded (ADR 0010 §3).
+    dates = [D(1999, 12, 24), D(2000, 1, 4)]
+    assert events.episodes(dates, set()) == [1, 2]
+    assert events.episodes(dates, events.new_year_holidays(1999, 2000)) == [1, 1]
+
+
 def test_fx_row_maps_to_same_or_next_new_york_row() -> None:
     rows = pd.DatetimeIndex(["2022-09-21", "2022-09-22", "2022-09-23", "2022-09-26"])
     assert events.fx_row(rows, D(2022, 9, 22)) == D(2022, 9, 22)
@@ -116,7 +123,7 @@ def test_committed_table() -> None:
     assert mof["decision_date"].min() >= "1991-04-01"
     assert (mof["observable"] == "unknown").all() and mof["fx_row_date"].isna().all()
     assert (mof["fx_row_decision"] >= mof["decision_date"]).all()
-    assert mof.release_id.nunique() == 369 and len(mof) == 386 and mof.episode_id.nunique() == 75
+    assert mof.release_id.nunique() == 369 and len(mof) == 386 and mof.episode_id.nunique() == 74
     assert not (t.institution == "BOJ").any()  # BOJ rows never enter the public table (§6.1)
     fomc = t[t.institution == "FOMC"]
     assert fomc[fomc.decision_date < "1994-01-01"].observable.eq("delayed").all()  # §5.2

@@ -2,10 +2,10 @@
 
 Date: 2026-11-07.
 
-**Status: PROPOSED (for reviewer approval with the collected dataset).** ADR 0009 stays
+**Status: ACCEPTED 2026-11-11 (reviewer approval of the collected dataset).** ADR 0009 stays
 frozen and unedited. This ADR records (a) one conflict resolved by the stricter rule, (b) the
-collection rules that ADR 0009 left to "collection" and that code now fixes, and (c) one open
-decision. Every rule below was fixed before any break date was estimated (ADR 0009 §3.7).
+collection rules that ADR 0009 left to "collection" and that code now fixes, (c) the Tokyo
+business-day calendar for MOF episodes, and (d) the collection gaps the reviewer accepted. Every rule below was fixed before any break date was estimated (ADR 0009 §3.7).
 
 ## 1. BOJ material: the stricter rule applies
 
@@ -37,20 +37,45 @@ coded BOJ row in `data/events/restricted/`.
 | R10 | Re-collection | `collect()` never overwrites a file it already has. The collected vintage is what gets checksummed (§8 D5). |
 | R11 | Checksums (§6.4) | `EVENTS_SHA256` pins three files: the manifest (which holds the SHA-256 of every raw file), the public table and the full table. `vintage.events_mismatches` checks both levels. |
 
-## 3. Open decision: New Year bank holidays in MOF episodes (Q-5)
+## 3. Decision: Tokyo business days include the New Year bank holidays (Q-5)
 
-ADR 0009 §3.6 defines Tokyo business days by the Cabinet Office public-holiday calendar.
-That calendar does not include the bank holidays of 31 December to 3 January.
+**Context.** ADR 0009 §3.6 defines Tokyo business days by the Cabinet Office public-holiday
+calendar. That calendar omits the bank holidays of 31 December to 3 January, on which Tokyo
+markets and banks are closed. The first build used the Cabinet calendar alone.
 
-| | Cabinet calendar only (as frozen) | Adding 31 Dec – 3 Jan |
+**Decision (reviewer, 2026-11-11).** Tokyo business days exclude weekends, Cabinet Office
+public holidays **and 31 December – 3 January**. The five-business-day threshold
+(`EPISODE_GAP = 5`) is unchanged. Only the calendar it counts in changes.
+
+| | Cabinet calendar only (first build) | Adopted: adding 31 Dec – 3 Jan |
 |---|---|---|
-| Episodes | 75 | 74 |
-| Affected gap | none | 1999-12-24 → 2000-01-04: 7 business days becomes 5, so the two days join one episode |
+| Intervention days / rows | 369 / 386 | 369 / 386 |
+| Episodes | 75 | **74** |
+| Affected gap | — | 1999-12-24 → 2000-01-04: 7 business days becomes 5, so the two days form one episode (MOF-EP047) |
 
-Interventions occurred on two New Year bank holidays: 2003-12-31 and 2004-01-02. Under either
-rule these fall in the same episode.
+**Why it changed.** The Cabinet calendar is a public-holiday list, not a business-day calendar.
+Counting days on which Tokyo banks are closed as business days overstates the gap. ADR 0009
+§3.6 intends a business-day count, so the stricter calendar is the faithful reading. This is a
+clarification of the calendar, fixed before any break date was estimated; the threshold was
+not tuned.
 
-**The build keeps the frozen rule (75 episodes) until the reviewer decides.**
+**Original calculation kept.** `events.episodes(dates, holidays)` is unchanged; passing the
+Cabinet calendar alone reproduces the 75-episode result, and
+`tests/test_events.py::test_new_year_bank_holidays_merge_the_1999_2000_gap` checks both.
+Interventions on New Year bank holidays (2003-12-31, 2004-01-02) are kept; under either
+calendar they fall in the same episode.
+
+## 3a. Collection gaps accepted by the reviewer (2026-11-11)
+
+- **FOMC C2 is a federal-funds-target-change classification only.** It does not cover asset
+  purchases, quantitative easing, balance-sheet or forward-guidance changes (R4). No result may
+  describe it as covering all monetary-policy changes.
+- **FOMC `policy_change` before 1990 is missing, not "no change"** (R2). Comparisons exclude
+  those releases from C2 rather than counting them as non-events.
+- **BOJ C1 requires the second, independent pass** (R7, ADR 0009 §6.4) before it is used in
+  any historical event comparison.
+- Uncertain announcement times, uncovered periods and incomplete classifications stay flagged
+  in the tables. No further open-ended collection is planned.
 
 ## 4. Risks
 

@@ -41,9 +41,9 @@ CPI_SHA256 = {
 # them all; events_mismatches() checks both levels. ADR 0007's run calls it first.
 EVENTS_SHA256 = {
     "manifest.json": "98f0d5b62ca26f4a9233fec2e7c8afc07b86ae570a6ea025d1b7fd290ee2b5df",
-    "policy_events.csv": "e9514210e4caa1cc655a88162f2cc6301ab9a6cbc18dae7ce9462b6df822049a",
+    "policy_events.csv": "18e636eb215e6428e56fde73f04683b74298cb89be7b84752733d453cebcdda5",
     "restricted/policy_events_full.csv": (
-        "f9413dc2dae0adaf019dfdfd61cf316c8abee3f694fa794eea8bb0d5dc5a18ec"
+        "03930bc4b2d110f41eef1ba430fac9cb1eff19d2c30a547e3367117b4475d8c8"
     ),
 }
 

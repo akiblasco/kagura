@@ -105,8 +105,20 @@ def tokyo_business_days(holidays: set[dt.date], start: dt.date, end: dt.date) ->
 
 
 def load_holidays(path: Path = HOLIDAYS_CSV) -> set[dt.date]:
+    """Cabinet Office public holidays plus the 31 Dec - 3 Jan bank holidays (ADR 0010 §3).
+    The Cabinet calendar alone, as first built, gave 75 episodes; this calendar gives 74."""
     df = pd.read_csv(path, encoding="cp932")
-    return set(pd.to_datetime(df.iloc[:, 0], format="%Y/%m/%d").dt.date)
+    cabinet = set(pd.to_datetime(df.iloc[:, 0], format="%Y/%m/%d").dt.date)
+    return cabinet | new_year_holidays(1955, 2100)
+
+
+def new_year_holidays(first: int, last: int) -> set[dt.date]:
+    """31 Dec to 3 Jan of every year: Tokyo bank holidays not in the Cabinet calendar."""
+    return {
+        d
+        for y in range(first, last + 1)
+        for d in (dt.date(y, 12, 31), dt.date(y, 1, 1), dt.date(y, 1, 2), dt.date(y, 1, 3))
+    }
 
 
 def episodes(dates: list[dt.date], holidays: set[dt.date]) -> list[int]:
