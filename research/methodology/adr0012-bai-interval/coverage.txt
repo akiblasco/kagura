@@ -1,0 +1,37 @@
+ADR 0012 coverage study, seed 20261118, 1000 reps per design, nominal 95 % / 90 %
+recent T= 3052 shift=0.15 eta=0.25 corrected cover95=0.800 [0.774, 0.824] cover90=0.714 true<lo=0.117 true>hi=0.083 median width95=1298 rows
+recent T= 3052 shift=0.15 eta=0.25 original  cover95=0.638 [0.607, 0.668] cover90=0.535 true<lo=0.282 true>hi=0.080 median width95=627 rows
+recent T= 3052 shift=0.15 eta=1.0  corrected cover95=0.869 [0.846, 0.889] cover90=0.796 true<lo=0.062 true>hi=0.069 median width95=756 rows
+recent T= 3052 shift=0.15 eta=1.0  original  cover95=0.868 [0.845, 0.888] cover90=0.797 true<lo=0.063 true>hi=0.069 median width95=758 rows
+recent T= 3052 shift=0.15 eta=4.0  corrected cover95=0.895 [0.874, 0.913] cover90=0.832 true<lo=0.037 true>hi=0.068 median width95=523 rows
+recent T= 3052 shift=0.15 eta=4.0  original  cover95=0.903 [0.883, 0.921] cover90=0.843 true<lo=0.007 true>hi=0.090 median width95=752 rows
+recent T= 3052 shift=0.30 eta=0.25 corrected cover95=0.886 [0.865, 0.905] cover90=0.825 true<lo=0.064 true>hi=0.050 median width95=520 rows
+recent T= 3052 shift=0.30 eta=0.25 original  cover95=0.719 [0.690, 0.747] cover90=0.617 true<lo=0.240 true>hi=0.041 median width95=205 rows
+recent T= 3052 shift=0.30 eta=1.0  corrected cover95=0.931 [0.913, 0.946] cover90=0.868 true<lo=0.034 true>hi=0.035 median width95=232 rows
+recent T= 3052 shift=0.30 eta=1.0  original  cover95=0.933 [0.916, 0.948] cover90=0.871 true<lo=0.033 true>hi=0.034 median width95=231 rows
+recent T= 3052 shift=0.30 eta=4.0  corrected cover95=0.943 [0.927, 0.957] cover90=0.902 true<lo=0.021 true>hi=0.036 median width95=149 rows
+recent T= 3052 shift=0.30 eta=4.0  original  cover95=0.939 [0.922, 0.953] cover90=0.896 true<lo=0.000 true>hi=0.061 median width95=212 rows
+recent T= 3052 shift=0.60 eta=0.25 corrected cover95=0.938 [0.921, 0.952] cover90=0.891 true<lo=0.042 true>hi=0.020 median width95=147 rows
+recent T= 3052 shift=0.60 eta=0.25 original  cover95=0.763 [0.735, 0.789] cover90=0.635 true<lo=0.221 true>hi=0.016 median width95=55 rows
+recent T= 3052 shift=0.60 eta=1.0  corrected cover95=0.960 [0.946, 0.971] cover90=0.930 true<lo=0.013 true>hi=0.027 median width95=61 rows
+recent T= 3052 shift=0.60 eta=1.0  original  cover95=0.959 [0.945, 0.970] cover90=0.929 true<lo=0.014 true>hi=0.027 median width95=61 rows
+recent T= 3052 shift=0.60 eta=4.0  corrected cover95=0.951 [0.936, 0.964] cover90=0.927 true<lo=0.017 true>hi=0.032 median width95=39 rows
+recent T= 3052 shift=0.60 eta=4.0  original  cover95=0.944 [0.928, 0.957] cover90=0.889 true<lo=0.001 true>hi=0.055 median width95=55 rows
+full   T=10279 shift=0.15 eta=0.25 corrected cover95=0.900 [0.880, 0.918] cover90=0.841 true<lo=0.063 true>hi=0.037 median width95=2026 rows
+full   T=10279 shift=0.15 eta=0.25 original  cover95=0.719 [0.690, 0.747] cover90=0.626 true<lo=0.247 true>hi=0.034 median width95=799 rows
+full   T=10279 shift=0.15 eta=1.0  corrected cover95=0.937 [0.920, 0.951] cover90=0.881 true<lo=0.032 true>hi=0.031 median width95=891 rows
+full   T=10279 shift=0.15 eta=1.0  original  cover95=0.937 [0.920, 0.951] cover90=0.881 true<lo=0.032 true>hi=0.031 median width95=888 rows
+full   T=10279 shift=0.15 eta=4.0  corrected cover95=0.934 [0.917, 0.949] cover90=0.881 true<lo=0.032 true>hi=0.034 median width95=593 rows
+full   T=10279 shift=0.15 eta=4.0  original  cover95=0.942 [0.926, 0.956] cover90=0.889 true<lo=0.001 true>hi=0.057 median width95=849 rows
+full   T=10279 shift=0.30 eta=0.25 corrected cover95=0.948 [0.932, 0.961] cover90=0.892 true<lo=0.030 true>hi=0.022 median width95=588 rows
+full   T=10279 shift=0.30 eta=0.25 original  cover95=0.750 [0.722, 0.777] cover90=0.644 true<lo=0.229 true>hi=0.021 median width95=218 rows
+full   T=10279 shift=0.30 eta=1.0  corrected cover95=0.955 [0.940, 0.967] cover90=0.908 true<lo=0.019 true>hi=0.026 median width95=245 rows
+full   T=10279 shift=0.30 eta=1.0  original  cover95=0.954 [0.939, 0.966] cover90=0.906 true<lo=0.020 true>hi=0.026 median width95=244 rows
+full   T=10279 shift=0.30 eta=4.0  corrected cover95=0.937 [0.920, 0.951] cover90=0.867 true<lo=0.036 true>hi=0.027 median width95=152 rows
+full   T=10279 shift=0.30 eta=4.0  original  cover95=0.945 [0.929, 0.958] cover90=0.874 true<lo=0.000 true>hi=0.055 median width95=218 rows
+full   T=10279 shift=0.60 eta=0.25 corrected cover95=0.948 [0.932, 0.961] cover90=0.916 true<lo=0.031 true>hi=0.021 median width95=152 rows
+full   T=10279 shift=0.60 eta=0.25 original  cover95=0.702 [0.673, 0.730] cover90=0.624 true<lo=0.279 true>hi=0.019 median width95=56 rows
+full   T=10279 shift=0.60 eta=1.0  corrected cover95=0.954 [0.939, 0.966] cover90=0.912 true<lo=0.025 true>hi=0.021 median width95=62 rows
+full   T=10279 shift=0.60 eta=1.0  original  cover95=0.954 [0.939, 0.966] cover90=0.910 true<lo=0.025 true>hi=0.021 median width95=62 rows
+full   T=10279 shift=0.60 eta=4.0  corrected cover95=0.972 [0.960, 0.981] cover90=0.971 true<lo=0.005 true>hi=0.023 median width95=39 rows
+full   T=10279 shift=0.60 eta=4.0  original  cover95=0.976 [0.964, 0.985] cover90=0.876 true<lo=0.000 true>hi=0.024 median width95=56 rows
