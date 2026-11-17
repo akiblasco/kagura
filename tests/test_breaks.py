@@ -137,7 +137,8 @@ def test_r_crosscheck_reference_files() -> None:
     rows = mod.compare()
     status = [r["status"] for r in rows]
     assert "FAIL" not in status
-    assert status.count("pass") == 359 and status.count("convention") == 40
+    # ADR 0012 §4: exact interval bounds and the phi2s correction (was 359 / 40 under ADR 0011).
+    assert status.count("pass") == 309 and status.count("convention") == 90
 
 
 def test_limit_dp_matches_brute_force() -> None:
@@ -213,3 +214,51 @@ def test_wf_bootstrap_matches_direct_computation() -> None:
         ystar = xm @ b0 + uhat * nu[:, r]
         ref = max(ew_wald(ystar, c, uhat) for c in ok)
         assert res.boot[r] == pytest.approx(ref, rel=1e-9)
+
+
+# --- ADR 0012: robust Bai interval, unequal regressor moments --------------------------------
+
+
+def _z_quantiles(xi: float, phi: float, reps: int = 20000, dt: float = 0.05) -> np.ndarray:
+    """Independent Monte Carlo of Bai's (1997) limit argmax of Z(s), derived in ADR 0012 §2:
+    W1(-s) - |s|/2 for s <= 0, sqrt(phi) W2(s) - xi s / 2 for s > 0. Returns 2.5/5/95/97.5 %."""
+    rng = np.random.default_rng(12)
+    span = 40 * max(1.0, phi / xi**2)  # the tails sit well inside +/- span
+    s = np.arange(1, int(span / dt) + 1) * dt
+    out = []
+    for _ in range(reps // 1000):
+        left = np.cumsum(rng.standard_normal((1000, s.size)), 1) * math.sqrt(dt) - s / 2
+        right = np.cumsum(rng.standard_normal((1000, s.size)), 1) * math.sqrt(dt * phi) - xi * s / 2
+        lmax, rmax = left.max(1), right.max(1)
+        go_right = np.maximum(rmax, 0) >= np.maximum(lmax, 0)
+        arg = np.where(go_right, np.where(rmax > 0, s[right.argmax(1)], 0.0), -s[left.argmax(1)])
+        out.append(arg)
+    return np.asarray(np.quantile(np.concatenate(out), [0.025, 0.05, 0.95, 0.975]), dtype=float)
+
+
+@pytest.mark.parametrize(("xi", "phi"), [(0.25, 0.25), (1.0, 1.0), (4.0, 4.0), (2.0, 3.0)])
+def test_bai_quantiles_match_independent_limit_simulation(xi: float, phi: float) -> None:
+    # cvg(eta, p1, p2) is the law of Z with xi = eta and phi = eta * p2 / p1 (ADR 0012 §2).
+    got = np.array(breaks.bai_quantiles(xi, 1.0, phi / xi))
+    want = _z_quantiles(xi, phi)
+    assert np.allclose(got, want, rtol=0.08), (got, want)
+
+
+@pytest.mark.parametrize("eta", [0.25, 1.0, 4.0])
+def test_robust_bai_interval_uses_second_regime_moments(eta: float) -> None:
+    """At the true break, with homoskedastic errors (sd 1) and Var(x) times eta after it, the
+    population inputs are a = d^2, xi = eta, phi = eta. The interval's half-widths times a
+    must match the limit quantiles of that Z. Before ADR 0012 the code used phi = eta^2."""
+    rng = np.random.default_rng(2012)
+    n_obs, k0, d = 40000, 20000, 0.6
+    x = rng.standard_normal(n_obs)
+    x[k0:] *= math.sqrt(eta)
+    y = 0.5 * x + np.where(np.arange(n_obs) >= k0, d * x, 0.0) + rng.standard_normal(n_obs)
+    xm = np.column_stack([np.ones(n_obs), x])
+    iv = breaks.break_intervals(y, xm, (k0,), breaks.Cov(lags=0))[0]
+    c = breaks.bai_quantiles(eta, 1.0, 1.0)  # checked against _z_quantiles above
+    a = d * d
+    left, right = k0 - iv.raw95[0], iv.raw95[1] - k0
+    # The shape (left / right) does not depend on a; the levels also carry the error in d-hat.
+    assert math.isclose(left / right, c[3] / -c[0], rel_tol=0.05), (left, right, c)
+    assert np.allclose([left * a, right * a], [c[3], -c[0]], rtol=0.1), (left, right, c)

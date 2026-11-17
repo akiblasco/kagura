@@ -1,9 +1,12 @@
 """Compare kagura.breaks with the committed R reference results (ADR 0007 §9.2).
 
-Reads the fixtures and r_results.json in this directory; writes comparison.txt.
-Pass rules (§9.2): strucchange dates identical and SSR to 1e-8 for m = 0..5; mbreaks sup F to
-1e-6, sequential m identical, interval bounds to one row. Rows reported as "convention" are
-differences explained by a documented difference between the two codes, not by a defect.
+Reads the fixtures and r_results.json in this directory; writes comparison_adr0012.txt
+(comparison.txt is the frozen ADR 0011 original and is not rewritten).
+Pass rules (§9.2, ADR 0012): strucchange dates identical and SSR to 1e-8 for m = 0..5; mbreaks
+sup F to 1e-6, sequential m identical, interval bounds identical. Rows reported as "convention"
+are differences reproduced exactly by a documented difference between the two codes.
+Agreement is implementation-fidelity evidence: it shows the port computes what the R code
+computes, not that either is correct (ADR 0012 §4).
 Run: uv run python <this file>
 """
 
@@ -43,6 +46,44 @@ def psigmq_variant(y: np.ndarray, xm: np.ndarray, bk: tuple[int, ...]) -> tuple[
     rd = rmat @ delta
     wald = float(rd @ np.linalg.solve(rmat @ vdel @ rmat.T, rd))
     return (n_obs - (k + 1) * q) / (n_obs * k) * wald, np.sqrt(np.diag(vdel))
+
+
+def mbreaks_interval(
+    y: np.ndarray, xm: np.ndarray, bk: tuple[int, ...], cov: breaks.Cov
+) -> list[breaks.Interval]:
+    """`breaks.break_intervals` as it was before ADR 0012, i.e. as `mbreaks` 1.0.1 computes it:
+    robust phi2s = Δ'Ω2Δ / Δ'Q1Δ. Used to confirm that this explains a difference from R, and
+    by the ADR 0012 coverage study as the "original" method."""
+    n_obs, q = xm.shape
+    zm = breaks.diag_partition(xm, bk)
+    delta, *_ = np.linalg.lstsq(zm, y, rcond=None)
+    res = y - zm @ delta
+    e = [0, *bk, n_obs]
+    out = []
+    for i, b in enumerate(bk):
+        dv = delta[(i + 1) * q : (i + 2) * q] - delta[i * q : (i + 1) * q]
+        r0, r1, r2 = e[i], e[i + 1], e[i + 2]
+        qm = xm[r0:r1].T @ xm[r0:r1] / (r1 - r0) if cov.hetq else xm.T @ xm / n_obs
+        qm1 = xm[r1:r2].T @ xm[r1:r2] / (r2 - r1) if cov.hetq else qm
+        dq = float(dv @ qm @ dv)
+        om = breaks.lrv(xm[r0:r1], res[r0:r1], cov) if cov.hetomega else breaks.lrv(xm, res, cov)
+        om1 = breaks.lrv(xm[r1:r2], res[r1:r2], cov) if cov.hetomega else om
+        c = breaks.bai_quantiles(
+            float(dv @ qm1 @ dv) / dq, float(dv @ om @ dv) / dq, float(dv @ om1 @ dv) / dq
+        )
+        a = dq**2 / float(dv @ om @ dv)
+        raw95, raw90 = (b - c[3] / a, b - c[0] / a), (b - c[2] / a, b - c[1] / a)
+        out.append(
+            breaks.Interval(
+                raw95,
+                raw90,
+                round(raw95[0]),
+                round(raw95[1]) + 1,
+                round(raw90[0]),
+                round(raw90[1]) + 1,
+            )
+        )
+    return out
 
 
 def load(name: str) -> tuple[np.ndarray, np.ndarray]:
@@ -113,12 +154,18 @@ def compare() -> list[dict[str, object]]:
                     py = (iv.lo95, iv.hi95, iv.lo90, iv.hi90)
                     r = tuple(int(v) for v in ci[i])
                     extra = m - i - 1  # mbreaks adds "+1" to break i's upper bounds m - i times
-                    note = ""
-                    ok = max(abs(a - b) for a, b in zip(py, r, strict=True)) <= 1
-                    if not ok and extra and (py[0], py[1] + extra, py[2], py[3] + extra) == r:
-                        note = (
-                            f"mbreaks upper bounds +{extra}: rounding inside its loop over breaks"
-                        )
+                    ok = py == r  # ADR 0012: exact; no one-row tolerance
+                    notes = []
+                    mb = py
+                    if not ok and cov.robust:
+                        old = mbreaks_interval(y, xm, bk, cov)[i]
+                        mb = (old.lo95, old.hi95, old.lo90, old.hi90)
+                        if mb != py:
+                            notes.append("mbreaks phi2s uses Q1, ADR 0012")
+                    if not ok and extra:
+                        mb = (mb[0], mb[1] + extra, mb[2], mb[3] + extra)
+                        notes.append(f"mbreaks upper bounds +{extra}: rounding inside its loop")
+                    note = "; ".join(notes) if not ok and mb == r else ""
                     add(name, f"{cn} CI m={m} break {i + 1}", py, r, ok, note)
                 coef, se = breaks.regime_table(y, xm, bk, cov)
                 br, ser = np.asarray(e["beta"]), np.asarray(e["SE"])
@@ -147,7 +194,8 @@ def main() -> None:
     ]
     counts = {s: sum(r["status"] == s for r in rows) for s in ("pass", "convention", "FAIL")}
     lines.append(f"summary: {counts}")
-    (HERE / "comparison.txt").write_text("\n".join(lines) + "\n")
+    # ADR 0012: comparison.txt is the frozen ADR 0011 original; this run writes beside it.
+    (HERE / "comparison_adr0012.txt").write_text("\n".join(lines) + "\n")
     print(lines[-1])
 
 

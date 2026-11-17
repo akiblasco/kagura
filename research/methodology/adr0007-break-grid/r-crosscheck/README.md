@@ -46,7 +46,12 @@ Running `crosscheck.R` twice gives byte-identical `r_results.json`.
 | `make_fixtures.py` | Four fixtures: Nile (mean shift), two slope breaks, heteroskedastic regimes, AR(1) errors. Fixed seeds, T = 100 or 400, written with `%.17g` |
 | `crosscheck.R` | `strucchange::breakpoints` (h = 15 %, all rows candidates, m = 0…5) and the `mbreaks` internals `doglob`, `pftest`, `sequa`, `estim`/`interval`, `cvg`, with four explicit option sets |
 | `r_results.json`, `sessionInfo.txt` | R output (reference files) |
-| `compare.py` → `comparison.txt` | Item-by-item comparison with the §9.2 tolerances |
+| `compare.py` → `comparison_adr0012.txt` | Item-by-item comparison; interval bounds exact (ADR 0012) |
+| `comparison.txt` | The ADR 0011 original (one-row tolerance, before the ADR 0012 correction), kept unchanged |
+
+**What agreement shows.** Implementation fidelity: the Python port computes what
+`strucchange` and `mbreaks` compute. It is not evidence that either is correct. ADR 0012 found
+a defect that both share and that this comparison could not detect.
 
 ## Option sets compared
 
@@ -64,14 +69,17 @@ the kernel swap is checked separately against statsmodels' Newey–West
 
 ## Differences that are explained, not failures
 
-`comparison.txt` labels these "convention". Each one is reproduced exactly by `compare.py`
+The comparison labels these "convention". Each one is reproduced exactly by `compare.py`
 before it is given that label.
 
 1. **`mbreaks::interval` upper bounds.** The rounding and "+ 1" of the upper bounds sit inside
    the loop over breaks, so break i of an m-break model gets m − i + 1 additions instead of
    one. Python applies it once. With m = 3, break 1's upper bounds in `mbreaks` are exactly
-   2 rows higher; m ≤ 2 stays within the one-row tolerance.
+   2 rows higher. Since ADR 0012, bounds must match exactly, so a one-row difference is also
+   labelled "convention" (it was a "pass" under the one-row tolerance).
 2. **`mbreaks::psigmq`** (robust = 0, hetvar = 1 only). A middle regime's variance sums
    rows b[j−1]…b[j] (1-based, inclusive), one row more than the regime, over b[j] − b[j−1].
    Python uses the regime's own rows. Reproducing the `mbreaks` rows gives its sup F and
    SEs to 1e-6. The ADR 0007 protocol uses robust = 1, which does not call `psigmq`.
+3. **`mbreaks::interval` robust `phi2s`** (ADR 0012). `mbreaks` divides Δ'Ω₂Δ by Δ'Q₁Δ;
+   Python divides by Δ'Q₂Δ. `compare.mbreaks_interval` reproduces the `mbreaks` value.

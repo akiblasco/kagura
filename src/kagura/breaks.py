@@ -380,7 +380,10 @@ def break_intervals(y: Arr, xm: Arr, breaks_: tuple[int, ...], cov: Cov) -> list
 
     `mbreaks` 1.0.1 applies its rounding and "+ 1" inside the loop over breaks, so the upper
     bound of break i is raised by one row m - i + 1 times. Here it is applied once; for m = 1
-    the two agree. The difference is reported by the R cross-check."""
+    the two agree. The difference is reported by the R cross-check.
+
+    Robust branch, ADR 0012: phi2s = Δ'Ω2Δ / Δ'Q2Δ, not `mbreaks`' Δ'Ω2Δ / Δ'Q1Δ. The two
+    agree only when Δ'Q2Δ = Δ'Q1Δ (eta = 1)."""
     n_obs, q = xm.shape
     zm = diag_partition(xm, breaks_)
     delta, *_ = np.linalg.lstsq(zm, y, rcond=None)
@@ -411,7 +414,8 @@ def break_intervals(y: Arr, xm: Arr, breaks_: tuple[int, ...], cov: Cov) -> list
             else:
                 om = om1 = lrv(xm, res, cov)
             phi1s = float(dv @ om @ dv) / dq
-            phi2s = float(dv @ om1 @ dv) / dq
+            # ADR 0012: Δ'Ω2Δ / Δ'Q2Δ. mbreaks 1.0.1 divides by Δ'Q1Δ, which counts eta twice.
+            phi2s = float(dv @ om1 @ dv) / float(dv @ qm1 @ dv)
             a = dq**2 / float(dv @ om @ dv)
         c = bai_quantiles(eta, phi1s, phi2s)
         b = breaks_[i]
