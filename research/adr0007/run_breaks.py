@@ -52,7 +52,11 @@ CELLS = [
 ]
 LABEL = "exploratory (ADR 0007), Phase A (ADR 0011)"
 TIERS = {"descriptive estimate", "model selection"}
-CI_NOTE = "nominal level only; simulated coverage at nominal 95 % was 76.5-92.7 % (ADR 0011 §6)"
+CI_NOTE = (
+    "nominal level only, coverage not established; simulated coverage at nominal 95 % ranged "
+    "from 76.5 % (ADR 0011 §6: T = 1,000, shift 0.15) to 97.2 % (ADR 0012 §3.2: full grid, "
+    "shift 0.60, eta = 4); not a bound for these estimates"
+)
 # ADR 0011 §5: the original validation outputs, kept byte for byte.
 ORIGINALS = {
     "critical_values_tables.txt": (
@@ -69,8 +73,30 @@ ORIGINALS = {
         "c6e43db91cfb4264d63526a122553a397e9069dcef3ec1aa3ddfa28a7f51d6d0"
     ),
 }
-# Anything that would read as a test result. Phase B and sequential counts are withheld.
-WITHHELD = re.compile(r"sup_?f|udmax|wdmax|seq|wald|boot|p_value|pval|cv5|critical|signif", re.I)
+# ADR 0012 §4, §7: the R comparison rerun with exact bounds and the phi2s correction.
+COMPARISON = "r-crosscheck/comparison_adr0012.txt"
+COMPARISON_SHA256 = "93fb041358a85a01a08430c3722e209ccde7858ea07da2abd2501199ea9af38f"
+# ADR 0012 §5: an allow-list. Any other column, e.g. a test statistic, is refused.
+ALLOWED = frozenset(
+    {
+        *("spec", "sample", "eps", "p", "label", "tier"),
+        *("T", "h", "q", "hac_lag", "n_candidates", "first_eligible", "last_eligible"),
+        *("m_BIC", "m_LWZ", "m", "selected_by", "ssr", "bic", "lwz", "dates", "break", "date"),
+        *(
+            f"ci{lev}_{part}"
+            for lev in ("95", "90")
+            for part in (
+                "nominal",
+                "truncated",
+                "width_rows",
+                "width_days",
+                "width_share_eligible",
+            )
+        ),
+        *("ci_note", "regime", "start", "end", "rows", "coef", "estimate", "hac_se"),
+        *("daily_date", "daily_ssr", "month_date", "month_ssr"),
+    }
+)
 WITHHELD_LABEL = re.compile(r"tested|bootstrap|significan|confirm", re.I)
 README = f"""ADR 0007 break estimation, Phase A (ADR 0011). {LABEL}.
 
@@ -88,8 +114,14 @@ Everything here is descriptive or model selection. Nothing is a tested claim.
 
 
 def gate(validation: Path = VALIDATION) -> None:
-    """ADR 0011 §7 Phase A gate: R cross-check passes; original outputs unchanged."""
-    last = (validation / "r-crosscheck/comparison.txt").read_text().strip().splitlines()[-1]
+    """ADR 0011 §7 Phase A gate, as amended by ADR 0012 §5: the rerun R comparison passes;
+    original outputs unchanged."""
+    rerun = validation / COMPARISON
+    if not rerun.exists():
+        raise SystemExit(f"Phase A gate: {COMPARISON} missing; run r-crosscheck/compare.py")
+    if sha256(rerun) != COMPARISON_SHA256:
+        raise SystemExit(f"Phase A gate: {COMPARISON} differs from ADR 0012 §7; run refused")
+    last = rerun.read_text().strip().splitlines()[-1]
     if "'FAIL': 0}" not in last:
         raise SystemExit("Phase A gate: R cross-check does not pass; run refused")
     for rel, want in ORIGINALS.items():
@@ -100,9 +132,9 @@ def gate(validation: Path = VALIDATION) -> None:
 def guard(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
     """Refuse rows carrying a withheld statistic or a label stronger than Phase A allows."""
     for r in rows:
-        bad = [k for k in r if WITHHELD.search(k)]
+        bad = sorted(set(r) - ALLOWED)
         if bad:
-            raise ValueError(f"withheld statistic in Phase A output: {bad}")
+            raise ValueError(f"column not allowed in Phase A output: {bad}")
         if r.get("tier") not in TIERS:
             raise ValueError(f"tier must be one of {sorted(TIERS)}: {r.get('tier')!r}")
         if WITHHELD_LABEL.search(str(r.get("label", ""))):
@@ -230,7 +262,8 @@ def write(path: Path, rows: list[dict[str, Any]]) -> None:
 def main() -> None:
     gate()
     OUT.mkdir(parents=True, exist_ok=True)
-    with ProcessPoolExecutor(max_workers=10) as ex:
+    # ADR 0012 §5: a daily-grid cell peaks at ~2.3 GB (measured), so 4 workers stay under ~10 GB.
+    with ProcessPoolExecutor(max_workers=4) as ex:
         res = list(ex.map(analyse, CELLS))
     for part, name in (
         ("selection", "selection.csv"),

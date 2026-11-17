@@ -1,6 +1,7 @@
 """ADR 0011 Phase A reporting restrictions for `research/adr0007/run_breaks.py`."""
 
 import importlib.util
+import re
 import shutil
 import sys
 from pathlib import Path
@@ -36,11 +37,12 @@ def test_phase_a_outputs_only_descriptive_and_model_selection() -> None:
     for rows in out.values():
         for r in rows:
             assert r["tier"] in {"descriptive estimate", "model selection"}
-            assert not [k for k in r if rb.WITHHELD.search(k)]
+            assert set(r) <= rb.ALLOWED
     # Every m = 1..5 is reported with its intervals, so alternative counts stay visible.
     assert sorted({r["m"] for r in out["breaks"]}) == [1, 2, 3, 4, 5]
     r = out["breaks"][0]
-    assert r["ci_note"] == rb.CI_NOTE and "76.5-92.7" in r["ci_note"]
+    assert r["ci_note"] == rb.CI_NOTE
+    assert "76.5 %" in r["ci_note"] and "97.2 %" in r["ci_note"] and "not a bound" in r["ci_note"]
     for lev in ("95", "90"):
         assert {
             f"ci{lev}_width_rows",
@@ -58,6 +60,7 @@ def test_phase_a_outputs_only_descriptive_and_model_selection() -> None:
         {"tier": "descriptive estimate", "m_sequential": 2},
         {"tier": "descriptive estimate", "boot_p": 0.01},
         {"tier": "descriptive estimate", "cv5_WDmax": "12"},
+        {"tier": "descriptive estimate", "lr_stat": 4.2},  # not on the allow-list
         {"tier": "approximately tested"},
         {"tier": "descriptive estimate", "label": "bootstrap-supported"},
         {"label": "exploratory"},
@@ -74,12 +77,23 @@ def test_write_applies_the_guard(tmp_path: Path) -> None:
     assert not (tmp_path / "x.csv").exists()
 
 
+def test_allow_list_has_no_withheld_statistic() -> None:
+    withheld = re.compile(r"sup_?f|udmax|wdmax|seq|wald|boot|p_?val|cv\d|critical|signif", re.I)
+    assert not [k for k in rb.ALLOWED if withheld.search(k)]
+
+
 def test_gate_refuses_changed_validation_outputs(tmp_path: Path) -> None:
-    rb.gate()  # the committed originals pass
     for rel in rb.ORIGINALS:
         (tmp_path / rel).parent.mkdir(parents=True, exist_ok=True)
         shutil.copy(rb.VALIDATION / rel, tmp_path / rel)
-    rb.gate(tmp_path)
+    with pytest.raises(SystemExit):  # ADR 0012 §5: the rerun comparison is required
+        rb.gate(tmp_path)
+    rerun = tmp_path / rb.COMPARISON
+    shutil.copy(rb.VALIDATION / rb.COMPARISON, rerun)
+    rb.gate(tmp_path)  # committed originals and the recorded rerun pass
+    rerun.write_text(rerun.read_text().replace("'FAIL': 0", "'FAIL': 1"))
+    with pytest.raises(SystemExit):
+        rb.gate(tmp_path)
     p = tmp_path / "critical_values_tables.txt"
     p.write_text(p.read_text().replace("11 outside", "0 outside"))
     with pytest.raises(SystemExit):
@@ -93,3 +107,8 @@ def test_adr_0011_records_the_gate_hashes() -> None:
     assert "Status: FROZEN" in adr
     for want in rb.ORIGINALS.values():
         assert want in adr
+
+
+def test_adr_0012_records_the_rerun_hash() -> None:
+    adr = (ROOT / "docs/decisions/0012-bai-interval-correction-and-audit-resolution.md").read_text()
+    assert "Status: FROZEN" in adr and rb.COMPARISON_SHA256 in adr
