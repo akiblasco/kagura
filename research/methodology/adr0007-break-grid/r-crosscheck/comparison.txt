@@ -1,0 +1,400 @@
+pass       nile             strucchange m=0 dates                    py=() r=() 
+pass       nile             strucchange m=0 SSR                      py=2835156.75 r=2835156.75 
+pass       nile             strucchange m=1 dates                    py=(28,) r=(28,) 
+pass       nile             strucchange m=1 SSR                      py=1597457.1944444445 r=1597457.19444444 
+pass       nile             strucchange m=2 dates                    py=(28, 83) r=(28, 83) 
+pass       nile             strucchange m=2 SSR                      py=1552923.6157754012 r=1552923.6157754 
+pass       nile             strucchange m=3 dates                    py=(28, 68, 83) r=(28, 68, 83) 
+pass       nile             strucchange m=3 SSR                      py=1538096.512745098 r=1538096.5127451 
+pass       nile             strucchange m=4 dates                    py=(28, 45, 68, 83) r=(28, 45, 68, 83) 
+pass       nile             strucchange m=4 SSR                      py=1507888.4759164536 r=1507888.47591645 
+pass       nile             strucchange m=5 dates                    py=(15, 30, 45, 68, 83) r=(15, 30, 45, 68, 83) 
+pass       nile             strucchange m=5 SSR                      py=1659993.5004262575 r=1659993.50042626 
+pass       nile             mbreaks global k=1 dates                 py=(28,) r=(28,) 
+pass       nile             mbreaks global k=2 dates                 py=(28, 83) r=(28, 83) 
+pass       nile             mbreaks global k=3 dates                 py=(28, 68, 83) r=(28, 68, 83) 
+pass       nile             mbreaks global k=4 dates                 py=(28, 45, 68, 83) r=(28, 45, 68, 83) 
+pass       nile             mbreaks global k=5 dates                 py=(15, 30, 45, 68, 83) r=(15, 30, 45, 68, 83) 
+pass       nile             homo supF(1)                             py=75.92976942748534 r=75.9297694274851 
+pass       nile             homo supF(2)                             py=40.0459535666481 r=40.0459535666482 
+pass       nile             homo supF(3)                             py=26.985255637879106 r=26.9852556378791 
+pass       nile             homo supF(4)                             py=20.90514120437565 r=20.9051412043756 
+pass       nile             homo supF(5)                             py=13.309129876902078 r=13.3091298769021 
+pass       nile             homo sequential m                        py=1 r=1 
+pass       nile             homo sequential dates                    py=(28,) r=(28,) 
+pass       nile             homo CI m=1 break 1                      py=(25, 32, 26, 31) r=(25, 32, 26, 31) 
+pass       nile             homo coef m=1                            py= r= 
+pass       nile             homo SE m=1                              py= r= 
+pass       nile             homo CI m=2 break 1                      py=(26, 32, 26, 31) r=(26, 33, 26, 32) 
+pass       nile             homo CI m=2 break 2                      py=(34, 131, 49, 116) r=(34, 131, 49, 116) 
+pass       nile             homo coef m=2                            py= r= 
+pass       nile             homo SE m=2                              py= r= 
+convention nile             homo CI m=3 break 1                      py=(25, 32, 26, 31) r=(25, 34, 26, 33) mbreaks upper bounds +2: rounding inside its loop over breaks
+pass       nile             homo CI m=3 break 2                      py=(6, 210, 27, 169) r=(6, 211, 27, 170) 
+pass       nile             homo CI m=3 break 3                      py=(59, 96, 66, 92) r=(59, 96, 66, 92) 
+pass       nile             homo coef m=3                            py= r= 
+pass       nile             homo SE m=3                              py= r= 
+pass       nile             homo_het supF(1)                         py=71.5540468412144 r=71.5540468412142 
+convention nile             homo_het supF(2)                         py=37.34081971584601 r=37.3407558263875 psigmq middle-regime row; with it Python gives 37.34075583
+convention nile             homo_het supF(3)                         py=26.81656991454262 r=25.9216310339909 psigmq middle-regime row; with it Python gives 25.92163103
+convention nile             homo_het supF(4)                         py=20.096783204989116 r=19.5649710607411 psigmq middle-regime row; with it Python gives 19.56497106
+convention nile             homo_het supF(5)                         py=12.738819896842292 r=12.2134829245004 psigmq middle-regime row; with it Python gives 12.21348292
+pass       nile             homo_het sequential m                    py=1 r=1 
+pass       nile             homo_het sequential dates                py=(28,) r=(28,) 
+pass       nile             homo_het CI m=1 break 1                  py=(25, 32, 26, 31) r=(25, 32, 26, 31) 
+pass       nile             homo_het coef m=1                        py= r= 
+pass       nile             homo_het SE m=1                          py= r= 
+pass       nile             homo_het CI m=2 break 1                  py=(26, 32, 26, 31) r=(26, 33, 26, 32) 
+pass       nile             homo_het CI m=2 break 2                  py=(34, 131, 49, 116) r=(34, 131, 49, 116) 
+pass       nile             homo_het coef m=2                        py= r= 
+convention nile             homo_het SE m=2                          py= r= psigmq middle-regime row; reproduced to 1e-6 with it
+convention nile             homo_het CI m=3 break 1                  py=(25, 32, 26, 31) r=(25, 34, 26, 33) mbreaks upper bounds +2: rounding inside its loop over breaks
+pass       nile             homo_het CI m=3 break 2                  py=(6, 210, 27, 169) r=(6, 211, 27, 170) 
+pass       nile             homo_het CI m=3 break 3                  py=(59, 96, 66, 92) r=(59, 96, 66, 92) 
+pass       nile             homo_het coef m=3                        py= r= 
+convention nile             homo_het SE m=3                          py= r= psigmq middle-regime row; reproduced to 1e-6 with it
+pass       nile             hac supF(1)                              py=57.864113582503556 r=57.8641135825034 
+pass       nile             hac supF(2)                              py=30.735027563366838 r=30.7350275633669 
+pass       nile             hac supF(3)                              py=21.67114498264769 r=21.6711449826477 
+pass       nile             hac supF(4)                              py=16.190131514238587 r=16.1901315142386 
+pass       nile             hac supF(5)                              py=9.755058834348034 r=9.75505883434803 
+pass       nile             hac sequential m                         py=1 r=1 
+pass       nile             hac sequential dates                     py=(28,) r=(28,) 
+pass       nile             hac CI m=1 break 1                       py=(24, 33, 25, 32) r=(24, 33, 25, 32) 
+pass       nile             hac coef m=1                             py= r= 
+pass       nile             hac SE m=1                               py= r= 
+pass       nile             hac CI m=2 break 1                       py=(25, 32, 26, 31) r=(25, 33, 26, 32) 
+pass       nile             hac CI m=2 break 2                       py=(25, 143, 42, 125) r=(25, 143, 42, 125) 
+pass       nile             hac coef m=2                             py= r= 
+pass       nile             hac SE m=2                               py= r= 
+convention nile             hac CI m=3 break 1                       py=(25, 33, 26, 32) r=(25, 35, 26, 34) mbreaks upper bounds +2: rounding inside its loop over breaks
+pass       nile             hac CI m=3 break 2                       py=(-26, 234, 5, 186) r=(-26, 235, 5, 187) 
+pass       nile             hac CI m=3 break 3                       py=(55, 102, 63, 96) r=(55, 102, 63, 96) 
+pass       nile             hac coef m=3                             py= r= 
+pass       nile             hac SE m=3                               py= r= 
+pass       nile             hac_pw supF(1)                           py=51.430539816718316 r=51.4305398167182 
+pass       nile             hac_pw supF(2)                           py=27.183014343457756 r=27.1830143434578 
+pass       nile             hac_pw supF(3)                           py=18.329888530362275 r=18.3298885303623 
+pass       nile             hac_pw supF(4)                           py=13.719862032883494 r=13.7198620328835 
+pass       nile             hac_pw supF(5)                           py=8.46934032332177 r=8.46934032332179 
+pass       nile             hac_pw sequential m                      py=1 r=1 
+pass       nile             hac_pw sequential dates                  py=(28,) r=(28,) 
+pass       nile             hac_pw CI m=1 break 1                    py=(24, 33, 25, 32) r=(24, 33, 25, 32) 
+pass       nile             hac_pw coef m=1                          py= r= 
+pass       nile             hac_pw SE m=1                            py= r= 
+pass       nile             hac_pw CI m=2 break 1                    py=(25, 33, 26, 32) r=(25, 34, 26, 33) 
+pass       nile             hac_pw CI m=2 break 2                    py=(13, 149, 34, 129) r=(13, 149, 34, 129) 
+pass       nile             hac_pw coef m=2                          py= r= 
+pass       nile             hac_pw SE m=2                            py= r= 
+convention nile             hac_pw CI m=3 break 1                    py=(24, 33, 25, 32) r=(24, 35, 25, 34) mbreaks upper bounds +2: rounding inside its loop over breaks
+pass       nile             hac_pw CI m=3 break 2                    py=(-70, 255, -27, 200) r=(-70, 256, -27, 201) 
+pass       nile             hac_pw CI m=3 break 3                    py=(50, 110, 60, 102) r=(50, 110, 60, 102) 
+pass       nile             hac_pw coef m=3                          py= r= 
+pass       nile             hac_pw SE m=3                            py= r= 
+pass       two_break_slope  strucchange m=0 dates                    py=() r=() 
+pass       two_break_slope  strucchange m=0 SSR                      py=440.11904381351013 r=440.11904381351 
+pass       two_break_slope  strucchange m=1 dates                    py=(281,) r=(281,) 
+pass       two_break_slope  strucchange m=1 SSR                      py=413.3541415058039 r=413.354141505804 
+pass       two_break_slope  strucchange m=2 dates                    py=(137, 281) r=(137, 281) 
+pass       two_break_slope  strucchange m=2 SSR                      py=354.5835884161134 r=354.583588416113 
+pass       two_break_slope  strucchange m=3 dates                    py=(137, 210, 281) r=(137, 210, 281) 
+pass       two_break_slope  strucchange m=3 SSR                      py=352.63491472954865 r=352.634914729549 
+pass       two_break_slope  strucchange m=4 dates                    py=(66, 137, 210, 281) r=(66, 137, 210, 281) 
+pass       two_break_slope  strucchange m=4 SSR                      py=351.3027667921609 r=351.302766792161 
+pass       two_break_slope  strucchange m=5 dates                    py=(66, 137, 209, 280, 340) r=(66, 137, 209, 280, 340) 
+pass       two_break_slope  strucchange m=5 SSR                      py=351.54318382203564 r=351.543183822036 
+pass       two_break_slope  mbreaks global k=1 dates                 py=(281,) r=(281,) 
+pass       two_break_slope  mbreaks global k=2 dates                 py=(137, 281) r=(137, 281) 
+pass       two_break_slope  mbreaks global k=3 dates                 py=(137, 210, 281) r=(137, 210, 281) 
+pass       two_break_slope  mbreaks global k=4 dates                 py=(66, 137, 210, 281) r=(66, 137, 210, 281) 
+pass       two_break_slope  mbreaks global k=5 dates                 py=(66, 137, 209, 280, 340) r=(66, 137, 209, 280, 340) 
+pass       two_break_slope  homo supF(1)                             py=25.64121233971688 r=25.6412123397168 
+pass       two_break_slope  homo supF(2)                             py=47.52189684964397 r=47.5218968496439 
+pass       two_break_slope  homo supF(3)                             py=32.416697996013134 r=32.4166979960131 
+pass       two_break_slope  homo supF(4)                             py=24.64992544366944 r=24.6499254436694 
+pass       two_break_slope  homo supF(5)                             py=19.552325437258464 r=19.5523254372584 
+pass       two_break_slope  homo sequential m                        py=2 r=2 
+pass       two_break_slope  homo sequential dates                    py=(137, 281) r=(137, 281) 
+pass       two_break_slope  homo CI m=1 break 1                      py=(249, 318, 259, 307) r=(249, 318, 259, 307) 
+pass       two_break_slope  homo coef m=1                            py= r= 
+pass       two_break_slope  homo SE m=1                              py= r= 
+pass       two_break_slope  homo CI m=2 break 1                      py=(126, 150, 129, 146) r=(126, 151, 129, 147) 
+pass       two_break_slope  homo CI m=2 break 2                      py=(270, 291, 273, 288) r=(270, 291, 273, 288) 
+pass       two_break_slope  homo coef m=2                            py= r= 
+pass       two_break_slope  homo SE m=2                              py= r= 
+convention two_break_slope  homo CI m=3 break 1                      py=(123, 154, 127, 149) r=(123, 156, 127, 151) mbreaks upper bounds +2: rounding inside its loop over breaks
+pass       two_break_slope  homo CI m=3 break 2                      py=(16, 371, 74, 322) r=(16, 372, 74, 323) 
+pass       two_break_slope  homo CI m=3 break 3                      py=(272, 289, 275, 287) r=(272, 289, 275, 287) 
+pass       two_break_slope  homo coef m=3                            py= r= 
+pass       two_break_slope  homo SE m=3                              py= r= 
+pass       two_break_slope  homo_het supF(1)                         py=27.56207054741416 r=27.5620705474141 
+convention two_break_slope  homo_het supF(2)                         py=47.31136121987023 r=47.2310598418026 psigmq middle-regime row; with it Python gives 47.23105984
+convention two_break_slope  homo_het supF(3)                         py=31.836557640751938 r=31.7515276653815 psigmq middle-regime row; with it Python gives 31.75152767
+convention two_break_slope  homo_het supF(4)                         py=24.05704070736431 r=23.9697753142396 psigmq middle-regime row; with it Python gives 23.96977531
+convention two_break_slope  homo_het supF(5)                         py=19.115092680828223 r=18.8762782372229 psigmq middle-regime row; with it Python gives 18.87627824
+pass       two_break_slope  homo_het sequential m                    py=2 r=2 
+pass       two_break_slope  homo_het sequential dates                py=(137, 281) r=(137, 281) 
+pass       two_break_slope  homo_het CI m=1 break 1                  py=(249, 318, 259, 307) r=(249, 318, 259, 307) 
+pass       two_break_slope  homo_het coef m=1                        py= r= 
+pass       two_break_slope  homo_het SE m=1                          py= r= 
+pass       two_break_slope  homo_het CI m=2 break 1                  py=(126, 150, 129, 146) r=(126, 151, 129, 147) 
+pass       two_break_slope  homo_het CI m=2 break 2                  py=(270, 291, 273, 288) r=(270, 291, 273, 288) 
+pass       two_break_slope  homo_het coef m=2                        py= r= 
+convention two_break_slope  homo_het SE m=2                          py= r= psigmq middle-regime row; reproduced to 1e-6 with it
+convention two_break_slope  homo_het CI m=3 break 1                  py=(123, 154, 127, 149) r=(123, 156, 127, 151) mbreaks upper bounds +2: rounding inside its loop over breaks
+pass       two_break_slope  homo_het CI m=3 break 2                  py=(16, 371, 74, 322) r=(16, 372, 74, 323) 
+pass       two_break_slope  homo_het CI m=3 break 3                  py=(272, 289, 275, 287) r=(272, 289, 275, 287) 
+pass       two_break_slope  homo_het coef m=3                        py= r= 
+convention two_break_slope  homo_het SE m=3                          py= r= psigmq middle-regime row; reproduced to 1e-6 with it
+pass       two_break_slope  hac supF(1)                              py=23.096844167946436 r=23.0968441679464 
+pass       two_break_slope  hac supF(2)                              py=47.89799883819686 r=47.8979988381968 
+pass       two_break_slope  hac supF(3)                              py=34.46525502771981 r=34.4652550277198 
+pass       two_break_slope  hac supF(4)                              py=25.81563837270299 r=25.815638372703 
+pass       two_break_slope  hac supF(5)                              py=20.5427237286089 r=20.5427237286089 
+pass       two_break_slope  hac sequential m                         py=2 r=2 
+pass       two_break_slope  hac sequential dates                     py=(137, 281) r=(137, 281) 
+pass       two_break_slope  hac CI m=1 break 1                       py=(256, 342, 264, 325) r=(256, 342, 264, 325) 
+pass       two_break_slope  hac coef m=1                             py= r= 
+pass       two_break_slope  hac SE m=1                               py= r= 
+pass       two_break_slope  hac CI m=2 break 1                       py=(124, 149, 128, 146) r=(124, 150, 128, 147) 
+pass       two_break_slope  hac CI m=2 break 2                       py=(272, 291, 275, 289) r=(272, 291, 275, 289) 
+pass       two_break_slope  hac coef m=2                             py= r= 
+pass       two_break_slope  hac SE m=2                               py= r= 
+convention two_break_slope  hac CI m=3 break 1                       py=(119, 153, 125, 148) r=(119, 155, 125, 150) mbreaks upper bounds +2: rounding inside its loop over breaks
+pass       two_break_slope  hac CI m=3 break 2                       py=(70, 416, 114, 355) r=(70, 417, 114, 356) 
+pass       two_break_slope  hac CI m=3 break 3                       py=(274, 288, 276, 286) r=(274, 288, 276, 286) 
+pass       two_break_slope  hac coef m=3                             py= r= 
+pass       two_break_slope  hac SE m=3                               py= r= 
+pass       two_break_slope  hac_pw supF(1)                           py=22.752824247937262 r=22.7528242479372 
+pass       two_break_slope  hac_pw supF(2)                           py=47.3190695274723 r=47.3190695274723 
+pass       two_break_slope  hac_pw supF(3)                           py=33.94707412570305 r=33.9470741257031 
+pass       two_break_slope  hac_pw supF(4)                           py=25.988316884619667 r=25.9883168846196 
+pass       two_break_slope  hac_pw supF(5)                           py=20.87202131110778 r=20.8720213111078 
+pass       two_break_slope  hac_pw sequential m                      py=2 r=2 
+pass       two_break_slope  hac_pw sequential dates                  py=(137, 281) r=(137, 281) 
+pass       two_break_slope  hac_pw CI m=1 break 1                    py=(254, 340, 263, 323) r=(254, 340, 263, 323) 
+pass       two_break_slope  hac_pw coef m=1                          py= r= 
+pass       two_break_slope  hac_pw SE m=1                            py= r= 
+pass       two_break_slope  hac_pw CI m=2 break 1                    py=(124, 149, 128, 145) r=(124, 150, 128, 146) 
+pass       two_break_slope  hac_pw CI m=2 break 2                    py=(271, 292, 274, 289) r=(271, 292, 274, 289) 
+pass       two_break_slope  hac_pw coef m=2                          py= r= 
+pass       two_break_slope  hac_pw SE m=2                            py= r= 
+convention two_break_slope  hac_pw CI m=3 break 1                    py=(119, 152, 125, 148) r=(119, 154, 125, 150) mbreaks upper bounds +2: rounding inside its loop over breaks
+pass       two_break_slope  hac_pw CI m=3 break 2                    py=(70, 409, 114, 350) r=(70, 410, 114, 351) 
+pass       two_break_slope  hac_pw CI m=3 break 3                    py=(274, 288, 276, 286) r=(274, 288, 276, 286) 
+pass       two_break_slope  hac_pw coef m=3                          py= r= 
+pass       two_break_slope  hac_pw SE m=3                            py= r= 
+pass       hetero_regimes   strucchange m=0 dates                    py=() r=() 
+pass       hetero_regimes   strucchange m=0 SSR                      py=1839.9814797846902 r=1839.98147978469 
+pass       hetero_regimes   strucchange m=1 dates                    py=(219,) r=(219,) 
+pass       hetero_regimes   strucchange m=1 SSR                      py=1804.9238191913173 r=1804.92381919132 
+pass       hetero_regimes   strucchange m=2 dates                    py=(222, 282) r=(222, 282) 
+pass       hetero_regimes   strucchange m=2 SSR                      py=1750.0686353498454 r=1750.06863534984 
+pass       hetero_regimes   strucchange m=3 dates                    py=(219, 280, 340) r=(219, 280, 340) 
+pass       hetero_regimes   strucchange m=3 SSR                      py=1731.0573723877144 r=1731.05737238771 
+pass       hetero_regimes   strucchange m=4 dates                    py=(150, 219, 280, 340) r=(150, 219, 280, 340) 
+pass       hetero_regimes   strucchange m=4 SSR                      py=1727.0805686322756 r=1727.08056863228 
+pass       hetero_regimes   strucchange m=5 dates                    py=(67, 134, 219, 280, 340) r=(67, 134, 219, 280, 340) 
+pass       hetero_regimes   strucchange m=5 SSR                      py=1723.8277401020187 r=1723.82774010202 
+pass       hetero_regimes   mbreaks global k=1 dates                 py=(219,) r=(219,) 
+pass       hetero_regimes   mbreaks global k=2 dates                 py=(222, 282) r=(222, 282) 
+pass       hetero_regimes   mbreaks global k=3 dates                 py=(219, 280, 340) r=(219, 280, 340) 
+pass       hetero_regimes   mbreaks global k=4 dates                 py=(150, 219, 280, 340) r=(150, 219, 280, 340) 
+pass       hetero_regimes   mbreaks global k=5 dates                 py=(67, 134, 219, 280, 340) r=(67, 134, 219, 280, 340) 
+pass       hetero_regimes   homo supF(1)                             py=7.691645180457412 r=7.69164518045739 
+pass       hetero_regimes   homo supF(2)                             py=10.121220388664106 r=10.1212203886641 
+pass       hetero_regimes   homo supF(3)                             py=8.22199787264883 r=8.22199787264883 
+pass       hetero_regimes   homo supF(4)                             py=6.373668395839727 r=6.37366839583973 
+pass       hetero_regimes   homo supF(5)                             py=5.228788230801925 r=5.22878823080193 
+pass       hetero_regimes   homo sequential m                        py=0 r=0 
+pass       hetero_regimes   homo sequential dates                    py=() r=() 
+pass       hetero_regimes   homo CI m=1 break 1                      py=(-26, 273, 44, 253) r=(-26, 273, 44, 253) 
+pass       hetero_regimes   homo coef m=1                            py= r= 
+pass       hetero_regimes   homo SE m=1                              py= r= 
+pass       hetero_regimes   homo CI m=2 break 1                      py=(177, 234, 190, 230) r=(177, 235, 190, 231) 
+pass       hetero_regimes   homo CI m=2 break 2                      py=(223, 335, 241, 319) r=(223, 335, 241, 319) 
+pass       hetero_regimes   homo coef m=2                            py= r= 
+pass       hetero_regimes   homo SE m=2                              py= r= 
+convention hetero_regimes   homo CI m=3 break 1                      py=(169, 232, 184, 228) r=(169, 234, 184, 230) mbreaks upper bounds +2: rounding inside its loop over breaks
+pass       hetero_regimes   homo CI m=3 break 2                      py=(234, 327, 248, 313) r=(234, 328, 248, 314) 
+pass       hetero_regimes   homo CI m=3 break 3                      py=(263, 430, 287, 403) r=(263, 430, 287, 403) 
+pass       hetero_regimes   homo coef m=3                            py= r= 
+pass       hetero_regimes   homo SE m=3                              py= r= 
+pass       hetero_regimes   homo_het supF(1)                         py=6.903842528335702 r=6.90384252833568 
+convention hetero_regimes   homo_het supF(2)                         py=7.6136741621101995 r=7.51440134945299 psigmq middle-regime row; with it Python gives 7.514401349
+convention hetero_regimes   homo_het supF(3)                         py=5.896608397774375 r=5.80993557098496 psigmq middle-regime row; with it Python gives 5.809935571
+convention hetero_regimes   homo_het supF(4)                         py=5.258409196665839 r=5.18433784824262 psigmq middle-regime row; with it Python gives 5.184337848
+convention hetero_regimes   homo_het supF(5)                         py=4.910319646891397 r=4.84884372188746 psigmq middle-regime row; with it Python gives 4.848843722
+pass       hetero_regimes   homo_het sequential m                    py=0 r=0 
+pass       hetero_regimes   homo_het sequential dates                py=() r=() 
+pass       hetero_regimes   homo_het CI m=1 break 1                  py=(-26, 273, 44, 253) r=(-26, 273, 44, 253) 
+pass       hetero_regimes   homo_het coef m=1                        py= r= 
+pass       hetero_regimes   homo_het SE m=1                          py= r= 
+pass       hetero_regimes   homo_het CI m=2 break 1                  py=(177, 234, 190, 230) r=(177, 235, 190, 231) 
+pass       hetero_regimes   homo_het CI m=2 break 2                  py=(223, 335, 241, 319) r=(223, 335, 241, 319) 
+pass       hetero_regimes   homo_het coef m=2                        py= r= 
+convention hetero_regimes   homo_het SE m=2                          py= r= psigmq middle-regime row; reproduced to 1e-6 with it
+convention hetero_regimes   homo_het CI m=3 break 1                  py=(169, 232, 184, 228) r=(169, 234, 184, 230) mbreaks upper bounds +2: rounding inside its loop over breaks
+pass       hetero_regimes   homo_het CI m=3 break 2                  py=(234, 327, 248, 313) r=(234, 328, 248, 314) 
+pass       hetero_regimes   homo_het CI m=3 break 3                  py=(263, 430, 287, 403) r=(263, 430, 287, 403) 
+pass       hetero_regimes   homo_het coef m=3                        py= r= 
+convention hetero_regimes   homo_het SE m=3                          py= r= psigmq middle-regime row; reproduced to 1e-6 with it
+pass       hetero_regimes   hac supF(1)                              py=5.456259338953938 r=5.45625933895392 
+pass       hetero_regimes   hac supF(2)                              py=7.630167139629793 r=7.63016713962979 
+pass       hetero_regimes   hac supF(3)                              py=6.143500985928666 r=6.14350098592866 
+pass       hetero_regimes   hac supF(4)                              py=5.5039077165682375 r=5.50390771656824 
+pass       hetero_regimes   hac supF(5)                              py=4.705688032389775 r=4.70568803238977 
+pass       hetero_regimes   hac sequential m                         py=0 r=0 
+pass       hetero_regimes   hac sequential dates                     py=() r=() 
+pass       hetero_regimes   hac CI m=1 break 1                       py=(-92, 284, -4, 259) r=(-92, 284, -4, 259) 
+pass       hetero_regimes   hac coef m=1                             py= r= 
+pass       hetero_regimes   hac SE m=1                               py= r= 
+pass       hetero_regimes   hac CI m=2 break 1                       py=(179, 238, 191, 233) r=(179, 239, 191, 234) 
+pass       hetero_regimes   hac CI m=2 break 2                       py=(205, 337, 228, 320) r=(205, 337, 228, 320) 
+pass       hetero_regimes   hac coef m=2                             py= r= 
+pass       hetero_regimes   hac SE m=2                               py= r= 
+convention hetero_regimes   hac CI m=3 break 1                       py=(170, 238, 184, 232) r=(170, 240, 184, 234) mbreaks upper bounds +2: rounding inside its loop over breaks
+pass       hetero_regimes   hac CI m=3 break 2                       py=(227, 338, 243, 320) r=(227, 339, 243, 321) 
+pass       hetero_regimes   hac CI m=3 break 3                       py=(242, 418, 271, 393) r=(242, 418, 271, 393) 
+pass       hetero_regimes   hac coef m=3                             py= r= 
+pass       hetero_regimes   hac SE m=3                               py= r= 
+pass       hetero_regimes   hac_pw supF(1)                           py=5.616319942892032 r=5.61631994289202 
+pass       hetero_regimes   hac_pw supF(2)                           py=7.066067942886455 r=7.06606794288645 
+pass       hetero_regimes   hac_pw supF(3)                           py=6.122162669086925 r=6.12216266908692 
+pass       hetero_regimes   hac_pw supF(4)                           py=5.506326910108504 r=5.5063269101085 
+pass       hetero_regimes   hac_pw supF(5)                           py=4.614743770156997 r=4.61474377015699 
+pass       hetero_regimes   hac_pw sequential m                      py=0 r=0 
+pass       hetero_regimes   hac_pw sequential dates                  py=() r=() 
+pass       hetero_regimes   hac_pw CI m=1 break 1                    py=(-76, 295, 8, 267) r=(-76, 295, 8, 267) 
+pass       hetero_regimes   hac_pw coef m=1                          py= r= 
+pass       hetero_regimes   hac_pw SE m=1                            py= r= 
+pass       hetero_regimes   hac_pw CI m=2 break 1                    py=(175, 241, 189, 235) r=(175, 242, 189, 236) 
+pass       hetero_regimes   hac_pw CI m=2 break 2                    py=(197, 342, 222, 324) r=(197, 342, 222, 324) 
+pass       hetero_regimes   hac_pw coef m=2                          py= r= 
+pass       hetero_regimes   hac_pw SE m=2                            py= r= 
+convention hetero_regimes   hac_pw CI m=3 break 1                    py=(167, 240, 182, 233) r=(167, 242, 182, 235) mbreaks upper bounds +2: rounding inside its loop over breaks
+pass       hetero_regimes   hac_pw CI m=3 break 2                    py=(224, 344, 241, 325) r=(224, 345, 241, 326) 
+pass       hetero_regimes   hac_pw CI m=3 break 3                    py=(240, 411, 269, 389) r=(240, 411, 269, 389) 
+pass       hetero_regimes   hac_pw coef m=3                          py= r= 
+pass       hetero_regimes   hac_pw SE m=3                            py= r= 
+pass       ar1_errors       strucchange m=0 dates                    py=() r=() 
+pass       ar1_errors       strucchange m=0 SSR                      py=688.001126068493 r=688.001126068493 
+pass       ar1_errors       strucchange m=1 dates                    py=(211,) r=(211,) 
+pass       ar1_errors       strucchange m=1 SSR                      py=636.5243618260439 r=636.524361826044 
+pass       ar1_errors       strucchange m=2 dates                    py=(188, 299) r=(188, 299) 
+pass       ar1_errors       strucchange m=2 SSR                      py=620.4799752207423 r=620.479975220742 
+pass       ar1_errors       strucchange m=3 dates                    py=(80, 188, 299) r=(80, 188, 299) 
+pass       ar1_errors       strucchange m=3 SSR                      py=608.9049141997476 r=608.904914199748 
+pass       ar1_errors       strucchange m=4 dates                    py=(80, 187, 247, 309) r=(80, 187, 247, 309) 
+pass       ar1_errors       strucchange m=4 SSR                      py=603.466129890792 r=603.466129890792 
+pass       ar1_errors       strucchange m=5 dates                    py=(80, 149, 211, 271, 331) r=(80, 149, 211, 271, 331) 
+pass       ar1_errors       strucchange m=5 SSR                      py=604.782360324494 r=604.782360324494 
+pass       ar1_errors       mbreaks global k=1 dates                 py=(211,) r=(211,) 
+pass       ar1_errors       mbreaks global k=2 dates                 py=(188, 299) r=(188, 299) 
+pass       ar1_errors       mbreaks global k=3 dates                 py=(80, 188, 299) r=(80, 188, 299) 
+pass       ar1_errors       mbreaks global k=4 dates                 py=(80, 187, 247, 309) r=(80, 187, 247, 309) 
+pass       ar1_errors       mbreaks global k=5 dates                 py=(80, 149, 211, 271, 331) r=(80, 149, 211, 271, 331) 
+pass       ar1_errors       homo supF(1)                             py=32.02516645479281 r=32.0251664547929 
+pass       ar1_errors       homo supF(2)                             py=21.437705080288346 r=21.4377050802883 
+pass       ar1_errors       homo supF(3)                             py=16.97348487396012 r=16.9734848739601 
+pass       ar1_errors       homo supF(4)                             py=13.658036000823135 r=13.6580360008231 
+pass       ar1_errors       homo supF(5)                             py=10.67785148076976 r=10.6778514807697 
+pass       ar1_errors       homo sequential m                        py=1 r=1 
+pass       ar1_errors       homo sequential dates                    py=(211,) r=(211,) 
+pass       ar1_errors       homo CI m=1 break 1                      py=(177, 245, 187, 235) r=(177, 245, 187, 235) 
+pass       ar1_errors       homo coef m=1                            py= r= 
+pass       ar1_errors       homo SE m=1                              py= r= 
+pass       ar1_errors       homo CI m=2 break 1                      py=(137, 246, 152, 229) r=(137, 247, 152, 230) 
+pass       ar1_errors       homo CI m=2 break 2                      py=(262, 352, 274, 337) r=(262, 352, 274, 337) 
+pass       ar1_errors       homo coef m=2                            py= r= 
+pass       ar1_errors       homo SE m=2                              py= r= 
+convention ar1_errors       homo CI m=3 break 1                      py=(3, 147, 26, 127) r=(3, 149, 26, 129) mbreaks upper bounds +2: rounding inside its loop over breaks
+pass       ar1_errors       homo CI m=3 break 2                      py=(162, 219, 170, 210) r=(162, 220, 170, 211) 
+pass       ar1_errors       homo CI m=3 break 3                      py=(262, 352, 274, 337) r=(262, 352, 274, 337) 
+pass       ar1_errors       homo coef m=3                            py= r= 
+pass       ar1_errors       homo SE m=3                              py= r= 
+pass       ar1_errors       homo_het supF(1)                         py=32.24193338750628 r=32.2419333875064 
+convention ar1_errors       homo_het supF(2)                         py=22.777968890991986 r=22.7777479117065 psigmq middle-regime row; with it Python gives 22.77774791
+convention ar1_errors       homo_het supF(3)                         py=17.69621601909466 r=17.5779732994349 psigmq middle-regime row; with it Python gives 17.5779733
+convention ar1_errors       homo_het supF(4)                         py=13.567470969678926 r=13.4740608434214 psigmq middle-regime row; with it Python gives 13.47406084
+convention ar1_errors       homo_het supF(5)                         py=11.48756749268092 r=11.3292303021995 psigmq middle-regime row; with it Python gives 11.3292303
+pass       ar1_errors       homo_het sequential m                    py=1 r=1 
+pass       ar1_errors       homo_het sequential dates                py=(211,) r=(211,) 
+pass       ar1_errors       homo_het CI m=1 break 1                  py=(177, 245, 187, 235) r=(177, 245, 187, 235) 
+pass       ar1_errors       homo_het coef m=1                        py= r= 
+pass       ar1_errors       homo_het SE m=1                          py= r= 
+pass       ar1_errors       homo_het CI m=2 break 1                  py=(137, 246, 152, 229) r=(137, 247, 152, 230) 
+pass       ar1_errors       homo_het CI m=2 break 2                  py=(262, 352, 274, 337) r=(262, 352, 274, 337) 
+pass       ar1_errors       homo_het coef m=2                        py= r= 
+convention ar1_errors       homo_het SE m=2                          py= r= psigmq middle-regime row; reproduced to 1e-6 with it
+convention ar1_errors       homo_het CI m=3 break 1                  py=(3, 147, 26, 127) r=(3, 149, 26, 129) mbreaks upper bounds +2: rounding inside its loop over breaks
+pass       ar1_errors       homo_het CI m=3 break 2                  py=(162, 219, 170, 210) r=(162, 220, 170, 211) 
+pass       ar1_errors       homo_het CI m=3 break 3                  py=(262, 352, 274, 337) r=(262, 352, 274, 337) 
+pass       ar1_errors       homo_het coef m=3                        py= r= 
+convention ar1_errors       homo_het SE m=3                          py= r= psigmq middle-regime row; reproduced to 1e-6 with it
+pass       ar1_errors       hac supF(1)                              py=20.608846715679192 r=20.6088467156793 
+pass       ar1_errors       hac supF(2)                              py=26.99249613820911 r=26.9924961382091 
+pass       ar1_errors       hac supF(3)                              py=21.167619095043683 r=21.1676190950437 
+pass       ar1_errors       hac supF(4)                              py=16.78486939860963 r=16.7848693986096 
+pass       ar1_errors       hac supF(5)                              py=13.180616576043327 r=13.1806165760433 
+pass       ar1_errors       hac sequential m                         py=1 r=1 
+pass       ar1_errors       hac sequential dates                     py=(211,) r=(211,) 
+pass       ar1_errors       hac CI m=1 break 1                       py=(166, 300, 181, 274) r=(166, 300, 181, 274) 
+pass       ar1_errors       hac coef m=1                             py= r= 
+pass       ar1_errors       hac SE m=1                               py= r= 
+pass       ar1_errors       hac CI m=2 break 1                       py=(57, 379, 98, 322) r=(57, 380, 98, 323) 
+pass       ar1_errors       hac CI m=2 break 2                       py=(283, 365, 289, 346) r=(283, 365, 289, 346) 
+pass       ar1_errors       hac coef m=2                             py= r= 
+pass       ar1_errors       hac SE m=2                               py= r= 
+convention ar1_errors       hac CI m=3 break 1                       py=(-89, 280, -36, 221) r=(-89, 282, -36, 223) mbreaks upper bounds +2: rounding inside its loop over breaks
+pass       ar1_errors       hac CI m=3 break 2                       py=(113, 266, 135, 243) r=(113, 267, 135, 244) 
+pass       ar1_errors       hac CI m=3 break 3                       py=(283, 365, 289, 346) r=(283, 365, 289, 346) 
+pass       ar1_errors       hac coef m=3                             py= r= 
+pass       ar1_errors       hac SE m=3                               py= r= 
+pass       ar1_errors       hac_pw supF(1)                           py=20.56813244791196 r=20.568132447912 
+pass       ar1_errors       hac_pw supF(2)                           py=24.365226266129977 r=24.3652262661299 
+pass       ar1_errors       hac_pw supF(3)                           py=19.14633916136165 r=19.1463391613616 
+pass       ar1_errors       hac_pw supF(4)                           py=14.345704817844112 r=14.3457048178441 
+pass       ar1_errors       hac_pw supF(5)                           py=9.96422051937154 r=9.96422051937151 
+pass       ar1_errors       hac_pw sequential m                      py=1 r=1 
+pass       ar1_errors       hac_pw sequential dates                  py=(211,) r=(211,) 
+pass       ar1_errors       hac_pw CI m=1 break 1                    py=(149, 288, 169, 266) r=(149, 288, 169, 266) 
+pass       ar1_errors       hac_pw coef m=1                          py= r= 
+pass       ar1_errors       hac_pw SE m=1                            py= r= 
+pass       ar1_errors       hac_pw CI m=2 break 1                    py=(-6, 359, 52, 307) r=(-6, 360, 52, 308) 
+pass       ar1_errors       hac_pw CI m=2 break 2                    py=(277, 351, 285, 336) r=(277, 351, 285, 336) 
+pass       ar1_errors       hac_pw coef m=2                          py= r= 
+pass       ar1_errors       hac_pw SE m=2                            py= r= 
+convention ar1_errors       hac_pw CI m=3 break 1                    py=(-118, 268, -58, 212) r=(-118, 270, -58, 214) mbreaks upper bounds +2: rounding inside its loop over breaks
+pass       ar1_errors       hac_pw CI m=3 break 2                    py=(80, 272, 112, 246) r=(80, 273, 112, 247) 
+pass       ar1_errors       hac_pw CI m=3 break 3                    py=(277, 351, 285, 336) r=(277, 351, 285, 336) 
+pass       ar1_errors       hac_pw coef m=3                          py= r= 
+pass       ar1_errors       hac_pw SE m=3                            py= r= 
+pass       cvg              eta=0.5 phi1=0.7 phi2=0.5                py=(-11.378765106201172, -8.02624225616455, 10.29515266418457, 15.055656433105469) r=[-11.3787651062012, -8.02624225616455, 10.2951526641846, 15.0556564331055] 
+pass       cvg              eta=1 phi1=0.7 phi2=0.5                  py=(-11.378765106201172, -8.02624225616455, 5.147576332092285, 7.527828216552734) r=[-11.3787651062012, -8.02624225616455, 5.14757633209229, 7.52782821655273] 
+pass       cvg              eta=2.5 phi1=0.7 phi2=0.5                py=(-11.378765106201172, -8.02624225616455, 2.059042453765869, 3.0112266540527344) r=[-11.3787651062012, -8.02624225616455, 2.05904245376587, 3.01122665405273] 
+pass       cvg              eta=0.5 phi1=1 phi2=0.5                  py=(-11.616706848144531, -8.261442184448242, 6.52468204498291, 9.829998016357422) r=[-11.6167068481445, -8.26144218444824, 6.52468204498291, 9.82999801635742] 
+pass       cvg              eta=1 phi1=1 phi2=0.5                    py=(-11.616706848144531, -8.261442184448242, 3.262341022491455, 4.914999008178711) r=[-11.6167068481445, -8.26144218444824, 3.26234102249146, 4.91499900817871] 
+pass       cvg              eta=2.5 phi1=1 phi2=0.5                  py=(-11.616706848144531, -8.261442184448242, 1.304924488067627, 1.9659996032714844) r=[-11.6167068481445, -8.26144218444824, 1.30492448806763, 1.96599960327148] 
+pass       cvg              eta=0.5 phi1=2 phi2=0.5                  py=(-11.83938980102539, -8.482933044433594, 2.3603439331054688, 3.954648971557617) r=[-11.8393898010254, -8.48293304443359, 2.36034393310547, 3.95464897155762] 
+pass       cvg              eta=1 phi1=2 phi2=0.5                    py=(-11.83938980102539, -8.482933044433594, 1.1801719665527344, 1.9773244857788086) r=[-11.8393898010254, -8.48293304443359, 1.18017196655273, 1.97732448577881] 
+pass       cvg              eta=2.5 phi1=2 phi2=0.5                  py=(-11.83938980102539, -8.482933044433594, 0.47206878662109375, 0.7909238338470459) r=[-11.8393898010254, -8.48293304443359, 0.472068786621094, 0.790923833847046] 
+pass       cvg              eta=0.5 phi1=0.7 phi2=1                  py=(-10.50424575805664, -7.172822952270508, 22.978782653808594, 32.558441162109375) r=[-10.5042457580566, -7.17282295227051, 22.9787826538086, 32.5584411621094] 
+pass       cvg              eta=1 phi1=0.7 phi2=1                    py=(-10.50424575805664, -7.172822952270508, 11.489391326904297, 16.279220581054688) r=[-10.5042457580566, -7.17282295227051, 11.4893913269043, 16.2792205810547] 
+pass       cvg              eta=2.5 phi1=0.7 phi2=1                  py=(-10.50424575805664, -7.172822952270508, 4.595756530761719, 6.511688232421875) r=[-10.5042457580566, -7.17282295227051, 4.59575653076172, 6.51168823242188] 
+pass       cvg              eta=0.5 phi1=1 phi2=1                    py=(-11.033296585083008, -7.68733024597168, 15.37466049194336, 22.066593170166016) r=[-11.033296585083, -7.68733024597168, 15.3746604919434, 22.066593170166] 
+pass       cvg              eta=1 phi1=1 phi2=1                      py=(-11.033296585083008, -7.68733024597168, 7.68733024597168, 11.033296585083008) r=[-11.033296585083, -7.68733024597168, 7.68733024597168, 11.033296585083] 
+pass       cvg              eta=2.5 phi1=1 phi2=1                    py=(-11.033296585083008, -7.68733024597168, 3.0748844146728516, 4.413366317749023) r=[-11.033296585083, -7.68733024597168, 3.07488441467285, 4.41336631774902] 
+pass       cvg              eta=0.5 phi1=2 phi2=1                    py=(-11.616706848144531, -8.261442184448242, 6.52468204498291, 9.829998016357422) r=[-11.6167068481445, -8.26144218444824, 6.52468204498291, 9.82999801635742] 
+pass       cvg              eta=1 phi1=2 phi2=1                      py=(-11.616706848144531, -8.261442184448242, 3.262341022491455, 4.914999008178711) r=[-11.6167068481445, -8.26144218444824, 3.26234102249146, 4.91499900817871] 
+pass       cvg              eta=2.5 phi1=2 phi2=1                    py=(-11.616706848144531, -8.261442184448242, 1.304924488067627, 1.9659996032714844) r=[-11.6167068481445, -8.26144218444824, 1.30492448806763, 1.96599960327148] 
+pass       cvg              eta=0.5 phi1=0.7 phi2=3                  py=(-7.683753967285156, -4.513144493103027, 72.80826568603516, 101.57966613769531) r=[-7.68375396728516, -4.51314449310303, 72.8082656860352, 101.579666137695] 
+pass       cvg              eta=1 phi1=0.7 phi2=3                    py=(-7.683753967285156, -4.513144493103027, 36.40413284301758, 50.789833068847656) r=[-7.68375396728516, -4.51314449310303, 36.4041328430176, 50.7898330688477] 
+pass       cvg              eta=2.5 phi1=0.7 phi2=3                  py=(-7.683753967285156, -4.513144493103027, 14.561653137207031, 20.316123962402344) r=[-7.68375396728516, -4.51314449310303, 14.561653137207, 20.3161239624023] 
+pass       cvg              eta=0.5 phi1=1 phi2=3                    py=(-8.787155151367188, -5.537748336791992, 50.510406494140625, 70.648193359375) r=[-8.78715515136719, -5.53774833679199, 50.5104064941406, 70.648193359375] 
+pass       cvg              eta=1 phi1=1 phi2=3                      py=(-8.787155151367188, -5.537748336791992, 25.255203247070312, 35.3240966796875) r=[-8.78715515136719, -5.53774833679199, 25.2552032470703, 35.3240966796875] 
+pass       cvg              eta=2.5 phi1=1 phi2=3                    py=(-8.787155151367188, -5.537748336791992, 10.102033615112305, 14.129638671875) r=[-8.78715515136719, -5.53774833679199, 10.1020336151123, 14.129638671875] 
+pass       cvg              eta=0.5 phi1=2 phi2=3                    py=(-10.417461395263672, -7.088899612426758, 24.241924285888672, 34.3017578125) r=[-10.4174613952637, -7.08889961242676, 24.2419242858887, 34.3017578125] 
+pass       cvg              eta=1 phi1=2 phi2=3                      py=(-10.417461395263672, -7.088899612426758, 12.120962142944336, 17.15087890625) r=[-10.4174613952637, -7.08889961242676, 12.1209621429443, 17.15087890625] 
+pass       cvg              eta=2.5 phi1=2 phi2=3                    py=(-10.417461395263672, -7.088899612426758, 4.848361015319824, 6.860256195068359) r=[-10.4174613952637, -7.08889961242676, 4.84836101531982, 6.86025619506836] 
+summary: {'pass': 359, 'convention': 40, 'FAIL': 0}

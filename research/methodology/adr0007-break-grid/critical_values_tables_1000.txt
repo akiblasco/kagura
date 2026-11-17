@@ -1,0 +1,73 @@
+pass eps=0.05 q= 2 supF(1)    sim= 12.63 [ 12.57,  12.70] n=100000 table= 12.89 diff=-0.26
+pass eps=0.05 q= 2 supF(2)    sim= 11.53 [ 11.43,  11.66] n= 10000 table= 11.60 diff=-0.07
+pass eps=0.05 q= 2 supF(3)    sim= 10.43 [ 10.33,  10.50] n= 10000 table= 10.46 diff=-0.03
+pass eps=0.05 q= 2 supF(4)    sim=  9.69 [  9.60,   9.77] n= 10000 table=  9.71 diff=-0.02
+pass eps=0.05 q= 2 supF(5)    sim=  9.10 [  9.03,   9.16] n= 10000 table=  9.12 diff=-0.02
+pass eps=0.05 q= 2 seq(1|0)   sim= 12.63 [ 12.57,  12.70] n=100000 table= 12.89 diff=-0.26
+pass eps=0.05 q= 2 seq(2|1)   sim= 14.29 [ 14.21,  14.37] n=100000 table= 14.50 diff=-0.21
+pass eps=0.05 q= 2 seq(3|2)   sim= 15.19 [ 15.06,  15.29] n=100000 table= 15.42 diff=-0.23
+pass eps=0.05 q= 2 seq(4|3)   sim= 15.89 [ 15.74,  16.02] n=100000 table= 16.16 diff=-0.27
+pass eps=0.05 q= 2 seq(5|4)   sim= 16.34 [ 16.23,  16.52] n=100000 table= 16.61 diff=-0.27
+pass eps=0.05 q= 2 UDmax      sim= 13.17 [ 13.01,  13.34] n= 10000 table= 13.27 diff=-0.10
+pass eps=0.05 q= 2 WDmax      sim= 14.11 [ 13.95,  14.27] n= 10000 table= 14.19 diff=-0.08
+pass eps=0.05 q=10 supF(1)    sim= 28.50 [ 28.40,  28.60] n=100000 table= 28.49 diff=+0.01
+pass eps=0.05 q=10 supF(2)    sim= 26.16 [ 25.98,  26.31] n= 10000 table= 26.17 diff=-0.01
+pass eps=0.05 q=10 supF(3)    sim= 24.58 [ 24.44,  24.68] n= 10000 table= 24.59 diff=-0.01
+pass eps=0.05 q=10 supF(4)    sim= 23.44 [ 23.35,  23.57] n= 10000 table= 23.59 diff=-0.15
+pass eps=0.05 q=10 supF(5)    sim= 22.64 [ 22.57,  22.73] n= 10000 table= 22.71 diff=-0.07
+pass eps=0.05 q=10 seq(1|0)   sim= 28.50 [ 28.40,  28.60] n=100000 table= 28.49 diff=+0.01
+pass eps=0.05 q=10 seq(2|1)   sim= 30.64 [ 30.52,  30.75] n=100000 table= 30.65 diff=-0.01
+pass eps=0.05 q=10 seq(3|2)   sim= 31.88 [ 31.73,  32.04] n=100000 table= 31.90 diff=-0.02
+pass eps=0.05 q=10 seq(4|3)   sim= 32.72 [ 32.57,  32.88] n=100000 table= 32.83 diff=-0.11
+pass eps=0.05 q=10 seq(5|4)   sim= 33.37 [ 33.20,  33.53] n=100000 table= 33.57 diff=-0.20
+pass eps=0.05 q=10 UDmax      sim= 28.65 [ 28.41,  28.83] n= 10000 table= 28.75 diff=-0.10
+pass eps=0.05 q=10 WDmax      sim= 30.03 [ 29.85,  30.28] n= 10000 table= 30.16 diff=-0.13
+pass eps=0.10 q= 2 supF(1)    sim= 12.05 [ 11.99,  12.12] n=100000 table= 12.25 diff=-0.20
+pass eps=0.10 q= 2 supF(2)    sim= 10.36 [ 10.23,  10.50] n= 10000 table= 10.58 diff=-0.22
+pass eps=0.10 q= 2 supF(3)    sim=  9.17 [  9.09,   9.30] n= 10000 table=  9.29 diff=-0.12
+pass eps=0.10 q= 2 supF(4)    sim=  8.36 [  8.28,   8.42] n= 10000 table=  8.37 diff=-0.01
+pass eps=0.10 q= 2 supF(5)    sim=  7.58 [  7.50,   7.66] n= 10000 table=  7.62 diff=-0.04
+pass eps=0.10 q= 2 seq(1|0)   sim= 12.05 [ 11.99,  12.12] n=100000 table= 12.25 diff=-0.20
+pass eps=0.10 q= 2 seq(2|1)   sim= 13.70 [ 13.61,  13.80] n=100000 table= 13.83 diff=-0.13
+pass eps=0.10 q= 2 seq(3|2)   sim= 14.64 [ 14.53,  14.77] n=100000 table= 14.73 diff=-0.09
+pass eps=0.10 q= 2 seq(4|3)   sim= 15.27 [ 15.16,  15.39] n=100000 table= 15.46 diff=-0.19
+pass eps=0.10 q= 2 seq(5|4)   sim= 15.80 [ 15.64,  15.94] n=100000 table= 16.13 diff=-0.33
+pass eps=0.10 q= 2 UDmax      sim= 12.31 [ 12.15,  12.51] n= 10000 table= 12.59 diff=-0.28
+pass eps=0.10 q= 2 WDmax      sim= 13.50 [ 13.38,  13.68] n= 10000 table= 13.66 diff=-0.16
+pass eps=0.10 q=10 supF(1)    sim= 27.68 [ 27.60,  27.78] n=100000 table= 27.64 diff=+0.04
+pass eps=0.10 q=10 supF(2)    sim= 24.85 [ 24.67,  25.01] n= 10000 table= 24.87 diff=-0.02
+pass eps=0.10 q=10 supF(3)    sim= 23.07 [ 22.93,  23.21] n= 10000 table= 23.11 diff=-0.04
+pass eps=0.10 q=10 supF(4)    sim= 21.74 [ 21.63,  21.88] n= 10000 table= 21.79 diff=-0.05
+pass eps=0.10 q=10 supF(5)    sim= 20.53 [ 20.42,  20.62] n= 10000 table= 20.58 diff=-0.05
+pass eps=0.10 q=10 seq(1|0)   sim= 27.68 [ 27.60,  27.78] n=100000 table= 27.64 diff=+0.04
+pass eps=0.10 q=10 seq(2|1)   sim= 29.90 [ 29.79,  30.03] n=100000 table= 29.78 diff=+0.12
+pass eps=0.10 q=10 seq(3|2)   sim= 31.14 [ 30.98,  31.28] n=100000 table= 31.02 diff=+0.12
+pass eps=0.10 q=10 seq(4|3)   sim= 32.02 [ 31.83,  32.20] n=100000 table= 31.90 diff=+0.12
+pass eps=0.10 q=10 seq(5|4)   sim= 32.72 [ 32.50,  32.89] n=100000 table= 32.71 diff=+0.01
+pass eps=0.10 q=10 UDmax      sim= 27.86 [ 27.60,  28.12] n= 10000 table= 27.82 diff=+0.04
+pass eps=0.10 q=10 WDmax      sim= 29.44 [ 29.20,  29.70] n= 10000 table= 29.46 diff=-0.02
+pass eps=0.15 q= 2 supF(1)    sim= 11.58 [ 11.52,  11.65] n=100000 table= 11.47 diff=+0.11
+pass eps=0.15 q= 2 supF(2)    sim=  9.62 [  9.51,   9.75] n= 10000 table=  9.75 diff=-0.13
+pass eps=0.15 q= 2 supF(3)    sim=  8.18 [  8.08,   8.32] n= 10000 table=  8.36 diff=-0.18
+pass eps=0.15 q= 2 supF(4)    sim=  7.03 [  6.94,   7.13] n= 10000 table=  7.19 diff=-0.16
+pass eps=0.15 q= 2 supF(5)    sim=  5.66 [  5.60,   5.72] n= 10000 table=  5.85 diff=-0.19
+pass eps=0.15 q= 2 seq(1|0)   sim= 11.58 [ 11.52,  11.65] n=100000 table= 11.47 diff=+0.11
+pass eps=0.15 q= 2 seq(2|1)   sim= 13.24 [ 13.14,  13.33] n=100000 table= 12.95 diff=+0.29
+pass eps=0.15 q= 2 seq(3|2)   sim= 14.16 [ 14.05,  14.28] n=100000 table= 14.03 diff=+0.13
+pass eps=0.15 q= 2 seq(4|3)   sim= 14.77 [ 14.65,  14.92] n=100000 table= 14.85 diff=-0.08
+pass eps=0.15 q= 2 seq(5|4)   sim= 15.32 [ 15.19,  15.46] n=100000 table= 15.29 diff=+0.03
+pass eps=0.15 q= 2 UDmax      sim= 11.79 [ 11.57,  12.07] n= 10000 table= 11.70 diff=+0.09
+pass eps=0.15 q= 2 WDmax      sim= 13.04 [ 12.86,  13.24] n= 10000 table= 12.81 diff=+0.23
+pass eps=0.15 q=10 supF(1)    sim= 27.04 [ 26.95,  27.13] n=100000 table= 27.03 diff=+0.01
+pass eps=0.15 q=10 supF(2)    sim= 23.65 [ 23.50,  23.87] n= 10000 table= 23.80 diff=-0.15
+pass eps=0.15 q=10 supF(3)    sim= 21.49 [ 21.36,  21.61] n= 10000 table= 21.62 diff=-0.13
+pass eps=0.15 q=10 supF(4)    sim= 19.65 [ 19.53,  19.77] n= 10000 table= 19.79 diff=-0.14
+pass eps=0.15 q=10 supF(5)    sim= 17.31 [ 17.21,  17.44] n= 10000 table= 17.44 diff=-0.13
+pass eps=0.15 q=10 seq(1|0)   sim= 27.04 [ 26.95,  27.13] n=100000 table= 27.03 diff=+0.01
+pass eps=0.15 q=10 seq(2|1)   sim= 29.26 [ 29.13,  29.38] n=100000 table= 29.24 diff=+0.02
+pass eps=0.15 q=10 seq(3|2)   sim= 30.50 [ 30.38,  30.63] n=100000 table= 30.45 diff=+0.05
+pass eps=0.15 q=10 seq(4|3)   sim= 31.36 [ 31.18,  31.53] n=100000 table= 31.45 diff=-0.09
+pass eps=0.15 q=10 seq(5|4)   sim= 32.09 [ 31.88,  32.25] n=100000 table= 32.12 diff=-0.03
+pass eps=0.15 q=10 UDmax      sim= 27.13 [ 26.82,  27.45] n= 10000 table= 27.23 diff=-0.10
+pass eps=0.15 q=10 WDmax      sim= 29.00 [ 28.82,  29.20] n= 10000 table= 29.06 diff=-0.06
+summary: 72 comparisons, 0 outside 0.35

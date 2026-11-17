@@ -75,8 +75,9 @@ def test_known_two_break_slope_dgp() -> None:
     assert hits >= 16 and m2 >= 16
 
 
-def test_sup_f_one_break_equals_chow_form() -> None:
-    # For k = 1 and homoskedastic errors, Wald = (S0 - S1) / s2 with s2 = S1 / (T - 2q).
+def test_f_test_one_break_homoskedastic_equals_chow_form() -> None:
+    # robust = 0, hetvar = 0 (mbreaks pvdel): s2 = S1 / T, Wald = (S0 - S1) / s2,
+    # F = (T - 2q) / T * Wald.
     rng = np.random.default_rng(3)
     n_obs = 200
     x = rng.normal(size=n_obs)
@@ -84,8 +85,22 @@ def test_sup_f_one_break_equals_chow_form() -> None:
     y = x * np.where(np.arange(n_obs) < 100, 1.0, 1.6) + rng.normal(size=n_obs)
     parts = breaks.global_partitions(y, xm, 30, 1)
     s0, s1 = parts[0].ssr, parts[1].ssr
-    expected = (n_obs - 4) / n_obs * (s0 - s1) / (s1 / (n_obs - 4))
-    assert breaks.sup_f(y, xm, parts[1]) == pytest.approx(expected, rel=1e-10)
+    expected = (n_obs - 4) / n_obs * (s0 - s1) / (s1 / n_obs)
+    cov = breaks.Cov(robust=False, hetvar=False)
+    assert breaks.f_test(y, xm, parts[1].breaks, cov) == pytest.approx(expected, rel=1e-10)
+
+
+def test_bartlett_lrv_matches_statsmodels() -> None:
+    # mbreaks' jhatpr divides the kernel-weighted sum by n - d; S_hac_simple returns the sum.
+    from statsmodels.stats.sandwich_covariance import S_hac_simple
+
+    rng = np.random.default_rng(5)
+    n_obs = 500
+    xm = np.column_stack([np.ones(n_obs), rng.normal(size=n_obs)])
+    e = np.convolve(rng.normal(size=n_obs + 3), [1, 0.5, 0.25], "valid")[:n_obs]
+    got = breaks.lrv(xm, e, breaks.Cov(lags=6)) * (n_obs - 2)
+    ref = S_hac_simple(xm * e[:, None], nlags=6)
+    np.testing.assert_allclose(got, ref, rtol=1e-10)
 
 
 def test_month_start_grid_reproduces_eligible_ranges() -> None:
@@ -110,3 +125,91 @@ def test_month_start_grid_reproduces_eligible_ranges() -> None:
         assert str(d.iloc[ok[-1]].date()) == r["last_eligible"]
         checked += 1
     assert checked == len(rows) > 0
+
+
+def test_r_crosscheck_reference_files() -> None:
+    # ADR 0007 §9.2: compares with the committed R output; R itself is not run here.
+    path = GRID_DIR / "r-crosscheck" / "compare.py"
+    spec = importlib.util.spec_from_file_location("compare", path)
+    assert spec and spec.loader
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    rows = mod.compare()
+    status = [r["status"] for r in rows]
+    assert "FAIL" not in status
+    assert status.count("pass") == 359 and status.count("convention") == 40
+
+
+def test_limit_dp_matches_brute_force() -> None:
+    from kagura import breaksim as bs
+
+    rng = np.random.default_rng(11)
+    n_obs, h, q = 60, 9, 2
+    cand = sorted(rng.choice(np.arange(1, n_obs), size=25, replace=False).tolist())
+    rows = np.array([0, *[c for c in cand if h <= c <= n_obs - h], n_obs])
+    lam = rows / n_obs
+    valid = rows[None, :] - rows[:, None] >= h
+    p = np.concatenate(
+        [np.zeros((3, 1, q)), np.cumsum(rng.normal(size=(3, len(lam) - 1, q)), 1)], 1
+    )
+    got = bs.supf_from_paths(p, lam, valid, 2)
+    for k in (1, 2):
+        for r in range(3):
+            vals = []
+            for bs_ in itertools.combinations(range(1, len(lam) - 1), k):
+                e = [0, *bs_, len(lam) - 1]
+                if all(rows[b] - rows[a] >= h for a, b in zip(e[:-1], e[1:], strict=True)):
+                    s = sum(
+                        float(np.sum((p[r, b] - p[r, a]) ** 2)) / (lam[b] - lam[a])
+                        for a, b in zip(e[:-1], e[1:], strict=True)
+                    )
+                    vals.append((s - float(np.sum(p[r, -1] ** 2))) / k)
+            assert got[r, k - 1] == pytest.approx(max(vals), rel=1e-12)
+
+
+def test_robust_bg_equals_statsmodels_hc0_wald() -> None:
+    from kagura import breaksim as bs
+
+    rng = np.random.default_rng(2)
+    n_obs = 300
+    xm = np.column_stack([np.ones(n_obs), rng.normal(size=n_obs)])
+    e = rng.normal(size=n_obs) * (1 + np.abs(xm[:, 1]))
+    w, pv = bs.robust_bg(e, xm, lags=4)
+    lagm = np.column_stack([np.concatenate([np.zeros(i), e[:-i]]) for i in range(1, 5)])
+    fit = sm.OLS(e, np.column_stack([xm, lagm])).fit(cov_type="HC0")
+    ref = fit.wald_test(np.eye(6)[2:], scalar=True, use_f=False)
+    assert w == pytest.approx(float(ref.statistic), rel=1e-10)
+    assert pv == pytest.approx(float(ref.pvalue), rel=1e-8)
+
+
+def test_wf_bootstrap_matches_direct_computation() -> None:
+    from kagura import breaksim as bs
+
+    rng = np.random.default_rng(4)
+    n_obs, h = 120, 18
+    xm = np.column_stack([np.ones(n_obs), rng.normal(size=n_obs), rng.normal(size=n_obs)])
+    y = xm @ [0.1, 1.0, -0.5] + rng.normal(size=n_obs) * (1 + 0.5 * np.abs(xm[:, 1]))
+    cand = list(range(10, 110, 5))
+    res = bs.wf_sup_wald(y, xm, (), cand, h, reps=7, seed=9)
+
+    def ew_wald(yv: np.ndarray, c: int, meat_resid: np.ndarray | None) -> float:
+        parts = []
+        for sl in (slice(0, c), slice(c, n_obs)):
+            z, yy = xm[sl], yv[sl]
+            b = np.linalg.solve(z.T @ z, z.T @ yy)
+            u = (yy - z @ b) if meat_resid is None else meat_resid[sl]
+            qi = np.linalg.inv(z.T @ z)
+            parts.append((b, qi @ (z.T * u**2) @ z @ qi))
+        d = parts[0][0] - parts[1][0]
+        return float(d @ np.linalg.solve(parts[0][1] + parts[1][1], d))
+
+    ok = [c for c in cand if h <= c <= n_obs - h]
+    stat = max(ew_wald(y, c, None) for c in ok)
+    assert res.stat == pytest.approx(stat, rel=1e-9)
+    b0 = np.linalg.lstsq(xm, y, rcond=None)[0]
+    uhat = y - xm @ b0
+    nu = np.random.default_rng(9).choice(np.array([-1.0, 1.0]), size=(n_obs, 7))
+    for r in range(7):
+        ystar = xm @ b0 + uhat * nu[:, r]
+        ref = max(ew_wald(ystar, c, uhat) for c in ok)
+        assert res.boot[r] == pytest.approx(ref, rel=1e-9)

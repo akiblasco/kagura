@@ -1113,6 +1113,7 @@ dependencies = [
     { name = "numpy" },
     { name = "pandas" },
     { name = "pypdf" },
+    { name = "scipy" },
     { name = "statsmodels" },
 ]
 
@@ -1135,6 +1136,7 @@ requires-dist = [
     { name = "numpy", specifier = ">=2.0" },
     { name = "pandas", specifier = ">=2.2" },
     { name = "pypdf", specifier = ">=7.0.0" },
+    { name = "scipy", specifier = ">=1.18.1" },
     { name = "statsmodels", specifier = ">=0.14" },
 ]
 

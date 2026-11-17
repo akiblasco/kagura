@@ -1,21 +1,15 @@
-"""Write the ADR 0007 §9.2 synthetic fixtures and the Python results to compare with R.
+"""Write the ADR 0007 §9.2 synthetic fixtures (CSV, fixed seeds) for crosscheck.R.
 
 Designs are fixed in advance and not calibrated to real data (§9.1). Every row is a candidate,
 because `strucchange` has no grid option. Run: uv run python <this file>
 """
 
-import json
-import math
 from pathlib import Path
 
 import numpy as np
 import statsmodels.api as sm
 
-from kagura import breaks
-
 OUT = Path(__file__).parent
-EPS = 0.15
-M = 5
 
 
 def design(name: str, n_obs: int, seed: int) -> tuple[np.ndarray, np.ndarray]:
@@ -45,34 +39,12 @@ def main() -> None:
     }
     for i, name in enumerate(("two_break_slope", "hetero_regimes", "ar1_errors")):
         fixtures[name] = design(name, 400, 20261111 + i)
-    result = {}
     for name, (y, x) in fixtures.items():
-        n_obs = len(y)
-        xm = np.ones((n_obs, 1)) if x is None else np.column_stack([np.ones(n_obs), x])
-        h = math.floor(EPS * n_obs)
-        cols = "y" if x is None else "y,x"
-        rows = [
-            f"{v!r}" if x is None else f"{v!r},{w!r}"
-            for v, w in zip(y, x if x is not None else y, strict=True)
-        ]
-        (OUT / f"{name}.csv").write_text(cols + "\n" + "\n".join(rows) + "\n")
-        parts = breaks.global_partitions(y, xm, h, M)
-        result[name] = {
-            "T": n_obs,
-            "h": h,
-            "q": xm.shape[1],
-            "selected": breaks.select(parts, n_obs, xm.shape[1]),
-            "partitions": {
-                str(m): {
-                    # 1-based last row of the old regime = strucchange's breakpoint
-                    "strucchange_breaks": list(p.breaks),
-                    "ssr": p.ssr,
-                    "supF": breaks.sup_f(y, xm, p) if m else None,
-                }
-                for m, p in parts.items()
-            },
-        }
-    (OUT / "python_results.json").write_text(json.dumps(result, indent=1) + "\n")
+        data = y[:, None] if x is None else np.column_stack([y, x])
+        header = "y" if x is None else "y,x"
+        np.savetxt(
+            OUT / f"{name}.csv", data, fmt="%.17g", delimiter=",", header=header, comments=""
+        )
 
 
 if __name__ == "__main__":
