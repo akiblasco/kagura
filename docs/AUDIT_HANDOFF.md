@@ -1,7 +1,49 @@
 # KAGURA — Independent Audit Handoff (before ADR 0011 Phase A)
 
 Prepared 2026-11-17 by the implementing session, for a fresh session that has not seen its
-reasoning.
+reasoning. **Updated 2026-11-18 after ADR 0012:** see §0. Sections 1–8 are the pre-audit
+handoff as given to the auditor, with only the ADR table extended.
+
+## 0. Status after the independent audit and ADR 0012 (2026-11-18)
+
+- **Audit (2026-11-17):** CONDITIONAL PASS. The report itself is not reproduced or rewritten
+  here.
+- **ADR 0012:** frozen 2026-11-18.
+- **Phase A:** not yet run. No historical break statistic has been computed.
+
+| Audit finding | Kind | Resolution |
+|---|---|---|
+| H1: robust Bai interval `phi2s` divided by Δ'Q₁Δ (inherited from `mbreaks`) | **Fixed defect** | Δ'Ω₂Δ/Δ'Q₂Δ (`breaks.break_intervals`). Derivation, independent limit-simulation tests at η = 0.25, 1, 4, and a coverage study on the Phase A grids (ADR 0012 §1–§3). |
+| M1: R comparison ±1-row tolerance; described as more than fidelity | **Fixed** | Exact bounds; every difference reproduced by a named convention (309 pass / 90 convention / 0 FAIL); described as implementation fidelity (ADR 0012 §4). |
+| M2: interval validation did not match Phase A | **Fixed** (validation added) | `adr0012-bai-interval/coverage.txt`, month-start grids, η ≠ 1. Coverage 80.0–97.2 % for the corrected method: not calibrated. |
+| M3: FX/yield intraday timing varies by era | Remaining limitation | ADR 0012 L19. State it beside every break date; V1 is the check. |
+| M4: Phase C multiplicity | Remaining limitation | ADR 0012 L20. Freeze the headline cell and m before Phase C. |
+| L1: Phase A memory | **Fixed** | 4 workers. |
+| L2: blocklist guard | **Fixed** | Explicit `ALLOWED` columns, with a test that the list contains no withheld-statistic name. |
+| L3: no h > q check in `global_partitions` | Not changed | Cannot occur with real h. |
+| L4: New York-afternoon MOF interventions one row early | Remaining limitation | ADR 0012 L21; flagged `fx_row_uncertain`. |
+| L5: robustness wording in `README.md` / H1a report | Not changed | Open documentation item. |
+| L6: monthly month-end carried JGB | Not changed | Deliberate (ADR 0006 §9.1). |
+| Not audited: H1b re-run, restricted BOJ data, critical-value simulator internals, live R re-run | Remaining limitation | ADR 0012 L22. |
+
+**Still failed or unresolved** (unchanged):
+- ADR 0007 §9.1 critical-value check: FAILED (ADR 0011 §1).
+- q = 2 seq(2|1) discrepancy (ADR 0011 §4).
+- BG power and non-MDS bootstrap designs D1/D2.
+
+**Withheld from Phase A** (ADR 0011 §3–§5):
+- sup F(k), UDmax, WDmax;
+- sequential sup F(l + 1 | l) and sequential break counts;
+- the WF bootstrap and any "approximately tested" or "bootstrap-supported" label;
+- the Phase C event comparison.
+
+Phase A reports descriptive estimates and BIC/LWZ model selection only. Its Bai intervals are
+nominal; coverage is not established.
+
+**Phase A gate:**
+- the five ADR 0011 §5 hashes;
+- `comparison_adr0012.txt` at its ADR 0012 §7 hash, with 0 FAIL;
+- the frozen data checksums.
 
 - **No historical structural-break estimate has been computed.** Phase A is not yet run.
 - **Treat everything below as claims to verify**, not as established.
@@ -19,6 +61,7 @@ reasoning.
 | 0009 | Official policy-event dataset (BOJ, Fed, MOF) | Frozen 2026-11-06 |
 | 0010 | Policy-event collection clarifications (Tokyo bank calendar; 74 MOF episodes) | Accepted 2026-11-11 |
 | 0011 | ADR 0007 validation resolution; Phase A (descriptive) authorised | Frozen 2026-11-17 |
+| 0012 | Bai interval correction (`phi2s`); audit resolution; amended Phase A gate | Frozen 2026-11-18 |
 
 ## 2. Research question and frozen estimands
 
