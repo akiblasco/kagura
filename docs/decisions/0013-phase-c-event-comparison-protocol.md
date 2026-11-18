@@ -1,6 +1,9 @@
 # ADR 0013: Phase C event-comparison protocol
 
-Status: PROPOSED, 2026-11-18. Not frozen. Not executed.
+Status: FROZEN, 2026-11-18. Approved by the reviewer 2026-11-18. Not yet executed.
+
+Changing this protocol requires a new ADR written before Phase C is run. Headline dates, classes,
+windows and the reading rule may not change after event data are compared with breaks.
 
 ## Context
 
@@ -100,16 +103,21 @@ The effective number of independent comparisons is therefore well below 24, and 
   (HC1, HC2, HC3; C0…C5; all then same_day), including empty, "not covered" and "pending"
   cells.
 - A pre-stated reading rule applies:
-  - Only the distance statistic has a percentile. A distance is described as "unusually close
-    relative to the chance baseline" only if its percentile is ≤ 5 %, which is one-sided,
-    closeness only.
-  - Under independence, about 24 × 0.05 = 1.2 of the 24 distance cells would reach that by
-    chance. Because the cells are nested, the count is clustered rather than reduced: a single
-    near event can mark C0, C1 or C2, and both observability versions, at once.
+  - **The 5 % threshold is a descriptive ranking benchmark.** It is not a p-value, not a
+    statistical-significance threshold, and not a valid null-hypothesis test. The baseline
+    places dates at random over covered candidates, whereas τ̂ is estimated (see Risks).
+  - Only the distance statistic has a percentile. When the percentile is ≤ 5 % (one-sided,
+    closeness only), the only permitted wording is: "within the lowest 5 % of the descriptive
+    random-date baseline". Proximity is never called "unusual", "significant" or "unlikely by
+    chance".
+  - If the 24 distance cells were independent, about 24 × 0.05 = 1.2 of them would fall within
+    the lowest 5 % by construction. They are not independent. Because the cells are nested, the
+    count comes in clusters: a single near event can mark C0, C1 or C2, and both observability
+    versions, at once.
   - Any such description therefore names the event rows behind it, so that one event counted
     several times is visible.
-  - The interval statistic is reported as count against baseline share, with no "unusual"
-    label.
+  - The interval statistic is reported as count against baseline share, with no threshold and
+    no label.
   - The rule is descriptive language, not inference.
 - S2 is summarised only as a distribution, the share of breaks with any class-c event in the
   interval against its baseline. It is never as a list of matches.
@@ -134,7 +142,12 @@ ADR 0009 §7.4 applies verbatim, including the banned verbs.
   make them informative.
 - **Estimated dates.** τ̂ is chosen to minimise SSR, and large moves around events can pull it
   towards them. The baselines treat τ̂ as if it were placed at random, so proximity is biased
-  towards looking unusual.
+  towards ranking close.
+- **Timing uncertainty.** FX is the New York noon fix, yields close around 15:30, and FOMC
+  statements arrive at 14:00–14:15 ET (ADR 0012 L19). MOF New York-afternoon operations fall one
+  row early (L21). Row-level distances can therefore be off by one row.
+- **Incomplete coverage.** C1 is pending (L22) and C5 coverage depends on collection, so some
+  headline cells may be "pending" or "not covered". They are reported as such.
 - The baselines ignore that τ̂ is estimated. With intervals of about one and three years, many
   events will fall inside by construction, especially C0 at 16–22 releases a year.
 - HC2's interval is wide (27–35 % of the eligible range), so its proximity statistics will be
@@ -143,6 +156,6 @@ ADR 0009 §7.4 applies verbatim, including the banned verbs.
 
 ## Order of operations
 
-1. Reviewer decision on this ADR, then freeze.
+1. Reviewer decision on this ADR, then freeze. Done 2026-11-18.
 2. Confirm `EVENTS_SHA256` and the C1 coding-pass status.
 3. Run Phase C once and report as specified.
