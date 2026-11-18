@@ -1,0 +1,7 @@
+spec,sample,eps,p,label,tier,daily_date,daily_ssr,month_date,month_ssr
+primary,full,0.15,0,"exploratory (ADR 0007), Phase A (ADR 0011)",descriptive estimate,2004-04-02,4160.020965608519,2004-04-01,4160.266591141459
+primary,full,0.1,0,"exploratory (ADR 0007), Phase A (ADR 0011)",descriptive estimate,2004-04-02,4160.020965608519,2004-04-01,4160.266591141459
+primary,full,0.05,0,"exploratory (ADR 0007), Phase A (ADR 0011)",descriptive estimate,2004-04-02,4160.020965608519,2004-04-01,4160.266591141459
+primary,recent,0.15,0,"exploratory (ADR 0007), Phase A (ADR 0011)",descriptive estimate,2017-09-14,924.7090535231545,2017-10-02,924.8465498062676
+primary,recent,0.1,0,"exploratory (ADR 0007), Phase A (ADR 0011)",descriptive estimate,2017-09-14,924.7090535231545,2017-10-02,924.8465498062676
+primary,recent,0.05,0,"exploratory (ADR 0007), Phase A (ADR 0011)",descriptive estimate,2017-09-14,924.7090535231545,2017-10-02,924.8465498062676
