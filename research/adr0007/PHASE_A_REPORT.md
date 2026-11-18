@@ -116,24 +116,26 @@ to 2026-09. The fall is 3.76, or −47 %.
   range.
 - The daily grid puts the date at 2017-09-14.
 
-**How much better is 2017-10 than 2022-01?** An ad hoc check, outside the committed outputs (code
-in Appendix A), compared the fit of a single break at several fixed dates in the primary
-recent cell, measured as Δlog(SSR/T) against m = 0.
+**Exploratory post hoc sensitivity: a break forced at 2022-01.** This is not a hypothesis test,
+and it was chosen after the results were seen. It uses the same cell (primary, recent, ε = 15 %),
+the same model, the same 115 eligible month-start candidates and the same objective (SSR) as
+Phase A. The code is in Appendix A; its output is not committed.
 
-| Single break at | Δlog(SSR/T) | ΔBIC |
-|---|---|---|
-| 2017-10-02 (selected) | −0.0128 | −0.0049 |
-| 2021-12-01 | −0.0092 | −0.0013 |
-| 2022-01-03 | −0.0090 | −0.0011 |
-| 2019-11-01 | −0.0066 | +0.0013 |
-| 2023-03-01 | −0.0065 | +0.0013 |
+| Single break at | SSR | Δlog SSR vs m = 0 | ΔBIC vs m = 0 | Rank of 115 |
+|---|---|---|---|---|
+| 2017-10-02 (selected) | 924.847 | −0.01275 | −0.00486 | 1 |
+| 2021-12-01 | 928.131 | −0.00920 | −0.00131 | 30 |
+| 2022-01-05 | 928.313 | −0.00901 | −0.00112 | 31 |
 
-ΔBIC is computed with the 3-parameter penalty of 0.0079.
-
-- BIC would also prefer a 2022-01 break to no break, by a smaller margin. LWZ, whose penalty is
-  0.0243, prefers no break over either date.
-- The SSR profile is flat. 2022 is a credible runner-up rather than an excluded date.
-- That flatness is consistent with the wide 2017 interval, whose upper end is 2020-07.
+- The profile minimum reproduces the `partitions.csv` m = 1 SSR exactly. Penalties per break,
+  implied by `partitions.csv`, are 0.00789 (BIC) and 0.02429 (LWZ).
+- A 2022-01 break obtains **71 %** of the SSR reduction that the best single break obtains. Its
+  SSR is 3.47 (0.37 %) higher than at 2017-10.
+- BIC would still prefer a 2022-01 break to no break, by a smaller margin. LWZ prefers no break
+  to any single date.
+- The profile is not flat near the optimum. All 12 best candidates lie in 2017-03 .. 2018-03,
+  and 2022-01 ranks 31st. **2022-01 is a clearly inferior single-break location, though not one
+  that fits worse than no break under BIC.**
 
 **Exploratory m = 4 partition** (ε = 15 %, not selected by either criterion):
 
@@ -150,18 +152,25 @@ result.
 
 ## 5. Why the fixed-era H1a contrast differs from estimated regimes
 
-An OLS slope over a pooled period is approximately a variance-weighted average of the slopes in
-its sub-periods. The weight of each sub-period is rows × var(Δdiff).
+For a regression with an intercept, the pooled OLS slope decomposes exactly into within-group
+slopes plus a between-group term:
 
-The H1a "old" era, 2013–21, contains two regimes with almost equal weight:
+b_pooled = [Σ_g S_xx,g · b_g + Σ_g n_g (x̄_g − x̄)(ȳ_g − ȳ)] / [Σ_g S_xx,g + Σ_g n_g (x̄_g − x̄)²]
 
-| Sub-period | Rows | sd(Δdiff) | Slope |
-|---|---|---|---|
-| 2013-01 .. 2017-09 | 1,063 | 0.030 | 7.97 |
-| 2017-10 .. 2021-12 | 944 | 0.033 | 5.03 |
+Here S_xx,g is the within-group sum of squared deviations of Δdiff.
 
-The weighted average is (1063·0.030²·7.97 + 944·0.033²·5.03) / (1063·0.030² + 944·0.033²) ≈
-**6.44**. That reproduces the H1a reference slope.
+Applied to the H1a "old" era (2013-01-07 .. 2021-12-30, 2,007 rows) split at the Phase A date:
+
+| Term | Rows | Slope | Weight | Contribution |
+|---|---|---|---|---|
+| 2013-01 .. 2017-09 (within) | 1,063 | 7.9737 | 0.4780 | 3.8116 |
+| 2017-10 .. 2021-12 (within) | 944 | 5.0326 | 0.5209 | 2.6216 |
+| Between-group means | — | — | 0.0011 | 0.0114 |
+| **Pooled** | 2,007 | **6.4446** | 1 | 6.4446 |
+
+The sum reproduces the pooled slope to 10⁻⁶, and the pooled slope matches the H1a reference
+slope of 6.44. The between-group term is negligible because the mean daily changes barely differ
+between the two periods.
 
 So the H1a contrast of 6.44 against 4.05 compares 2022– with an average over 2013–21:
 
@@ -244,8 +253,13 @@ Source: `figures/04_rate_volatility.csv`, figure 4. The slope equals corr × sd(
 
 On the correlation measure, the 2022– period shows the **closest** daily co-movement in the
 sample. ADR 0006 had already noted, before H1a was run, that the correlation was higher in
-2022– (0.44 against 0.37). Which measure answers "decoupling" is an economic choice the project has not yet made
-explicitly.
+2022– (0.44 against 0.37).
+
+**The estimand is unchanged.** The H1a slope, % USD/JPY per pp, remains the primary short-run
+sensitivity measure. Correlation and relative volatility are reported only as complementary
+descriptive measures that help read the slope. They are not alternative definitions of
+decoupling chosen after seeing these results. Long-run (level) decoupling remains H1b's
+separate question.
 
 **2. Composition of shocks.** When the differential barely moves, the few days it does move are
 dominated by specific news, such as US data and FOMC days. The slope then describes FX's
@@ -280,8 +294,9 @@ addressed here.
 
 - That any break exists, or how many. There are no tests; BIC and LWZ express preferences.
 - That 2017-10 or 2004-04 is the date of an economic change. The intervals are wide and nominal.
-- That nothing changed around 2022. A 2022-01 split fits almost as well as 2017-10, and the
-  exploratory m = 4 partition has a step at 2021-12.
+- That nothing changed around 2022. A forced 2022-01 split still captures 71 % of the best
+  single-break SSR reduction, though it ranks 31st of 115. The exploratory m = 4 partition has
+  a step at 2021-12.
 - Any cause. No event comparison has been run (Phase C), and estimated dates near policy events
   would not imply causation (ADR 0009 §7.4).
 - Anything about long-run level decoupling (H1b).
@@ -306,17 +321,41 @@ uv run python research/adr0007/run_breaks.py
 uv run python research/adr0007/phase_a_figures.py
 ```
 
-## Appendix A: fixed-date split check (§4), not committed as output
+## Appendix A: post hoc checks (§4, §5), not committed as output
 
 ```python
 import sys, numpy as np, pandas as pd
+
 sys.path.insert(0, "research/adr0007")
 from data import cell
-c = cell("primary", "recent", 0.15); d = pd.Series(c.dates.to_numpy()); T = len(c.y)
-def ssr(X, y): return float(((y - X @ np.linalg.lstsq(X, y, rcond=None)[0]) ** 2).sum())
+
+c = cell("primary", "recent", 0.15)
+T = len(c.y)
+
+
+def ssr(X, y):
+    return float(((y - X @ np.linalg.lstsq(X, y, rcond=None)[0]) ** 2).sum())
+
+
+# §4: single-break SSR profile over the same eligible month-start candidates
 s0 = ssr(c.xm, c.y)
-for k in ("2017-10-02", "2019-11-01", "2021-12-01", "2022-01-03", "2023-03-01"):
-    m = (d < k).to_numpy()
-    s = ssr(c.xm[m], c.y[m]) + ssr(c.xm[~m], c.y[~m])
-    print(k, round(np.log(s / T) - np.log(s0 / T), 5))
+prof = pd.DataFrame(
+    [
+        (c.dates.iloc[k].date(), ssr(c.xm[:k], c.y[:k]) + ssr(c.xm[k:], c.y[k:]))
+        for k in c.month_grid
+        if c.h <= k <= T - c.h
+    ],
+    columns=["date", "ssr"],
+)
+prof["rank"] = prof.ssr.rank().astype(int)
+print(prof.sort_values("ssr").head(31))
+# §5: exact pooled-OLS decomposition of the 2013-21 slope
+d = pd.DataFrame({"date": c.dates.to_numpy(), "y": c.y, "x": c.xm[:, 1]})
+P = d[d.date <= "2021-12-31"]
+g = [P[P.date < "2017-10-02"], P[P.date >= "2017-10-02"]]
+sxx = [((s.x - s.x.mean()) ** 2).sum() for s in g]
+sxy = [((s.x - s.x.mean()) * (s.y - s.y.mean())).sum() for s in g]
+bxx = sum(len(s) * (s.x.mean() - P.x.mean()) ** 2 for s in g)
+bxy = sum(len(s) * (s.x.mean() - P.x.mean()) * (s.y.mean() - P.y.mean()) for s in g)
+print((sum(sxy) + bxy) / (sum(sxx) + bxx))  # = pooled slope
 ```

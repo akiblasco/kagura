@@ -63,8 +63,10 @@ ADR 0009 §3.8 applies unchanged: C0–C5, with no class added, merged, split or
 - **Coverage** follows ADR 0009 §4 and §7.2: statistics outside coverage are "not covered",
   never zero.
 - **Class by headline:**
-  - HC1 (2003–04) lies inside C0, C1 (BOJ from 1998-04 rules), C2, C3, C4 and C5 coverage.
-  - HC2 (2017–20) lies inside every class's coverage.
+  - HC1 (2003–04) and HC2 (2017–20) lie inside the documented coverage of C0, C1 (post-1998-04
+    rules), C2, C3 and C4.
+  - C5 coverage is "confirmed at collection" (ADR 0009 §2), so it is taken from the manifest at
+    run time, not assumed here.
 - **BOJ split:** BOJ results are split at 1998-04 (§7.3). HC1 and HC2 are both after the split.
 - **C1 status:** C1 is used only after the ADR 0010 §3a second BOJ coding pass is complete
   (ADR 0012 L22). Until then, C1 is reported as "pending".
@@ -75,18 +77,39 @@ ADR 0009 §3.8 applies unchanged: C0–C5, with no class added, merged, split or
 
 ### 4. Multiple comparisons
 
-The headline family is HC1 and HC2 × 6 classes × 2 observability versions, which gives at most
-24 comparisons. The interval statistic and the distance statistic count separately.
+**Family size.** The headline family has 24 cells: HC1 and HC2, × 6 classes, × 2 observability
+versions. Each cell carries two statistics, so there are 48 values:
+
+- the interval count against its baseline share (ADR 0009 §7.2 items 1 and 3);
+- the nearest-event distance against its baseline percentile (items 2 and 4).
+
+HC3 adds one fixed row with no statistics. Cells that are "not covered" or "pending" stay in the
+table.
+
+**The cells are strongly dependent:**
+
+- C0 contains every C1 and C2 release.
+- `same_day` releases are a subset of all releases.
+- HC1 and HC2 share no events, but they share one estimation method.
+
+The effective number of independent comparisons is therefore well below 24, and unknown.
 
 - **ADR 0009 §7.2 baselines are descriptive, not p-values.** No significance threshold is
   applied, and no adjustment is reported as if it were a test.
-- To prevent cherry-picking, **all 24 headline cells are reported in one table in fixed order**
-  (HC1 then HC2; C0…C5; all then same_day), including empty and "not covered" cells.
+- To prevent cherry-picking, **all headline cells are reported in one table in fixed order**
+  (HC1, HC2, HC3; C0…C5; all then same_day), including empty, "not covered" and "pending"
+  cells.
 - A pre-stated reading rule applies:
-  - A proximity is described as "unusual relative to the chance baseline" only if its baseline
-    percentile is ≤ 5 % or ≥ 95 %.
-  - It is then accompanied by the count of how many of the 24 cells would reach that by chance:
-    about 1.2 if they were independent, which they are not.
+  - Only the distance statistic has a percentile. A distance is described as "unusually close
+    relative to the chance baseline" only if its percentile is ≤ 5 %, which is one-sided,
+    closeness only.
+  - Under independence, about 24 × 0.05 = 1.2 of the 24 distance cells would reach that by
+    chance. Because the cells are nested, the count is clustered rather than reduced: a single
+    near event can mark C0, C1 or C2, and both observability versions, at once.
+  - Any such description therefore names the event rows behind it, so that one event counted
+    several times is visible.
+  - The interval statistic is reported as count against baseline share, with no "unusual"
+    label.
   - The rule is descriptive language, not inference.
 - S2 is summarised only as a distribution, the share of breaks with any class-c event in the
   interval against its baseline. It is never as a list of matches.
@@ -105,6 +128,13 @@ ADR 0009 §7.4 applies verbatim, including the banned verbs.
 
 - The headline set was chosen after Phase A results were seen. The rule-based choice limits but
   does not remove that.
+- **Prior knowledge of history.** The analysts know the event record, for example that large MOF
+  operations ran in 2003–04. A proximity that was predictable before Phase C cannot count as a
+  finding. The fixed table and the fixed language limit how such cases are presented; they do not
+  make them informative.
+- **Estimated dates.** τ̂ is chosen to minimise SSR, and large moves around events can pull it
+  towards them. The baselines treat τ̂ as if it were placed at random, so proximity is biased
+  towards looking unusual.
 - The baselines ignore that τ̂ is estimated. With intervals of about one and three years, many
   events will fall inside by construction, especially C0 at 16–22 releases a year.
 - HC2's interval is wide (27–35 % of the eligible range), so its proximity statistics will be
