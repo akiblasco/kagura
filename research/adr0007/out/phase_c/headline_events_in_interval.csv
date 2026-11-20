@@ -1,0 +1,72 @@
+id,class,release_id,institution,row_date,rows_from_break,same_day,by_decision,uncertain,action
+HC1,C0,FOMC-20030812-1,FOMC,2003-08-12,-142,True,False,True,funds target unchanged
+HC1,C0,FOMC-20030915-1,FOMC,2003-09-16,-119,False,True,True,funds target unchanged
+HC1,C0,FOMC-20030916-1,FOMC,2003-09-16,-119,True,False,True,funds target unchanged
+HC1,C0,FOMC-20031028-1,FOMC,2003-10-28,-93,True,False,True,funds target unchanged
+HC1,C0,FOMC-20031209-1,FOMC,2003-12-09,-69,True,False,True,funds target unchanged
+HC1,C0,FOMC-20040128-1,FOMC,2004-01-28,-43,True,False,True,funds target unchanged
+HC1,C0,FOMC-20040316-1,FOMC,2004-03-16,-12,True,False,True,funds target unchanged
+HC1,C0,FOMC-20040504-1,FOMC,2004-05-04,18,True,False,True,funds target unchanged
+HC1,C0,FOMC-20040630-1,FOMC,2004-06-30,53,True,False,True,funds target +25 bp to 1.25 (Board table 2004-06-30)
+HC1,C2,FOMC-20040630-1,FOMC,2004-06-30,53,True,False,True,funds target +25 bp to 1.25 (Board table 2004-06-30)
+HC1,C3,MOF-EP060,MOF,2003-08-29,-129,False,True,True,intervention: JPY sold
+HC1,C3,MOF-EP061,MOF,2003-09-30,-112,False,True,True,intervention: JPY sold
+HC1,C3,MOF-EP062,MOF,2003-10-28,-93,False,True,True,intervention: JPY sold
+HC1,C3,MOF-EP063,MOF,2003-11-10,-86,False,True,True,intervention: JPY sold
+HC1,C3,MOF-EP064,MOF,2003-12-08,-70,False,True,True,intervention: JPY sold
+HC1,C3,MOF-EP065,MOF,2003-12-26,-59,False,True,True,intervention: JPY sold
+HC1,C5,FRB-20040630-1,FRB,2004-06-30,53,True,False,True,Increase in the primary credit rate from 2 percent to 2-1/4 percent.
+HC2,C0,FOMC-20170315-1,FOMC,2017-03-16,-125,True,False,False,funds target +25 bp to 0.75-1.00 (Board table 2017-03-16)
+HC2,C0,FOMC-20170503-1,FOMC,2017-05-04,-95,True,False,False,funds target unchanged
+HC2,C0,FOMC-20170614-1,FOMC,2017-06-15,-69,True,False,False,funds target +25 bp to 1.00-1.25 (Board table 2017-06-15)
+HC2,C0,FOMC-20170726-1,FOMC,2017-07-27,-42,True,False,False,funds target unchanged
+HC2,C0,FOMC-20170920-1,FOMC,2017-09-21,-7,True,False,False,funds target unchanged
+HC2,C0,FOMC-20171101-1,FOMC,2017-11-02,22,True,False,False,funds target unchanged
+HC2,C0,FOMC-20171213-1,FOMC,2017-12-14,48,True,False,False,funds target +25 bp to 1.25-1.50 (Board table 2017-12-14)
+HC2,C0,FOMC-20180131-1,FOMC,2018-02-01,75,True,False,False,funds target unchanged
+HC2,C0,FOMC-20180321-1,FOMC,2018-03-22,106,True,False,False,funds target +25 bp to 1.50-1.75 (Board table 2018-03-22)
+HC2,C0,FOMC-20180502-1,FOMC,2018-05-03,131,True,False,False,funds target unchanged
+HC2,C0,FOMC-20180613-1,FOMC,2018-06-14,157,True,False,False,funds target +25 bp to 1.75-2.00 (Board table 2018-06-14)
+HC2,C0,FOMC-20180801-1,FOMC,2018-08-02,189,True,False,False,funds target unchanged
+HC2,C0,FOMC-20180926-1,FOMC,2018-09-27,224,True,False,False,funds target +25 bp to 2.00-2.25 (Board table 2018-09-27)
+HC2,C0,FOMC-20181108-1,FOMC,2018-11-09,254,True,False,False,funds target unchanged
+HC2,C0,FOMC-20181219-1,FOMC,2018-12-20,278,True,False,False,funds target +25 bp to 2.25-2.50 (Board table 2018-12-20)
+HC2,C0,FOMC-20190130-1,FOMC,2019-01-31,299,True,False,False,funds target unchanged
+HC2,C0,FOMC-20190320-1,FOMC,2019-03-21,330,True,False,False,funds target unchanged
+HC2,C0,FOMC-20190501-1,FOMC,2019-05-02,353,True,False,False,funds target unchanged
+HC2,C0,FOMC-20190619-1,FOMC,2019-06-20,383,True,False,False,funds target unchanged
+HC2,C0,FOMC-20190731-1,FOMC,2019-08-01,410,True,False,False,funds target -25 bp to 2.00-2.25 (Board table 2019-08-01)
+HC2,C0,FOMC-20190918-1,FOMC,2019-09-19,440,True,False,False,funds target -25 bp to 1.75-2.00 (Board table 2019-09-19)
+HC2,C0,FOMC-20191004-1,FOMC,2019-10-11,454,True,False,False,funds target unchanged
+HC2,C0,FOMC-20191030-1,FOMC,2019-10-31,465,True,False,False,funds target -25 bp to 1.50-1.75 (Board table 2019-10-31)
+HC2,C0,FOMC-20191211-1,FOMC,2019-12-12,491,True,False,False,funds target unchanged
+HC2,C0,FOMC-20200129-1,FOMC,2020-01-30,517,True,False,False,funds target unchanged
+HC2,C0,FOMC-20200302-1,FOMC,2020-03-03,535,True,False,False,funds target -50 bp to 1.00-1.25 (Board table 2020-03-04)
+HC2,C0,FOMC-20200315-1,FOMC,2020-03-16,544,True,False,False,funds target -100 bp to 0-0.25 (Board table 2020-03-16)
+HC2,C0,FOMC-20200323-1,FOMC,2020-03-23,548,True,False,False,funds target unchanged
+HC2,C0,FOMC-20200429-1,FOMC,2020-04-30,572,True,False,False,funds target unchanged
+HC2,C0,FOMC-20200610-1,FOMC,2020-06-11,596,True,False,False,funds target unchanged
+HC2,C2,FOMC-20170315-1,FOMC,2017-03-16,-125,True,False,False,funds target +25 bp to 0.75-1.00 (Board table 2017-03-16)
+HC2,C2,FOMC-20170614-1,FOMC,2017-06-15,-69,True,False,False,funds target +25 bp to 1.00-1.25 (Board table 2017-06-15)
+HC2,C2,FOMC-20171213-1,FOMC,2017-12-14,48,True,False,False,funds target +25 bp to 1.25-1.50 (Board table 2017-12-14)
+HC2,C2,FOMC-20180321-1,FOMC,2018-03-22,106,True,False,False,funds target +25 bp to 1.50-1.75 (Board table 2018-03-22)
+HC2,C2,FOMC-20180613-1,FOMC,2018-06-14,157,True,False,False,funds target +25 bp to 1.75-2.00 (Board table 2018-06-14)
+HC2,C2,FOMC-20180926-1,FOMC,2018-09-27,224,True,False,False,funds target +25 bp to 2.00-2.25 (Board table 2018-09-27)
+HC2,C2,FOMC-20181219-1,FOMC,2018-12-20,278,True,False,False,funds target +25 bp to 2.25-2.50 (Board table 2018-12-20)
+HC2,C2,FOMC-20190731-1,FOMC,2019-08-01,410,True,False,False,funds target -25 bp to 2.00-2.25 (Board table 2019-08-01)
+HC2,C2,FOMC-20190918-1,FOMC,2019-09-19,440,True,False,False,funds target -25 bp to 1.75-2.00 (Board table 2019-09-19)
+HC2,C2,FOMC-20191030-1,FOMC,2019-10-31,465,True,False,False,funds target -25 bp to 1.50-1.75 (Board table 2019-10-31)
+HC2,C2,FOMC-20200302-1,FOMC,2020-03-03,535,True,False,False,funds target -50 bp to 1.00-1.25 (Board table 2020-03-04)
+HC2,C2,FOMC-20200315-1,FOMC,2020-03-16,544,True,False,False,funds target -100 bp to 0-0.25 (Board table 2020-03-16)
+HC2,C5,FRB-20170315-1,FRB,2017-03-16,-125,True,False,False,Increase in the interest rate on reserve balances and in the primary credit rate; renewal of secondary and seasonal cred
+HC2,C5,FRB-20170614-1,FRB,2017-06-15,-69,True,False,False,Increase in the interest rate on reserve balances and in the primary credit rate; renewal of secondary and seasonal cred
+HC2,C5,FRB-20171213-1,FRB,2017-12-14,48,True,False,False,Increase in the interest rate on reserve balances and in the primary credit rate; renewal of secondary and seasonal cred
+HC2,C5,FRB-20180321-1,FRB,2018-03-22,106,True,False,False,Increase in the interest rate on reserve balances and in the primary credit rate; renewal of secondary and seasonal cred
+HC2,C5,FRB-20180613-1,FRB,2018-06-14,157,True,False,False,Increase in the interest rate on reserve balances and in the primary credit rate; renewal of secondary and seasonal cred
+HC2,C5,FRB-20180926-1,FRB,2018-09-27,224,True,False,False,Increase in the interest rate on reserve balances and in the primary credit rate; renewal of secondary and seasonal cred
+HC2,C5,FRB-20181219-1,FRB,2018-12-20,278,True,False,False,Increase in the interest rate on reserve balances and in the primary credit rate; renewal of secondary and seasonal cred
+HC2,C5,FRB-20190731-1,FRB,2019-08-01,410,True,False,False,Decrease in the interest rate on reserve balances and in the primary credit rate; renewal of secondary and seasonal cred
+HC2,C5,FRB-20190918-1,FRB,2019-09-19,440,True,False,False,Decrease in the interest rate on reserve balances and in the primary credit rate; renewal of secondary and seasonal cred
+HC2,C5,FRB-20191030-1,FRB,2019-10-31,465,True,False,False,Decrease in the interest rate on reserve balances and in the primary credit rate; renewal of the secondary and seasonal 
+HC2,C5,FRB-20200303-1,FRB,2020-03-03,535,True,False,False,Decrease in the interest rate on required and excess reserve balances and in the primary credit rate; renewal of seconda
+HC2,C5,FRB-20200315-1,FRB,2020-03-16,544,True,False,False,Decrease in the interest rate on required and excess reserve balances and in the primary credit rate; renewal of seconda

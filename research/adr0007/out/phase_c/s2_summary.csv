@@ -1,0 +1,9 @@
+class,observability,n_breaks,share_with_event_in_interval,mean_baseline_interval_share,share_within_lowest_5pct,median_distance_percentile,status,note
+C0,all,,,,,,computed; withheld from public output: BOJ-derived (ADR 0010 §1),"descriptive; baseline percentile is a ranking against random dates, not a p-value or test; proximity does not imply causation (ADR 0009 §7.4, ADR 0013 §4)"
+C0,same_day,,,,,,computed; withheld from public output: BOJ-derived (ADR 0010 §1),"descriptive; baseline percentile is a ranking against random dates, not a p-value or test; proximity does not imply causation (ADR 0009 §7.4, ADR 0013 §4)"
+C2,all,397,0.94,0.897,0.02,56.6,computed,"descriptive; baseline percentile is a ranking against random dates, not a p-value or test; proximity does not imply causation (ADR 0009 §7.4, ADR 0013 §4)"
+C2,same_day,397,0.914,0.884,0.02,54.0,computed,"descriptive; baseline percentile is a ranking against random dates, not a p-value or test; proximity does not imply causation (ADR 0009 §7.4, ADR 0013 §4)"
+C3,all,384,0.5,0.507,0.01,58.3,computed,"descriptive; baseline percentile is a ranking against random dates, not a p-value or test; proximity does not imply causation (ADR 0009 §7.4, ADR 0013 §4)"
+C4,all,448,0.607,0.612,0.025,50.9,computed,"descriptive; baseline percentile is a ranking against random dates, not a p-value or test; proximity does not imply causation (ADR 0009 §7.4, ADR 0013 §4)"
+C5,all,338,0.929,0.873,0.033,55.4,computed,"descriptive; baseline percentile is a ranking against random dates, not a p-value or test; proximity does not imply causation (ADR 0009 §7.4, ADR 0013 §4)"
+C5,same_day,338,0.769,0.824,0.033,51.9,computed,"descriptive; baseline percentile is a ranking against random dates, not a p-value or test; proximity does not imply causation (ADR 0009 §7.4, ADR 0013 §4)"
