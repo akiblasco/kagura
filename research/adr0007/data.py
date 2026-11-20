@@ -104,7 +104,9 @@ def cell(spec: str, sample: str, eps: float, p: int = 0) -> Cell:
 
 def _check(c: Cell, data: str, maturity: str, timing: str) -> None:
     grid_name = "month-start" if data == "daily" else "month"
-    for r in csv.DictReader(GRID.open()):
+    with GRID.open() as f:
+        rows = list(csv.DictReader(f))
+    for r in rows:
         if (
             r["data"],
             r["maturity"],
