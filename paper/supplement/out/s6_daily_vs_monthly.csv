@@ -1,0 +1,7 @@
+era,series,rows,corr,sd_dd,sd_fx,slope,same_day_share_cov,same_day_share_var_dd,same_day_share_var_fx
+ref 2013-2021,daily,2007,0.365186,0.031544,0.556672,6.44461,,,
+ref 2013-2021,"monthly (R2, month-end levels)",108,0.267692,0.141557,2.3184,4.38421,,,
+ref 2013-2021,daily changes summed by month,108,0.292557,0.133779,2.12632,4.64998,1.44142,1.04253,1.27779
+new 2022-,daily,1045,0.436517,0.0730979,0.678978,4.05464,,,
+new 2022-,"monthly (R2, month-end levels)",56,0.736273,0.315894,3.19678,7.45091,,,
+new 2022-,daily changes summed by month,57,0.688484,0.278513,3.15574,7.801,0.671172,1.28494,0.871413
